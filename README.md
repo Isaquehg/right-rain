@@ -1,10 +1,17 @@
 # RightRain
 
-RightRain System
+RightRain System for Agricultural Sensing
 
-- temperatura
-- umidade do ar
-- umidade do solo
-- pluviosidade
-- velocidade do vento
-- localização
+## Measuments
+- Temperature
+- Air Humidity
+- Ground Humidity
+- Pluviosity
+- Wind Speed
+- Location
+
+## Technologies
+- React Native
+- FastAPI
+- MongoDB
+- ESP8266

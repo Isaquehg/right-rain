@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "right-rain-app",
+    "slug": "right-rain-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/RightRain-removebg_HD.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/RightRain-removebg_HD.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}

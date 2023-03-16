@@ -1,0 +1,25 @@
+{
+    "id": 1,
+    "nome": "larry",
+    "senha": 123,
+    "localizacoes": [
+        {
+            "latitude": 12316846.468,
+            "longitude": 151768753.58,
+            "datas":[
+                {
+                    "01/01/2021": {
+                        "pluviosidade": 122,
+                        "vel_ar": 43
+                    }
+                },
+                {
+                    "01/02/2021": {
+                        "temperatura": 32.0,
+                        "humidade": 75
+                    }
+                }
+            ]
+        }
+    ]
+}

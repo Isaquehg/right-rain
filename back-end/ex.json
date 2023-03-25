@@ -1,0 +1,168 @@
+[
+    {
+        "_id": "168661dff86r168",
+        "name": "larry",
+        "email": "larry@larry.com",
+        "password": "fkadsjfwe48",
+        "locations": [
+            {
+                "_id_loc": "fa81f86re1v86e",
+                "latitude": 13557284.16,
+                "longitude": 868821113.28,
+                "dates":[
+                    {
+                        "01-01-2019": {
+                            "pluviosity": 125,
+                            "soil_humidity": 99
+                        }
+                    },
+                    {
+                        "02-01-2019": {
+                            "pluviosity": 89,
+                            "soil_humidity": 78
+                        }
+                    },
+                    {
+                        "03-01-2019": {
+                            "pluviosity": 110,
+                            "soil_humidity": 95
+                        }
+                    }
+                ]
+            },
+            {
+                "_id_loc": "eklrei483vn3895g735nn",
+                "latitude": 784447284.16,
+                "longitude": 77777821113.28,
+                "dates":[
+                    {
+                        "01-01-2019": {
+                            "temperature": 25,
+                            "air_humidity": 99
+                        }
+                    },
+                    {
+                        "02-01-2019": {
+                            "temperature": 25,
+                            "air_humidity": 96
+                        }
+                    },
+                    {
+                        "03-01-2019": {
+                            "temperature": 24,
+                            "air_humidity": 95
+                        }
+                    }
+                ]
+            },
+            {
+                "_id_loc": "jenun439u349384nf95gh",
+                "latitude": 1991911989.16,
+                "longitude": 46428288547.28,
+                "dates":[
+                    {
+                        "01-01-2019": {
+                            "temperature": 25,
+                            "air_humidity": 97
+                        }
+                    },
+                    {
+                        "02-01-2019": {
+                            "temperature": 25,
+                            "air_humidity": 98
+                        }
+                    },
+                    {
+                        "03-01-2019": {
+                            "temperature": 26,
+                            "air_humidity": 95
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "_id": "f9u438hfn9h39nf93n",
+        "name": "darry",
+        "email": "darry@darry.com",
+        "password": "43j8j9f934fn",
+        "locations": [
+            {
+                "_id_loc": "9n4funeirkfueun",
+                "latitude": 19817892.16,
+                "longitude": 277827727.28,
+                "dates":[
+                    {
+                        "01-01-2019": {
+                            "pluviosity": 125,
+                            "soil_humidity": 99
+                        }
+                    },
+                    {
+                        "02-01-2019": {
+                            "pluviosity": 89,
+                            "soil_humidity": 78
+                        }
+                    },
+                    {
+                        "03-01-2019": {
+                            "pluviosity": 110,
+                            "soil_humidity": 95
+                        }
+                    }
+                ]
+            },
+            {
+                "_id_loc": "eklrei483vn3895g735nn",
+                "latitude": 784447284.16,
+                "longitude": 77777821113.28,
+                "dates":[
+                    {
+                        "01-01-2019": {
+                            "temperature": 25,
+                            "air_humidity": 99
+                        }
+                    },
+                    {
+                        "02-01-2019": {
+                            "temperature": 25,
+                            "air_humidity": 96
+                        }
+                    },
+                    {
+                        "03-01-2019": {
+                            "temperature": 24,
+                            "air_humidity": 95
+                        }
+                    }
+                ]
+            },
+            {
+                "_id_loc": "jenun439u349384nf95gh",
+                "latitude": 1991911989.16,
+                "longitude": 46428288547.28,
+                "dates":[
+                    {
+                        "01-01-2019": {
+                            "temperature": 25,
+                            "air_humidity": 97
+                        }
+                    },
+                    {
+                        "02-01-2019": {
+                            "temperature": 25,
+                            "air_humidity": 98
+                        }
+                    },
+                    {
+                        "03-01-2019": {
+                            "temperature": 26,
+                            "air_humidity": 95
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]

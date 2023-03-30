@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
     textoselect:{
         color: '#fbfcfb',
         fontSize: 24, 
-        textAlign: 'center'
+        textAlign: 'center',
+        fontWeight: 'bold'
     },
     space:{
       width: 20, // or whatever size you need

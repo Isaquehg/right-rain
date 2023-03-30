@@ -19,7 +19,8 @@ from typing import List, Dict
 #home/{id}/{location}/temperature
 
 app = FastAPI()
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
+#client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
+client = motor.motor_asyncio.AsyncIOMotorClient("mongodb://127.0.0.1:27017")
 db = client.rightrain
 
 #converting _id BSON to string
@@ -39,13 +40,13 @@ class PyObjectId(ObjectId):
         field_schema.update(type="string")
 
 class LocationData(BaseModel):
-    _id_loc: ObjectId()
+    id_loc: PyObjectId = Field(default_factory=PyObjectId, alias="_id_loc")
     latitude: float
     longitude: float
     dates: List[Dict[str, Dict[str, float]]]
 
 class UserData(BaseModel):
-    _id: ObjectId()
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     name: str
     email: str
     password: str
@@ -72,7 +73,7 @@ async def show_user(id: str):
 
 #update user
 @app.put("/home/{id}", response_description="Update a user", response_model=UserData)
-async def update_user(id: str, user: UpdateUserData = Body(...)):
+async def update_user(id: str, user: UserData = Body(...)):
     user = {k: v for k, v in user.dict().items() if v is not None}
 
     if len(user) >= 1:
@@ -102,7 +103,7 @@ async def delete_user(id: str):
 
 #LOCATION CRUD
 #register new location
-@app.post("/register"/{id}, response_description="Add new location", response_model=UserData)
+@app.post("/register/{id}", response_description="Add new location", response_model=UserData)
 async def create_user(user: UserData = Body(...)):
     user = jsonable_encoder(user)
     new_user = await db["locations"].insert_one(user)
@@ -110,7 +111,7 @@ async def create_user(user: UserData = Body(...)):
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_user)
 
 #get location details
-@app.get("/home/{id}/{idloc}", response_description="List location details", response_model=UserData)
+@app.get("/home/{id}/{id_loc}", response_description="List location details", response_model=LocationData)
 async def show_user(id: str):
     if (location := await db["locations"].find_one({"_id": id})) is not None:
         return location
@@ -118,8 +119,8 @@ async def show_user(id: str):
     raise HTTPException(status_code=404, detail=f"Location {id} not found")
 
 #update location details
-@app.put("/home/{id}/{idloc}", response_description="Update location details", response_model=UserData)
-async def update_user(id: str, user: UpdateUserData = Body(...)):
+@app.put("/home/{id}/{id_loc}", response_description="Update location details", response_model=UserData)
+async def update_user(id: str, user: LocationData = Body(...)):
     user = {k: v for k, v in user.dict().items() if v is not None}
 
     if len(user) >= 1:
@@ -137,7 +138,7 @@ async def update_user(id: str, user: UpdateUserData = Body(...)):
     raise HTTPException(status_code=404, detail=f"Location {id} not found")
 
 #delete location
-@app.delete("/home/{id}/{idloc}", response_description="Delete a user")
+@app.delete("/home/{id}/{id_loc}", response_description="Delete a location")
 async def delete_user(id: str):
     delete_result = await db["users"].delete_one({"_id": id})
 

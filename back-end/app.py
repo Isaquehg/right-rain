@@ -20,7 +20,7 @@ from typing import List, Dict
 
 app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
-db = client.college
+db = client.rightrain
 
 #converting _id BSON to string
 class PyObjectId(ObjectId):

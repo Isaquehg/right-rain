@@ -39,13 +39,13 @@ class PyObjectId(ObjectId):
         field_schema.update(type="string")
 
 class LocationData(BaseModel):
-    _id_loc: str
+    _id_loc: ObjectId()
     latitude: float
     longitude: float
     dates: List[Dict[str, Dict[str, float]]]
 
 class UserData(BaseModel):
-    _id: str
+    _id: ObjectId()
     name: str
     email: str
     password: str

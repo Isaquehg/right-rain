@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     entradaTexto: {
       bottom: 230,
       marginBottom: 12,
+      paddingLeft: 30,
       height: 40,
       borderBottomWidth: 2
     },
@@ -57,6 +58,9 @@ const styles = StyleSheet.create({
       color: '#FFF',
       fontWeight: 'bold',
       fontSize: 30
+    },
+    icones: {
+      bottom: 200
     }
   });
 

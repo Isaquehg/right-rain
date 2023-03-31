@@ -20,14 +20,18 @@ export default function Routes() {
   return (
     <NavigationContainer
     theme={Tema}>
-      <StatusBar hidden />
+      <StatusBar 
+      backgroundColor="#4c7031"
+      barStyle="light-content"
+      translucent={true} />
       <Stack.Navigator>
       <Stack.Screen
           name='Login'
           component={Login}
           options={{headerStyle:{
               backgroundColor:'#4c7031',},
-               headerTintColor:'#fff'
+               headerTintColor:'#fff',
+               headerShown: false
               }}
           />
         <Stack.Screen
@@ -35,7 +39,8 @@ export default function Routes() {
           component={Main}
           options={{headerStyle:{
               backgroundColor:'#4c7031',},
-               headerTintColor:'#fff'
+               headerTintColor:'#fff',
+               headerShown: false
               }}
           />
         <Stack.Screen 
@@ -45,7 +50,8 @@ export default function Routes() {
           headerStyle:{
             backgroundColor:'#4c7031',
           },
-             headerTintColor:'#fff'
+             headerTintColor:'#fff',
+             headerShown: false
             }
           }
          />

@@ -5,7 +5,8 @@ import styles from "./style";
 export default function Cadastro() {
     return (
         <View style={styles.container}>
-            <Text>Ola</Text>
+            <Text style={styles.textoIn}>Faça seu cadastro!</Text>
+            <View style={styles.containerForm}></View>
           </View>
     )
 }

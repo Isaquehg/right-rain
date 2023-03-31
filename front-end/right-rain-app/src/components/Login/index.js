@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ToastAndroid, TouchableOpacity, TextInput } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import styles from "./style";
 
 export default function Login({navigation}) {
@@ -11,20 +12,32 @@ export default function Login({navigation}) {
         <View>
             <Text style={styles.bemVindoTexto}>Bem vindo ao RightRain!</Text>
         </View>
+
         <View style = {styles.containerForm}>
           <Text 
-          style = {styles.containerText}>E-Mail
+          style = {styles.containerText}>Usuário
           </Text>
-
+            <FontAwesome 
+                style={styles.icones}
+                name="user-o"
+                size={20}
+                />
           <TextInput 
           style={styles.entradaTexto} 
           onChangeText={setNome}
           value={nome} 
-          placeholder="Digite seu email"/>
+          placeholder="Digite o nome de usuário"/>
+
+
           <Text style = {styles.containerText}>Senha</Text>
-          
+          <FontAwesome 
+                style={styles.icones}
+                name="lock"
+                size={20}
+                />
           <TextInput 
           style={styles.entradaTexto} 
+          secureTextEntry={true}
           onChangeText={setSenha}
           value={senha} 
           placeholder="Digite sua senha"/>
@@ -43,11 +56,9 @@ export default function Login({navigation}) {
   );
 
   function verificaUsuario(nome, senha){
-    const customData = require('./ex2.json');
+    const customData = require('../Json/index.json');
   
-    if(customData.nome.localeCompare(nome) == 0){
-        console.log(senha);
-        console.log(customData.senha);
+    if(customData.nome == nome && customData.senha == senha){
         return navigation.navigate('RightRain');
     }else{
         return ToastAndroid.show('Usuário ou senha inválida!', ToastAndroid.SHORT);

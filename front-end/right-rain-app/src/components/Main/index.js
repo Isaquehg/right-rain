@@ -5,6 +5,8 @@ import styles from "./style"
 export default function Main({navigation}){
     return(
         <View style= {styles.principal}>
+        <Text style = {styles.textoTitulo}>RightRain</Text>
+        <View style = {styles.space3} />
         <Text style = {styles.textoselect}>SELECIONE UMA LOCALIZAÇÃO</Text>
         <View style={styles.space2} /> 
         

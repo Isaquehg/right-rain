@@ -103,12 +103,12 @@ async def delete_user(id: str):
 
 #LOCATION CRUD
 #register new location
-@app.post("/register/{id}", response_description="Add new location", response_model=UserData)
-async def create_user(user: UserData = Body(...)):
-    user = jsonable_encoder(user)
-    new_user = await db["locations"].insert_one(user)
-    created_user = await db["locations"].find_one({"_id": new_user.inserted_id})
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_user)
+@app.post("/register/{id}", response_description="Add new location", response_model=LocationData)
+async def create_user(location: LocationData = Body(...)):
+    location = jsonable_encoder(location)
+    new_location = await db["locations"].insert_one(location)
+    created_location = await db["locations"].find_one({"_id_loc": new_location.inserted_id})
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_location)
 
 #get location details
 @app.get("/home/{id}/{id_loc}", response_description="List location details", response_model=LocationData)

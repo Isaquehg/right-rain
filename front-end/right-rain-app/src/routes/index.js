@@ -1,12 +1,15 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import Localizacao from '../components/Localizacao';
-import Main from '../components/Main'
+import Main2 from '../components/Main'
+import Configs from '../components/Settings';
 import Cadastro from '../components/Cadastro';
 import Login from '../components/Login';
 
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function Routes() {
   const Tema = {
@@ -21,22 +24,21 @@ export default function Routes() {
     <NavigationContainer
     theme={Tema}>
       <StatusBar 
-      backgroundColor="#4c7031"
-      barStyle="light-content"
+      style="light"
       translucent={true} />
       <Stack.Navigator>
       <Stack.Screen
           name='Login'
           component={Login}
           options={{headerStyle:{
-              backgroundColor:'#4c7031',},
+               backgroundColor:'#4c7031',},
                headerTintColor:'#fff',
                headerShown: false
               }}
           />
         <Stack.Screen
           name='RightRain'
-          component={Main}
+          component={DrawerRoutes}
           options={{headerStyle:{
               backgroundColor:'#4c7031',},
                headerTintColor:'#fff',
@@ -62,11 +64,30 @@ export default function Routes() {
           headerStyle:{
             backgroundColor:'#4c7031',
           },
-             headerTintColor:'#fff'
+             headerTintColor:'#fff',
+             headerShown: false
             }
           }
          />
       </Stack.Navigator>
     </NavigationContainer>
   );
+
+  function DrawerRoutes() {
+    return (
+        <Drawer.Navigator 
+        screenOptions={{
+          drawerStyle: {
+            backgroundColor: '#c6cbef',
+          },
+        }}
+        initialRouteName="Tela inicial">
+          <Drawer.Screen 
+          name = "Tela inicial" 
+          component={Main2}
+          options={{headerShown:false}} />
+          <Drawer.Screen name="Configurações" component={Configs} />
+        </Drawer.Navigator>
+    )
+  }
 }

@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
       marginTop: 10
     },
     containerForm: {
-      top: 50,
+      top: 100,
       backgroundColor: '#FFF',
       borderTopLeftRadius: 25,
       borderTopRightRadius: 25,
@@ -53,11 +53,11 @@ const styles = StyleSheet.create({
       borderBottomWidth: 2
     },
     bemVindoTexto: {
-      top: 30,
+      top: 60,
       left: 10,
       color: '#FFF',
       fontWeight: 'bold',
-      fontSize: 30
+      fontSize: 33
     },
     icones: {
       bottom: 200

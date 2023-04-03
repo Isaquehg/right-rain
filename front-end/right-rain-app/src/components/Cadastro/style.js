@@ -6,14 +6,14 @@ const styles = StyleSheet.create({
     backgroundColor:'#4c7031'
   },
   textoIn:{
-    top: 30,
-    left: 10,
+    top: 60,
+    left: 15,
     color: '#FFF',
     fontWeight: 'bold',
     fontSize: 30
   },
   containerForm: {
-    top: 60,
+    top: 100,
     backgroundColor: '#FFF',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,

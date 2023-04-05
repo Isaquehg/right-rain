@@ -20,10 +20,10 @@ from typing import List, Dict
 
 app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
-#client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/test")
+# client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/test")
 db = client.rightrain
 
-#converting _id BSON to string
+# converting _id BSON to string
 class PyObjectId(ObjectId):
     @classmethod
     def __get_validators__(cls):
@@ -40,25 +40,27 @@ class PyObjectId(ObjectId):
         field_schema.update(type="string")
 
 class LocationData(BaseModel):
-    id_loc: PyObjectId = Field(default_factory=PyObjectId, alias="_id_loc")
-    latitude: float
-    longitude: float
-    dates: List[Dict[str, Dict[str, float]]]
+    latitude: float = Field(...)
+    longitude: float = Field(...)
+    date: str = Field(..., regex=r"^\d{2}-\d{2}-\d{4}$")
+    temperature: Optional[float] = Field(None, ge=-100, le=100)
+    air_humidity: Optional[int] = Field(None, ge=0, le=100)
+    pluviosity: Optional[int] = Field(None, ge=0, le=1000)
+    soil_humidity: Optional[int] = Field(None, ge=0, le=100)
 
 class UserData(BaseModel):
-    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
-    name: str
-    email: str
-    password: str
-    number: str
-    locations: List[LocationData]
-    
-    def add_location(self, location: LocationData):
-        self.locations.append(location)
+    name: str = Field(..., min_length=1, max_length=100)
+    email: str = Field(..., min_length=5, max_length=100, regex=r"[^@]+@[^@]+\.[^@]+")
+    password: str = Field(..., min_length=8)
+    number: str = Field(..., regex=r"^\d{9,15}$")
+    locations: Optional[List[LocationData]] = []
 
+# MongoDB document keys
+USER_KEYS = ["name", "email", "password", "number", "locations"]
+LOCATION_KEYS = ["latitude", "longitude", "date", "temperature", "air_humidity", "pluviosity", "soil_humidity"]
 
-#USER CRUD
-#create user
+# USER CRUD
+# create user
 @app.post("/register", response_description="Add new user", response_model=UserData)
 async def create_user(user: UserData = Body(...)):
     user = jsonable_encoder(user)
@@ -66,8 +68,8 @@ async def create_user(user: UserData = Body(...)):
     created_user = await db["users"].find_one({"_id": new_user.inserted_id})
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_user)
 
-#implement auth
-#user home screen
+# implement auth
+# user home screen
 @app.get("/home/{id}", response_description="List all locations", response_model=UserData)
 async def show_user(id: str):
     if (location := await db["locations"].find_one({"_id": id})) is not None:
@@ -75,8 +77,8 @@ async def show_user(id: str):
 
     raise HTTPException(status_code=404, detail=f"User {id} not found")
 
-#update user
-@app.put("/home/{id}", response_description="Update a user", response_model=UserData)
+# update user
+@app.patch("/home/{id}", response_description="Update a user", response_model=UserData)
 async def update_user(id: str, user: UserData = Body(...)):
     user = {k: v for k, v in user.dict().items() if v is not None}
 
@@ -107,15 +109,21 @@ async def delete_user(id: str):
 
 #LOCATION CRUD
 #register new location
-"""
-@app.post("/register/{id}", response_description="Add new location", response_model=LocationData)
-async def create_user(location: LocationData = Body(...)):
-    location = jsonable_encoder(location)
-    new_location = await db["locations"].insert_one(location)
-    created_location = await db["locations"].find_one({"_id_loc": new_location.inserted_id})
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_location)
-"""
-#get location details
+#patches the user document with new locations, instead of put, that replaces the entire data
+@app.patch("/locations/{user_id}", response_description="Add a new location to a user", response_model=UserData)
+async def add_location(user_id: str, location: LocationData = Body(...)):
+    user = await db['users'].find_one({"_id": ObjectId(user_id)})
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    # Generate _id_loc for the new location
+    location_dict = location.dict(by_alias=True)
+    location_dict["_id_loc"] = ObjectId()
+    # Add the new location to the user's list of locations
+    db['users'].update_one({"_id": ObjectId(user_id)}, {"$push": {"locations": location_dict}})
+    updated_user = await db['users'].find_one({"_id": ObjectId(user_id)})
+    return updated_user
+    
+# get location details
 @app.get("/home/{id}/{id_loc}", response_description="List location details", response_model=LocationData)
 async def show_user(id: str):
     if (location := await db["users"].find_one({"_id_loc": id})) is not None:
@@ -123,7 +131,7 @@ async def show_user(id: str):
 
     raise HTTPException(status_code=404, detail=f"Location {id} not found")
 
-#update/add location details
+# update/add location details
 @app.put("/home/{id}/addlocation", response_description="Update location details", response_model=UserData)
 async def update_user(id: str, location: LocationData = Body(...)):
     location = {k: v for k, v in location.dict().items() if v is not None}

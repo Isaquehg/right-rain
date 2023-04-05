@@ -19,8 +19,8 @@ from typing import List, Dict
 #home/{id}/{location}/temperature
 
 app = FastAPI()
-#client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
-client = motor.motor_asyncio.AsyncIOMotorClient("mongodb://127.0.0.1:27017")
+client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
+#client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/test")
 db = client.rightrain
 
 #converting _id BSON to string
@@ -50,7 +50,11 @@ class UserData(BaseModel):
     name: str
     email: str
     password: str
+    number: str
     locations: List[LocationData]
+    
+    def add_location(self, location: LocationData):
+        self.locations.append(location)
 
 
 #USER CRUD
@@ -103,36 +107,37 @@ async def delete_user(id: str):
 
 #LOCATION CRUD
 #register new location
+"""
 @app.post("/register/{id}", response_description="Add new location", response_model=LocationData)
 async def create_user(location: LocationData = Body(...)):
     location = jsonable_encoder(location)
     new_location = await db["locations"].insert_one(location)
     created_location = await db["locations"].find_one({"_id_loc": new_location.inserted_id})
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_location)
-
+"""
 #get location details
 @app.get("/home/{id}/{id_loc}", response_description="List location details", response_model=LocationData)
 async def show_user(id: str):
-    if (location := await db["locations"].find_one({"_id": id})) is not None:
+    if (location := await db["users"].find_one({"_id_loc": id})) is not None:
         return location
 
     raise HTTPException(status_code=404, detail=f"Location {id} not found")
 
-#update location details
-@app.put("/home/{id}/{id_loc}", response_description="Update location details", response_model=UserData)
-async def update_user(id: str, user: LocationData = Body(...)):
-    user = {k: v for k, v in user.dict().items() if v is not None}
+#update/add location details
+@app.put("/home/{id}/addlocation", response_description="Update location details", response_model=UserData)
+async def update_user(id: str, location: LocationData = Body(...)):
+    location = {k: v for k, v in location.dict().items() if v is not None}
 
-    if len(user) >= 1:
-        update_result = await db["locations"].update_one({"_id": id}, {"$set": user})
+    #if the request has items
+    if len(location) >= 1:
+        user_updated_location = UserData.add_location(location)
+        update_result = await db["users"].update_one({"_id": id}, {"$set": user_updated_location})
 
         if update_result.modified_count == 1:
-            if (
-                updated_user := await db["locations"].find_one({"_id": id})
-            ) is not None:
+            if (updated_user := await db["users"].find_one({"_id": id})) is not None:
                 return updated_user
 
-    if (existing_user := await db["locations"].find_one({"_id": id})) is not None:
+    if (existing_user := await db["users"].find_one({"_id": id})) is not None:
         return existing_user
 
     raise HTTPException(status_code=404, detail=f"Location {id} not found")

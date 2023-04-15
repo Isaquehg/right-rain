@@ -1,0 +1,90 @@
+{
+    "name": "Harry",
+    "email": "harry@harry.com",
+    "password": "987654321",
+    "number": "468616861",
+    "locations": [
+      {
+        "_id_loc": {
+          "$oid": "6175f5c216e5b5bf5d0bbd70"
+        },
+        "latitude": 13557284.16,
+        "longitude": 868821113.28,
+        "dates": [
+          {
+            "01-01-2020": {
+              "pluviosity": 125,
+              "soil_humidity": 99
+            }
+          },
+          {
+            "02-01-2020": {
+              "pluviosity": 89,
+              "soil_humidity": 78
+            }
+          },
+          {
+            "03-01-2020": {
+              "pluviosity": 110,
+              "soil_humidity": 95
+            }
+          }
+        ]
+      },
+      {
+        "_id_loc": {
+          "$oid": "6175f5c216e5b5bf5d0bbd71"
+        },
+        "latitude": 784447284.16,
+        "longitude": 77777821113.28,
+        "dates": [
+          {
+            "01-01-2020": {
+              "temperature": 25,
+              "air_humidity": 99
+            }
+          },
+          {
+            "02-01-2020": {
+              "temperature": 25,
+              "air_humidity": 96
+            }
+          },
+          {
+            "03-01-2020": {
+              "temperature": 24,
+              "air_humidity": 95
+            }
+          }
+        ]
+      },
+      {
+        "_id_loc": {
+          "$oid": "6175f5c216e5b5bf5d0bbd72"
+        },
+        "latitude": 1991911989.16,
+        "longitude": 46428288547.28,
+        "dates": [
+          {
+            "01-01-2020": {
+              "temperature": 25,
+              "air_humidity": 97
+            }
+          },
+          {
+            "02-01-2020": {
+              "temperature": 25,
+              "air_humidity": 98
+            }
+          },
+          {
+            "03-01-2020": {
+              "temperature": 26,
+              "air_humidity": 95
+            }
+          }
+        ]
+      }
+    ]
+  }
+  

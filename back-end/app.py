@@ -19,8 +19,8 @@ from typing import List, Dict
 #home/{id}/{location}/temperature
 
 app = FastAPI()
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
-# client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/test")
+#client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
+client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/test")
 db = client.rightrain
 
 # converting _id BSON to string

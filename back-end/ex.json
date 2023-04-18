@@ -1,162 +1,30 @@
-[
-    {
-        "name": "garry",
-        "email": "garry@garry.com",
-        "password": "987654321",
-        "number" : "357799999",
-        "locations": [
-            {
-                "latitude": 13557284.16,
-                "longitude": 868821113.28,
-                "dates":[
-                    {
-                        "01-01-2020": {
-                            "pluviosity": 125,
-                            "soil_humidity": 99
-                        }
-                    },
-                    {
-                        "02-01-2020": {
-                            "pluviosity": 89,
-                            "soil_humidity": 78
-                        }
-                    },
-                    {
-                        "03-01-2020": {
-                            "pluviosity": 110,
-                            "soil_humidity": 95
-                        }
-                    }
-                ]
-            },
-            {
-                "latitude": 784447284.16,
-                "longitude": 77777821113.28,
-                "dates":[
-                    {
-                        "01-01-2020": {
-                            "temperature": 25,
-                            "air_humidity": 99
-                        }
-                    },
-                    {
-                        "02-01-2020": {
-                            "temperature": 25,
-                            "air_humidity": 96
-                        }
-                    },
-                    {
-                        "03-01-2020": {
-                            "temperature": 24,
-                            "air_humidity": 95
-                        }
-                    }
-                ]
-            },
-            {
-                "latitude": 1991911989.16,
-                "longitude": 46428288547.28,
-                "dates":[
-                    {
-                        "01-01-2020": {
-                            "temperature": 25,
-                            "air_humidity": 97
-                        }
-                    },
-                    {
-                        "02-01-2020": {
-                            "temperature": 25,
-                            "air_humidity": 98
-                        }
-                    },
-                    {
-                        "03-01-2020": {
-                            "temperature": 26,
-                            "air_humidity": 95
-                        }
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "_id": "f9u438hfn9h39nf93n",
-        "name": "barry",
-        "email": "barry@barry.com",
-        "password": "46568468186",
-        "locations": [
-            {
-                "latitude": 19817892.16,
-                "longitude": 277827727.28,
-                "dates":[
-                    {
-                        "01-01-2020": {
-                            "pluviosity": 125,
-                            "soil_humidity": 99
-                        }
-                    },
-                    {
-                        "02-01-2020": {
-                            "pluviosity": 89,
-                            "soil_humidity": 78
-                        }
-                    },
-                    {
-                        "03-01-2020": {
-                            "pluviosity": 110,
-                            "soil_humidity": 95
-                        }
-                    }
-                ]
-            },
-            {
-                "latitude": 784447284.16,
-                "longitude": 77777821113.28,
-                "dates":[
-                    {
-                        "01-01-2020": {
-                            "temperature": 25,
-                            "air_humidity": 99
-                        }
-                    },
-                    {
-                        "02-01-2020": {
-                            "temperature": 25,
-                            "air_humidity": 96
-                        }
-                    },
-                    {
-                        "03-01-2020": {
-                            "temperature": 24,
-                            "air_humidity": 95
-                        }
-                    }
-                ]
-            },
-            {
-                "latitude": 1991911989.16,
-                "longitude": 46428288547.28,
-                "dates":[
-                    {
-                        "01-01-2020": {
-                            "temperature": 25,
-                            "air_humidity": 97
-                        }
-                    },
-                    {
-                        "02-01-2020": {
-                            "temperature": 25,
-                            "air_humidity": 98
-                        }
-                    },
-                    {
-                        "03-01-2020": {
-                            "temperature": 26,
-                            "air_humidity": 95
-                        }
-                    }
-                ]
-            }
-        ]
-    }
-]
+{
+    "name": "garry",
+    "email": "garry@garry.com",
+    "password": "987654321",
+    "number" : "357799999",
+    "datetime": "2020-01-01T00:00:21",
+    "locations": [
+        {
+            "id_loc": "1",
+            "latitude": 13557284.16,
+            "longitude": 868821113.28,
+            "pluviosity": 125,
+            "soil_humidity": 99
+        },
+        {
+            "id_loc": "2",
+            "latitude": 31557555.16,
+            "longitude": 868821113.28,
+            "pluviosity": 89,
+            "soil_humidity": 78
+        },
+        {
+            "id_loc": "3",
+            "latitude": 98757284.45,
+            "longitude": 868821113.28,
+            "pluviosity": 110,
+            "soil_humidity": 95
+        }
+    ]
+}

@@ -12,15 +12,15 @@ from typing import List, Dict
 #/login
 #/register
 #/home/{id}
-#/home/{id}/{location}
-#home/{id}/{location}/pluviosity
-#home/{id}/{location}/soilhumidity
-#home/{id}/{location}/airhumidity
-#home/{id}/{location}/temperature
+#/home/{id}/{id_loc}
+#home/{id}/{id_loc}/pluviosity
+#home/{id}/{id_loc}/soilhumidity
+#home/{id}/{id_loc}/airhumidity
+#home/{id}/{id_loc}/temperature
 
 app = FastAPI()
-#client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
-client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/test")
+client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
+#client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/test")
 db = client.rightrain
 
 # converting _id BSON to string
@@ -42,7 +42,7 @@ class PyObjectId(ObjectId):
 class LocationData(BaseModel):
     latitude: float = Field(...)
     longitude: float = Field(...)
-    date: str = Field(..., regex=r"^\d{2}-\d{2}-\d{4}$")
+    date: str = Field(..., regex=r"^\d{2}-\d{2}-\d{4}T\d{2}:\d{2}:\d{2}$")
     temperature: Optional[float] = Field(None, ge=-100, le=100)
     air_humidity: Optional[int] = Field(None, ge=0, le=100)
     pluviosity: Optional[int] = Field(None, ge=0, le=1000)
@@ -52,7 +52,7 @@ class UserData(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
     email: str = Field(..., min_length=5, max_length=100, regex=r"[^@]+@[^@]+\.[^@]+")
     password: str = Field(..., min_length=8)
-    number: str = Field(..., regex=r"^\d{9,15}$")
+    number: str = Field(..., regex=r"^\d{11,15}$")
     locations: Optional[List[LocationData]] = []
 
 # MongoDB document keys

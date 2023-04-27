@@ -17,6 +17,11 @@ from typing import List, Dict
 #home/{id}/{id_loc}/soilhumidity
 #home/{id}/{id_loc}/airhumidity
 #home/{id}/{id_loc}/temperature
+#home/{id}/{id_loc}/wind-dir
+#home/{id}/{id_loc}/wind-vel
+#home/{id}/{id_loc}/luminosity
+#home/{id}/{id_loc}/pression
+#home/{id}/{id_loc}/rain-det
 
 app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])

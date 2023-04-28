@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, ToastAndroid, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, ToastAndroid, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native';
+import { useHeaderHeight } from '@react-navigation/elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import styles from "./style";
 
@@ -9,8 +10,13 @@ export default function Cadastro() {
     const [senha, setSenha] = useState('');
     const [senha2, setSenha2] = useState('');
     const [phone, setPhone] = useState('');
+    const height = useHeaderHeight();
 
     return (
+        <KeyboardAvoidingView 
+        style={styles.teclado} 
+        behavior="position"
+        keyboardVerticalOffset={height-160}>
         <View style={styles.container}>
             <Text style={styles.bemVindoTexto}>Faça seu cadastro!</Text>
             <View style={styles.containerForm}></View>
@@ -39,7 +45,7 @@ export default function Cadastro() {
           onChangeText={setSenha}
           value={senha} 
           placeholder="Nova senha"/>
-                    <FontAwesome 
+            <FontAwesome 
                 style={styles.icones}
                 name="lock"
                 size={20}
@@ -65,10 +71,19 @@ export default function Cadastro() {
           value={phone} 
           placeholder="Telefone"/>
 
-          <TouchableOpacity 
-          style={styles.botao}>
+          <TouchableOpacity onPress={() => verificaDados(nome, senha, senha2, phone)} style={styles.botao}>
            <Text style = {styles.containerTextAc}>Finalizar</Text>
           </TouchableOpacity>
         </View>
+        </KeyboardAvoidingView>
     )
+
+    function verificaDados(nome, senha, senha2, phone){
+        const customData = require('../Json/index.json');
+        if(nome == '' || senha != senha2 || senha == '' || senha2 == '' || phone.length != 11){
+            return ToastAndroid.show('Um ou mais dados inválidos!', ToastAndroid.SHORT);
+        }else{
+            return ToastAndroid.show('Usuário criado!', ToastAndroid.SHORT);
+        }
+    }
 }

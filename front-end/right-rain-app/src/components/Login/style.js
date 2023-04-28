@@ -22,10 +22,9 @@ const styles = StyleSheet.create({
     containerText: {
       fontSize: 24,
       fontWeight: 'bold',
-      bottom: 100,
       borderRadius: 50,
       bottom: 240,
-      marginTop: 10
+      marginTop: 5
     },
     containerForm: {
       top: 100,
@@ -46,10 +45,9 @@ const styles = StyleSheet.create({
       alignSelf: 'center'
     },
     entradaTexto: {
-      bottom: 230,
+      bottom: 250,
       marginBottom: 12,
       paddingLeft: 30,
-      height: 40,
       borderBottomWidth: 2
     },
     bemVindoTexto: {
@@ -60,7 +58,7 @@ const styles = StyleSheet.create({
       fontSize: 33
     },
     icones: {
-      bottom: 200
+      bottom: 227
     }
   });
 

@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor:'#4c7031'
   },
     containerLogo: {
@@ -61,6 +60,9 @@ const styles = StyleSheet.create({
     icones: {
       bottom: 430,
       marginLeft: 10
+    },
+    teclado:{
+      flex:1,
     }
   });
 

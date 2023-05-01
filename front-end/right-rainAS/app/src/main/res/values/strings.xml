@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">RightRain</string>
+    <string name ="locations">Localizações</string>
+    <string name ="location1">Localização 1</string>
+    <string name ="location2">Localização 2</string>
+    <string name ="location3">Localização 3</string>
+    <string name ="location4">Localização 4</string>
+    <string name ="select">Selecione uma localização!</string>
+    <string name="statistics">Estatísticas</string>
+    <string name="welcome">Bem vindo ao RightRain!</string>
+    <string name="user">Usuário</string>
+    <string name="pass">Senha</string>
+    <string name="login_required">Faça seu login para continuar!</string>
+    <string name="type_username">Digite o nome de usuario</string>
+    <string name="sign_up_user">Cadastrar usuário</string>
+    <string name="access">Acessar</string>
+    <string name="type_pass">Digite sua senha</string>
+    <string name="a">a</string>
+</resources>

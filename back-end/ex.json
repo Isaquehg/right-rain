@@ -7,8 +7,8 @@
     "locations": [
         {
             "id_loc": "1",
-            "latitude": 13557284.16,
-            "longitude": 868821113.28,
+            "latitude": 13.55728416,
+            "longitude": 86.882111328,
             "pluviosity": 125,
             "soil_humidity": 99
         },
@@ -17,14 +17,15 @@
             "latitude": 31557555.16,
             "longitude": 868821113.28,
             "pluviosity": 89,
-            "soil_humidity": 78
-        },
-        {
-            "id_loc": "3",
-            "latitude": 98757284.45,
-            "longitude": 868821113.28,
-            "pluviosity": 110,
-            "soil_humidity": 95
+            "soil_humidity": 78,
+            "temperature": 25.1,
+            "air_humidity": 98,
+            "at_pressure": 2,
+            "wind_vel": 25,
+            "wind_dir": "w",
+            "luminosity": 2500,
+            "rain": 0,
+            "soil_ph": 7.1
         }
     ]
 }

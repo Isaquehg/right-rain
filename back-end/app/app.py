@@ -1,13 +1,3 @@
-import os
-from fastapi import FastAPI, Body, HTTPException, status
-from fastapi.responses import Response, JSONResponse
-from fastapi.encoders import jsonable_encoder
-from pydantic import BaseModel, Field
-from bson.objectid import ObjectId
-from typing import Optional, List
-import motor.motor_asyncio
-from typing import List, Dict
-
 #ROUTES
 #/login
 #/register
@@ -23,6 +13,20 @@ from typing import List, Dict
 #home/{id}/{id_loc}/pression
 #home/{id}/{id_loc}/rain-det
 
+import os
+from fastapi import FastAPI, Body, HTTPException, status
+from fastapi.responses import Response, JSONResponse
+from fastapi.encoders import jsonable_encoder
+from pydantic import BaseModel, Field
+from bson.objectid import ObjectId
+from typing import Optional, List
+import motor.motor_asyncio
+from typing import List, Dict
+
+## Set the environment variables for the certificate and private key paths
+#export DEVICE_CERT_PATH="/path/to/device/cert.pem"
+#export DEVICE_KEY_PATH="/path/to/device/key.pem"
+#export MONGODB_URL="mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority"
 app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
 #client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")

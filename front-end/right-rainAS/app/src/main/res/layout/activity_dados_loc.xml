@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background1">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/textView"
@@ -17,24 +17,27 @@
         tools:layout_editor_absoluteY="25dp" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/location1"
-        android:textColor="@color/white"
-        tools:layout_editor_absoluteX="149dp"
+        android:textColor="@color/black"
+        tools:layout_editor_absoluteX="150dp"
         tools:layout_editor_absoluteY="85dp" />
 
     <TextView
+        android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/statistics"
         android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="120dp"
-        tools:layout_editor_absoluteY="124dp" />
+        tools:layout_editor_absoluteX="121dp"
+        tools:layout_editor_absoluteY="123dp" />
 
     <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#af7a1f"
@@ -43,20 +46,22 @@
         tools:layout_editor_absoluteY="181dp" />
 
     <TextView
+        android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/a"
         android:textColor="@color/white"
         android:textSize="20sp"
         tools:layout_editor_absoluteX="200dp"
-        tools:layout_editor_absoluteY="191dp"/>
+        tools:layout_editor_absoluteY="191dp" />
 
     <Button
+        android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#af7a1f"
         android:text="@string/app_name"
-        tools:layout_editor_absoluteX="266dp"
+        tools:layout_editor_absoluteX="267dp"
         tools:layout_editor_absoluteY="181dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

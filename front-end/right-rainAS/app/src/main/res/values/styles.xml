@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Edit_text">
+        <item name="android:layout_width">332dp</item>
+        <item name="android:layout_height">66dp</item>
+        <item name="android:background">@drawable/edit_text</item>
+    </style>
+</resources>

@@ -1,7 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/nav_home"
-        android:title="@string/locations"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+        <group
+                android:checkableBehavior="single">
+        <item
+            android:id="@+id/notifications"
+            android:icon="@drawable/baseline_notifications_none_24"
+            android:title="Notificações" />
+        <item
+            android:id="@+id/add_sens"
+            android:icon="@drawable/baseline_sensors_24"
+            android:title="Adicionar sensor" />
+        <item
+            android:id="@+id/settings"
+            android:title="Configurações" />
+        <item
+            android:id="@+id/mapa"
+            android:title="Mapa" />
+        </group>
+
+        <item
+                android:title="">
+                <menu>
+                        <item
+                            android:id="@+id/dark_theme"
+                            android:title="Tema escuro" />
+                        <item
+                            android:id="@+id/logout"
+                            android:title="Sair" />
+                </menu>
+
+
+        </item>
+
 
 </menu>

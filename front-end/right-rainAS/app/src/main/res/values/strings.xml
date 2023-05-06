@@ -11,9 +11,11 @@
     <string name="user">Usuário</string>
     <string name="pass">Senha</string>
     <string name="login_required">Faça seu login para continuar!</string>
-    <string name="type_username">Digite o nome de usuario</string>
-    <string name="sign_up_user">Cadastrar usuário</string>
+    <string name="type_username"> Usuário/Email</string>
+    <string name="sign_up_user">Criar conta</string>
+    <string name="forget_pass">Esqueceu a senha?</string>
     <string name="access">Acessar</string>
-    <string name="type_pass">Digite sua senha</string>
+    <string name="type_pass"> Senha</string>
     <string name="a">a</string>
+    <string name="mapbox_access_token">sk.eyJ1IjoiZ2l2LWZueiIsImEiOiJjbGg4NXh6NzIwNWJ1M2Vtd2ZmcXpqMzgyIn0.lb_Yre-0LNVWEHT6bUlLBg</string>
 </resources>

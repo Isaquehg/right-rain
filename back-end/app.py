@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI, Body, HTTPException, status
 from fastapi.responses import Response, JSONResponse
 from fastapi.encoders import jsonable_encoder
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field
 from bson.objectid import ObjectId
 from typing import Optional, List
 import motor.motor_asyncio
@@ -25,7 +25,7 @@ from typing import List, Dict
 
 app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
-#client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/test")
+#client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
 db = client.rightrain
 
 # converting _id BSON to string
@@ -45,13 +45,19 @@ class PyObjectId(ObjectId):
         field_schema.update(type="string")
 
 class LocationData(BaseModel):
-    latitude: float = Field(...)
-    longitude: float = Field(...)
-    date: str = Field(..., regex=r"^\d{2}-\d{2}-\d{4}T\d{2}:\d{2}:\d{2}$")
+    latitude: Optional[float] = Field(None)
+    longitude: Optional[float] = Field(None)
+    date: Optional[str] = Field(None, regex=r"^\d{2}-\d{2}-\d{4}T\d{2}:\d{2}:\d{2}$")
     temperature: Optional[float] = Field(None, ge=-100, le=100)
     air_humidity: Optional[int] = Field(None, ge=0, le=100)
-    pluviosity: Optional[int] = Field(None, ge=0, le=1000)
+    pluviosity: Optional[int] = Field(None, ge=0, le=10000)
     soil_humidity: Optional[int] = Field(None, ge=0, le=100)
+    at_pressure: Optional[int] = Field(None, ge=0)
+    wind_vel: Optional[float] = Field(None, ge=0, le = 1000)
+    wind_dir: Optional[str] = Field(None, length=1, regex=r"n | s | w | e")
+    luminosity: Optional[int] = Field(None, ge=0)
+    rain: Optional[bool] = Field(None)
+    soil_ph: Optional[float] = Field(None, ge=0, le=14)
 
 class UserData(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)

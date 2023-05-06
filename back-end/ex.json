@@ -9,8 +9,8 @@
             "id_loc": "1",
             "latitude": 13.55728416,
             "longitude": 86.882111328,
-            "pluviosity": 125,
-            "soil_humidity": 99
+            "temperature": 25,
+            "air_humidity": 99
         },
         {
             "id_loc": "2",

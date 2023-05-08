@@ -1,0 +1,20 @@
+{
+    "id": "device ID",
+    "u_name": "Larry",
+    "u_email": "larry@gmail.com",
+    "u_password": "123456789",
+    "u_number" : "357799999",
+    "datetime": "2020-01-01T00:00:21",
+    "latitude": 31557555.16,
+    "longitude": 868821113.28,
+    "pluviosity": 89,
+    "soil_humidity": 78,
+    "temperature": 25.1,
+    "air_humidity": 98,
+    "at_pressure": 2,
+    "wind_vel": 25,
+    "wind_dir": "w",
+    "luminosity": 2500,
+    "rain": 0,
+    "soil_ph": 7.1
+}

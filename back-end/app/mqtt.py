@@ -3,6 +3,16 @@ from aiomqtt import Client, Message
 import ssl
 from app.aws import connect_to_iot, load_certificates
 
+'''
+from datetime import datetime
+
+iso8601_time = "2022-05-08T12:00:00.000Z"
+dt = datetime.fromisoformat(iso8601_time)
+
+print(dt)
+# Output: 2022-05-08 12:00:00+00:00
+'''
+
 async def on_message_received(client: Client, topic: str, message: Message):
     # Insert code to handle incoming messages
     pass
@@ -23,7 +33,7 @@ async def mqtt_subscribe():
     await client.subscribe('topic', qos=1)
 
     # Set up the message received callback
-    client.on_message = on_message_received
+    client.on_message = on_message_received(client, )
 
     # Keep the event loop running to receive messages
     try:

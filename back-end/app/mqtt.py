@@ -30,10 +30,10 @@ async def mqtt_subscribe():
     await client.connect(endpoint, port=8883)
 
     # Subscribe to a topic
-    await client.subscribe('topic', qos=1)
+    await client.subscribe('data', qos=1)
 
     # Set up the message received callback
-    client.on_message = on_message_received(client, )
+    client.on_message = on_message_received(client, "data", )
 
     # Keep the event loop running to receive messages
     try:

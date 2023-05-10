@@ -49,11 +49,12 @@ class PyObjectId(ObjectId):
         field_schema.update(type="string")
 
 class DeviceData(BaseModel):
-    name: str = Field(..., min_length=1, max_length=100)
-    email: str = Field(..., min_length=5, max_length=100, 
+    u_first_name: str = Field(..., min_length=1, max_length=30)
+    u_last_name: str = Field(..., min_length=1, max_length=100)
+    u_email: str = Field(..., min_length=5, max_length=100, 
                        regex=r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-    password: str = Field(..., min_length=8)
-    number: str = Field(..., regex=r"^\d{11,15}$")
+    u_password: str = Field(..., min_length=8)
+    u_number: str = Field(..., regex=r"^\d{9,15}$")
     latitude: Optional[float] = Field(None)
     longitude: Optional[float] = Field(None)
     date: Optional[str] = Field(None, regex=r"^\d{2}-\d{2}-\d{4}T\d{2}:\d{2}:\d{2}$")
@@ -63,7 +64,7 @@ class DeviceData(BaseModel):
     soil_humidity: Optional[int] = Field(None, ge=0, le=100)
     at_pressure: Optional[int] = Field(None, ge=0)
     wind_vel: Optional[float] = Field(None, ge=0, le = 1000)
-    wind_dir: Optional[str] = Field(None, length=1, regex=r"n | s | w | e")
+    wind_dir: Optional[str] = Field(None, length=1, regex=r"^[nswe]$")
     luminosity: Optional[int] = Field(None, ge=0)
     rain: Optional[bool] = Field(None)
     soil_ph: Optional[float] = Field(None, ge=0, le=14)
@@ -83,12 +84,13 @@ async def create_user(user: UserData = Body(...)):
 '''
 # -> implement auth
 # User's Home Screen
-@app.get("/home/{id}", response_description="List all devices", response_model=DeviceData)
-async def show_user(id: str):
-    if (device := await db["devices"].find_one({"_id": id})) is not None:
+@app.get("/home/{name}", response_description="List all devices", response_model=DeviceData)
+async def show_user(name: str):
+    if (device := await db["devices"].find_one({"u_first_name": name})) is not None:
+        print(type(device))
         return device
 
-    raise HTTPException(status_code=404, detail=f"Device {id} not found")
+    raise HTTPException(status_code=404, detail=f"User {name} not found")
 
 # Update device
 @app.patch("/home/{id}", response_description="Update a device", response_model=DeviceData)

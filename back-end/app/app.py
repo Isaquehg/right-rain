@@ -93,33 +93,33 @@ async def show_user(name: str):
     raise HTTPException(status_code=404, detail=f"User {name} not found")
 
 # Update device
-@app.patch("/home/{id}", response_description="Update a device", response_model=DeviceData)
-async def update_device(id: str, device: DeviceData = Body(...)):
+@app.patch("/home/{name}", response_description="Update a device", response_model=DeviceData)
+async def update_device(name: str, device: DeviceData = Body(...)):
     device = {k: v for k, v in device.dict().items() if v is not None}
 
     if len(device) >= 1:
-        update_result = await db["devices"].update_one({"_id": id}, {"$set": device})
+        update_result = await db["devices"].update_one({"u_first_name": name}, {"$set": device})
 
         if update_result.modified_count == 1:
             if (
-                updated_device := await db["devices"].find_one({"_id": id})
+                updated_device := await db["devices"].find_one({"u_first_name": name})
             ) is not None:
                 return updated_device
 
-    if (existing_device := await db["devices"].find_one({"_id": id})) is not None:
+    if (existing_device := await db["devices"].find_one({"u_first_name": name})) is not None:
         return existing_device
 
-    raise HTTPException(status_code=404, detail=f"Device {id} not found")
+    raise HTTPException(status_code=404, detail=f"User {name} not found")
 
 # Delete Device
 @app.delete("/home/{id}", response_description="Delete a device")
-async def delete_device(id: str):
-    delete_result = await db["devices"].delete_one({"_id": id})
+async def delete_device(name: str):
+    delete_result = await db["devices"].delete_one({"u_first_name": name})
 
     if delete_result.deleted_count == 1:
         return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-    raise HTTPException(status_code=404, detail=f"Device {id} not found")
+    raise HTTPException(status_code=404, detail=f"User {name} not found")
 
 
 #LOCATION CRUD

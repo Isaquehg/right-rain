@@ -1,0 +1,15 @@
+{
+    "id": "device ID",
+    "u_first_name": "sherlock",
+    "u_last_name": "Holmes",
+    "u_email": "sherlock@nycdp.com",
+    "u_password": "dsf6w1ae68c68e681we",
+    "u_number" : "522931752",
+    "datetime": "2020-12-31T11:01:09",
+    "latitude": 37.468319,
+    "longitude": -122.143936,
+    "soil_humidity": 78,
+    "temperature": 25.1,
+    "air_humidity": 98,
+    "soil_ph": 7.1
+}

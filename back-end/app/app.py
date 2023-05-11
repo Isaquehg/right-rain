@@ -95,9 +95,9 @@ async def show_user(name: str):
 
     raise HTTPException(status_code=404, detail=f"User {name} not found")
 
-# Update device
-@app.patch("/home/{name}/{device}", response_description="Send device data to specific device", response_model=DeviceData)
-async def update_device(name: str, device: DeviceData = Body(...)):
+# Send Device Data
+@app.post("/home/{name}/{device}", response_description="Send device data to specific device", response_model=DeviceData)
+async def update_device(name: str, device_name: str, device: DeviceData = Body(...)):
     device = {k: v for k, v in device.dict().items() if v is not None}
 
     if len(device) >= 1:

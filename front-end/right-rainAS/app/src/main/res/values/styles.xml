@@ -4,5 +4,6 @@
         <item name="android:layout_width">332dp</item>
         <item name="android:layout_height">66dp</item>
         <item name="android:background">@drawable/edit_text</item>
+        <item name="android:padding">15dp</item>
     </style>
 </resources>

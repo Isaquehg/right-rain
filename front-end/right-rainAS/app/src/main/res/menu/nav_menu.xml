@@ -8,28 +8,25 @@
         <item
             android:id="@+id/notifications"
             android:icon="@drawable/baseline_notifications_none_24"
-            android:title="Notificações" />
+            android:title="@string/notifications" />
         <item
             android:id="@+id/add_sens"
             android:icon="@drawable/baseline_sensors_24"
-            android:title="Adicionar sensor" />
+            android:title="@string/add_sensor" />
         <item
             android:id="@+id/settings"
-            android:title="Configurações" />
+            android:title="@string/settings" />
         <item
             android:id="@+id/mapa"
-            android:title="Mapa" />
+            android:title="@string/map" />
         </group>
 
         <item
                 android:title="">
                 <menu>
                         <item
-                            android:id="@+id/dark_theme"
-                            android:title="Tema escuro" />
-                        <item
                             android:id="@+id/logout"
-                            android:title="Sair" />
+                            android:title="@string/signoff" />
                 </menu>
 
 

@@ -50,11 +50,6 @@ class PyObjectId(ObjectId):
 
 class DeviceData(BaseModel):
     u_first_name: str = Field(..., min_length=1, max_length=30)
-    u_last_name: str = Field(..., min_length=1, max_length=100)
-    u_email: str = Field(..., min_length=5, max_length=100, 
-                       regex=r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-    u_password: str = Field(..., min_length=8)
-    u_number: str = Field(..., regex=r"^\d{9,15}$")
     latitude: Optional[float] = Field(None)
     longitude: Optional[float] = Field(None)
     date: Optional[str] = Field(None, regex=r"^\d{2}-\d{2}-\d{4}T\d{2}:\d{2}:\d{2}$")
@@ -68,6 +63,14 @@ class DeviceData(BaseModel):
     luminosity: Optional[int] = Field(None, ge=0)
     rain: Optional[bool] = Field(None)
     soil_ph: Optional[float] = Field(None, ge=0, le=14)
+
+class UserData(BaseModel):
+    u_first_name: str = Field(..., min_length=1, max_length=30)
+    u_last_name: str = Field(..., min_length=1, max_length=100)
+    u_email: str = Field(..., min_length=5, max_length=100, 
+                       regex=r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+    u_password: str = Field(..., min_length=8)
+    u_number: str = Field(..., regex=r"^\d{9,15}$")
 
 # MongoDB document keys
 USER_KEYS = []
@@ -93,7 +96,7 @@ async def show_user(name: str):
     raise HTTPException(status_code=404, detail=f"User {name} not found")
 
 # Update device
-@app.patch("/home/{name}", response_description="Update a device", response_model=DeviceData)
+@app.patch("/home/{name}/{device}", response_description="Send device data to specific device", response_model=DeviceData)
 async def update_device(name: str, device: DeviceData = Body(...)):
     device = {k: v for k, v in device.dict().items() if v is not None}
 

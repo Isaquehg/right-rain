@@ -2,8 +2,10 @@ package com.example.rightrain;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.gson.JsonElement;
@@ -26,5 +28,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mapView = findViewById(R.id.mapView);
         setContentView(R.layout.activity_main);
+
+        Button b1 = findViewById(R.id.bot_loc1);
+        b1.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), DadosLocActivity.class);
+            startActivity(intent);
+        });
     }
 }

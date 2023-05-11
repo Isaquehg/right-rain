@@ -23,7 +23,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:src="@drawable/baseline_menu_24"
-                    app:tint="@color/black">
+                    app:tint="@color/green">
                 </ImageView>
                 <ImageView
                     android:layout_width="90dp"
@@ -36,16 +36,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="130dp"
                     android:src="@drawable/baseline_notifications_none_24"
-                    app:tint="@color/black">
+                    app:tint="@color/green">
                 </ImageView>
             </androidx.appcompat.widget.Toolbar>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <androidx.appcompat.widget.SearchView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-                </androidx.appcompat.widget.SearchView>
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></androidx.appcompat.widget.SearchView>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -66,6 +66,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
             <Button
+                android:id="@+id/bot_loc1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
@@ -73,6 +74,7 @@
                 android:text="@string/location1">
         </Button>
             <Button
+                android:id="@+id/bot_loc2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"

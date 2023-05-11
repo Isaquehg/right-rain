@@ -97,11 +97,11 @@ async def show_user(name: str):
 
 # Send Device Data
 @app.post("/home/{name}/{device}", response_description="Send device data to specific device", response_model=DeviceData)
-async def update_device(name: str, device_name: str, device: DeviceData = Body(...)):
+async def update_device(name: str, device_name: str, data: DeviceData = Body(...)):
     device = {k: v for k, v in device.dict().items() if v is not None}
 
     if len(device) >= 1:
-        update_result = await db["devices"].update_one({"u_first_name": name}, {"$set": device})
+        update_result = await db["devices"].update_one({"u_first_name": name}, {"$set": data})
 
         if update_result.modified_count == 1:
             if (
@@ -115,7 +115,7 @@ async def update_device(name: str, device_name: str, device: DeviceData = Body(.
     raise HTTPException(status_code=404, detail=f"User {name} not found")
 
 # Delete Device
-@app.delete("/home/{id}", response_description="Delete a device")
+@app.delete("/home/{name}", response_description="Delete a device")
 async def delete_device(name: str):
     delete_result = await db["devices"].delete_one({"u_first_name": name})
 

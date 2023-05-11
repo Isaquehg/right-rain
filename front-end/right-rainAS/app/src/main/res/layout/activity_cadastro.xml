@@ -7,11 +7,9 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="285dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="25dp"
+        android:layout_width="283dp"
+        android:layout_height="101dp"
         android:src="@mipmap/logo"
-        app:layout_constraintBottom_toTopOf="@+id/edit_nome"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,12 +17,14 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="20dp"
-        android:layout_height="0dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="28dp"
         android:src="@drawable/baseline_arrow_back_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/black">
@@ -34,69 +34,67 @@
     <EditText
         android:id="@+id/edit_nome"
         style="@style/Edit_text"
-        android:layout_marginBottom="64dp"
+        android:layout_marginTop="28dp"
         android:hint="@string/Name"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_email"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
         android:id="@+id/edit_email"
         style="@style/Edit_text"
-        android:layout_marginTop="256dp"
+        android:layout_marginTop="72dp"
         android:hint="@string/email"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/edit_nome" />
 
     <EditText
         android:id="@+id/edit_phone"
         style="@style/Edit_text"
+        android:layout_marginTop="72dp"
         android:hint="@string/phone"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/edit_pass"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_nome"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintTop_toTopOf="@+id/edit_email"
         tools:ignore="TouchTargetSizeCheck" />
 
     <EditText
         android:id="@+id/edit_pass"
         style="@style/Edit_text"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="72dp"
         android:hint="@string/type_pass"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_email" />
+        app:layout_constraintTop_toTopOf="@+id/edit_phone" />
 
     <EditText
         android:id="@+id/edit_repeat_pass"
         style="@style/Edit_text"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="72dp"
         android:hint="@string/repeat_pass"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_phone" />
+        app:layout_constraintTop_toTopOf="@+id/edit_pass" />
 
     <Button
         android:id="@+id/bot_create"
         android:layout_width="331dp"
         android:layout_height="66dp"
-        android:layout_marginTop="36dp"
         android:backgroundTint="@color/green"
         android:text="@string/signup"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_repeat_pass" />
 

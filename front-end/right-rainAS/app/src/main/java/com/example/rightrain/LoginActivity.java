@@ -23,11 +23,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Button botao_acessar = findViewById(R.id.botao_acessar);
+        Button bot_acess = findViewById(R.id.botao_acessar);
+        Button bot_signup = findViewById(R.id.bot_create);
 
-        // Botao acessar deve acessar a main activity
-        botao_acessar.setOnClickListener(v -> {
+        // Acess button should start main screen
+        bot_acess.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        });
+        // Sign-up button should acess sign-up screen
+        bot_signup.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), CadastroActivity.class);
             startActivity(intent);
         });
     }

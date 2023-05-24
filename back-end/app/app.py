@@ -13,15 +13,21 @@
 #home/{id}/{id_loc}/pression
 #home/{id}/{id_loc}/rain-det
 
+from datetime import timedelta
+import datetime
 import os
-from fastapi import FastAPI, Body, HTTPException, status
+from fastapi import Depends, FastAPI, Body, HTTPException, status
 from fastapi.responses import Response, JSONResponse
 from fastapi.encoders import jsonable_encoder
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from pydantic import BaseModel, Field
 from bson.objectid import ObjectId
 from typing import Optional, List
 import motor.motor_asyncio
 from typing import List, Dict
+from jose import JWTError, jwt
+from passlib.context import CryptContext
+
 
 ## Set the environment variables for the certificate and private key paths
 #export DEVICE_CERT_PATH="/path/to/device/cert.pem"
@@ -31,6 +37,9 @@ from typing import List, Dict
 app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
 db = client.rightrain
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # converting _id BSON to string
 class PyObjectId(ObjectId):
@@ -49,10 +58,11 @@ class PyObjectId(ObjectId):
         field_schema.update(type="string")
 
 class DeviceData(BaseModel):
-    u_first_name: str = Field(..., min_length=1, max_length=30)
+    _id: str = Field(...)
+    u_id: str = Field(...)
     latitude: Optional[float] = Field(None)
     longitude: Optional[float] = Field(None)
-    date: Optional[str] = Field(None, regex=r"^\d{2}-\d{2}-\d{4}T\d{2}:\d{2}:\d{2}$")
+    date: Optional[str] = Field(None, regex=r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$")
     temperature: Optional[float] = Field(None, ge=-100, le=100)
     air_humidity: Optional[int] = Field(None, ge=0, le=100)
     pluviosity: Optional[int] = Field(None, ge=0, le=10000)
@@ -65,56 +75,122 @@ class DeviceData(BaseModel):
     soil_ph: Optional[float] = Field(None, ge=0, le=14)
 
 class UserData(BaseModel):
-    u_first_name: str = Field(..., min_length=1, max_length=30)
-    u_last_name: str = Field(..., min_length=1, max_length=100)
-    u_email: str = Field(..., min_length=5, max_length=100, 
+    id: str = Field(...)
+    name: str = Field(..., min_length=1, max_length=100)
+    email: str = Field(..., min_length=5, max_length=100, 
                        regex=r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-    u_password: str = Field(..., min_length=8)
-    u_number: str = Field(..., regex=r"^\d{9,15}$")
+    password: str = Field(..., min_length=8)
+    number: str = Field(..., regex=r"^\d{9,15}$")
 
+# CONSTANTS
 # MongoDB document keys
-USER_KEYS = []
-LOCATION_KEYS = ["name", "email", "password", "number", "locations", "latitude", "longitude", "date", "temperature", "air_humidity", "pluviosity", "soil_humidity", "soil_ph", "at_pressure", "wind_vel", "wind_dir", "luminosity", "rain"]
+USER_KEYS = ["name", "email", "password", "number"]
+LOCATION_KEYS = ["id", "locations", "latitude", "longitude", "date", "temperature", "air_humidity", "pluviosity", "soil_humidity", "soil_ph", "at_pressure", "wind_vel", "wind_dir", "luminosity", "rain"]
+# Sec. Keys
+SECRET_KEY = "seu_secret_key"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-# DEVICE CRUD
-# Create Device
-'''@app.post("/register", response_description="Add new user", response_model=UserData)
-async def create_user(user: UserData = Body(...)):
-    user = jsonable_encoder(user)
-    new_user = await db["users"].insert_one(user)
-    created_user = await db["users"].find_one({"_id": new_user.inserted_id})
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_user)
+# AUTHENTICATION
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+def get_user(email: str):
+    user = db["users"].find_one({"email": email})
+    client.close()
+    return user
+
+def authenticate_user(email: str, password: str):
+    user = get_user(email)
+    if not user:
+        return False
+    if not verify_password(password, user["hashed_password"]):
+        return False
+    return user
+
+# Função para gerar o token JWT
+def create_access_token(data: dict, expires_delta: timedelta):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + expires_delta
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+# Login
+def authenticate_user(email: str, password: str) -> bool:
+    user = db["users"].find_one({"email": email, "password": password})
+    if user:
+        return True
+
+    return False
+
+'''# User's Login
+@app.post("/login", response_description="User Login", response_model=UserData)
+async def send_data(form_data: OAuth2PasswordRequestForm):
+    email = form_data.username
+    password = form_data.password
+
+    if authenticate_user(email, password):
+        return {"message": "Successfull login"}
+
+    raise HTTPException(status_code=401, detail="Invalid credentials")
 '''
-# -> implement auth
-# User's Home Screen
-@app.get("/home/{name}", response_description="List all devices", response_model=DeviceData)
-async def show_user(name: str):
-    if (device := await db["devices"].find_one({"u_first_name": name})) is not None:
-        print(type(device))
-        return device
+# Authenticate Login with JWT
+@app.post("/token")
+async def login(form_data: OAuth2PasswordRequestForm):
+    user = authenticate_user(form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid Credentials")
 
-    raise HTTPException(status_code=404, detail=f"User {name} not found")
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user["username"]}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
 
+# User's Home Screen with authentication
+@app.get("/home/{u_id}", response_description="List all devices", response_model=List[DeviceData])
+async def show_user(u_id: str, token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username = payload.get("sub")
+        devices = []
+        async for device in db["devices"].find({"u_id": u_id}):
+            devices.append(device)
+
+        if devices:
+            return devices
+
+        raise HTTPException(status_code=404, detail=f"User's devices with ID {u_id} not found")
+    
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid Credentials")
+
+'''
 # Send Device Data
-@app.post("/home/{name}/{device}", response_description="Send device data to specific device", response_model=DeviceData)
-async def update_device(name: str, device_name: str, data: DeviceData = Body(...)):
+@app.post("/home/{u_id}", response_description="Send device data to specific device", response_model=DeviceData)
+async def update_device(u_id: str, data: DeviceData = Body(...)):
     device = {k: v for k, v in device.dict().items() if v is not None}
 
     if len(device) >= 1:
-        update_result = await db["devices"].update_one({"u_first_name": name}, {"$set": data})
+        update_result = await db["devices"].update_one({"u_id": u_id}, {"$set": data})
 
         if update_result.modified_count == 1:
             if (
-                updated_device := await db["devices"].find_one({"u_first_name": name})
+                updated_device := await db["devices"].find_one({"u_id": u_id})
             ) is not None:
                 return updated_device
 
-    if (existing_device := await db["devices"].find_one({"u_first_name": name})) is not None:
+    if (existing_device := await db["devices"].find_one({"u_id": u_id})) is not None:
         return existing_device
 
-    raise HTTPException(status_code=404, detail=f"User {name} not found")
+    raise HTTPException(status_code=404, detail=f"User's device {u_id} not found")
 
 # Delete Device
+
 @app.delete("/home/{name}", response_description="Delete a device")
 async def delete_device(name: str):
     delete_result = await db["devices"].delete_one({"u_first_name": name})
@@ -124,7 +200,7 @@ async def delete_device(name: str):
 
     raise HTTPException(status_code=404, detail=f"User {name} not found")
 
-
+'''
 #LOCATION CRUD
 #register new location
 #patches the user document with new locations, instead of put, that replaces the entire data

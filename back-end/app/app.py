@@ -3,15 +3,7 @@
 #/register
 #/home/{id}
 #/home/{id}/{id_loc}
-#home/{id}/{id_loc}/pluviosity
-#home/{id}/{id_loc}/soilhumidity
-#home/{id}/{id_loc}/airhumidity
-#home/{id}/{id_loc}/temperature
-#home/{id}/{id_loc}/wind-dir
-#home/{id}/{id_loc}/wind-vel
-#home/{id}/{id_loc}/luminosity
-#home/{id}/{id_loc}/pression
-#home/{id}/{id_loc}/rain-det
+#home/{u_id}/{_id}/pluviosity
 
 from datetime import timedelta
 import datetime
@@ -25,7 +17,7 @@ from bson.objectid import ObjectId
 from typing import Optional, List
 import motor.motor_asyncio
 from typing import List, Dict
-from jose import JWTError, jwt
+import jwt
 from passlib.context import CryptContext
 
 ## Set the environment variables for the certificate and private key paths
@@ -39,6 +31,10 @@ db = client.rightrain
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+class OAuth2PasswordRequestFormCustom(BaseModel):
+    username: str
+    password: str
 
 class DeviceData(BaseModel):
     _id: str = Field(...)
@@ -75,54 +71,43 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 # AUTHENTICATION
-def verify_password(plain_password, hashed_password):
+async def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
-def get_password_hash(password):
+async def get_password_hash(password):
     return pwd_context.hash(password)
 
-def get_user(email: str):
-    user = db["users"].find_one({"email": email})
-    client.close()
+async def get_user(email: str):
+    user = await db["users"].find_one({"email": email})
+    user["hashed_password"] = await get_password_hash(user["password"])
     return user
 
-def authenticate_user(email: str, password: str):
-    user = get_user(email)
+async def authenticate_user(email: str, password: str):
+    user = await get_user(email)
     if not user:
         return False
-    if not verify_password(password, user["hashed_password"]):
+    if not await verify_password(password, user["hashed_password"]):
         return False
     return user
 
-# Função para gerar o token JWT
-def create_access_token(data: dict, expires_delta: timedelta):
+# Generate JWT token
+async def create_access_token(data: dict, expires_delta: timedelta):
     to_encode = data.copy()
-    expire = datetime.utcnow() + expires_delta
+    expire = datetime.datetime.utcnow() + expires_delta
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-'''# User's Login
-@app.post("/login", response_description="User Login", response_model=UserData)
-async def send_data(form_data: OAuth2PasswordRequestForm):
-    email = form_data.username
-    password = form_data.password
-
-    if authenticate_user(email, password):
-        return {"message": "Successfull login"}
-
-    raise HTTPException(status_code=401, detail="Invalid credentials")
-'''
 # Authenticate Login with JWT
 @app.post("/token")
-async def login(form_data: OAuth2PasswordRequestForm):
-    user = authenticate_user(form_data.username, form_data.password)
+async def login(form_data: OAuth2PasswordRequestFormCustom):
+    user = await authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user["username"]}, expires_delta=access_token_expires
+    access_token = await create_access_token(
+        data={"sub": user["email"]}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
@@ -141,7 +126,7 @@ async def show_user(u_id: str, token: str = Depends(oauth2_scheme)):
 
         raise HTTPException(status_code=404, detail=f"User's devices with ID {u_id} not found")
     
-    except JWTError:
+    except:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
 
 '''

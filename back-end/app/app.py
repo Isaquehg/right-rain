@@ -28,7 +28,6 @@ from typing import List, Dict
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
-
 ## Set the environment variables for the certificate and private key paths
 #export DEVICE_CERT_PATH="/path/to/device/cert.pem"
 #export DEVICE_KEY_PATH="/path/to/device/key.pem"
@@ -40,22 +39,6 @@ db = client.rightrain
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-# converting _id BSON to string
-class PyObjectId(ObjectId):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v):
-        if not ObjectId.is_valid(v):
-            raise ValueError("Invalid objectid")
-        return ObjectId(v)
-
-    @classmethod
-    def __modify_schema__(cls, field_schema):
-        field_schema.update(type="string")
 
 class DeviceData(BaseModel):
     _id: str = Field(...)
@@ -118,14 +101,6 @@ def create_access_token(data: dict, expires_delta: timedelta):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
-
-# Login
-def authenticate_user(email: str, password: str) -> bool:
-    user = db["users"].find_one({"email": email, "password": password})
-    if user:
-        return True
-
-    return False
 
 '''# User's Login
 @app.post("/login", response_description="User Login", response_model=UserData)

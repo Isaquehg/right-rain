@@ -25,4 +25,5 @@
     <string name="settings">Configurações</string>
     <string name="add_sensor">Adicionar sensor</string>
     <string name="notifications">Notificações</string>
+    <string name="pluviosity">Pluviosidade</string>
 </resources>

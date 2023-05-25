@@ -39,17 +39,12 @@
                     app:tint="@color/green">
                 </ImageView>
             </androidx.appcompat.widget.Toolbar>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.SearchView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"></androidx.appcompat.widget.SearchView>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                    android:layout_width="412dp"
+                    android:layout_height="25dp">
+                </androidx.appcompat.widget.SearchView>
+
                 <com.mapbox.maps.MapView
                     android:id="@+id/mapView"
                     android:layout_width="match_parent"
@@ -60,17 +55,12 @@
                     app:mapbox_cameraTargetLat="40.7128"
                     app:mapbox_cameraTargetLng="-74.0060"
                     app:mapbox_cameraZoom="9.0" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
             <Button
                 android:id="@+id/bot_loc1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
-                android:backgroundTint="#af7a1f"
+                android:backgroundTint="@color/green"
                 android:text="@string/location1">
         </Button>
             <Button
@@ -78,10 +68,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
-                android:backgroundTint="#af7a1f"
+                android:backgroundTint="@color/green"
                 android:text="@string/location2">
             </Button>
-            </LinearLayout>
 
         </LinearLayout>
 

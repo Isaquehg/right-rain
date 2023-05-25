@@ -117,6 +117,7 @@ async def show_user(u_id: str, token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username = payload.get("sub")
+        print("here")
         devices = []
         async for device in db["devices"].find({"u_id": u_id}):
             devices.append(device)

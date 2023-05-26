@@ -86,11 +86,11 @@ async def login(form_data: OAuth2PasswordRequestFormCustom):
 
 # User's Home Screen with authentication
 @app.get("/home/{u_id}", response_description="List all devices", response_model=List[DeviceData])
-async def show_user(u_id: str, token: str = Depends(oauth2_scheme)):
+async def get_user_data(u_id: str, token: str = Depends(oauth2_scheme)):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username = payload.get("sub")
-        print("here")
+        #payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        #username = payload.get("sub")
+
         devices = []
         async for device in db["devices"].find({"u_id": u_id}):
             devices.append(device)
@@ -102,90 +102,41 @@ async def show_user(u_id: str, token: str = Depends(oauth2_scheme)):
     
     except:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
-
-'''
-# Send Device Data
-@app.post("/home/{u_id}", response_description="Send device data to specific device", response_model=DeviceData)
-async def update_device(u_id: str, data: DeviceData = Body(...)):
-    device = {k: v for k, v in device.dict().items() if v is not None}
-
-    if len(device) >= 1:
-        update_result = await db["devices"].update_one({"u_id": u_id}, {"$set": data})
-
-        if update_result.modified_count == 1:
-            if (
-                updated_device := await db["devices"].find_one({"u_id": u_id})
-            ) is not None:
-                return updated_device
-
-    if (existing_device := await db["devices"].find_one({"u_id": u_id})) is not None:
-        return existing_device
-
-    raise HTTPException(status_code=404, detail=f"User's device {u_id} not found")
-
-# Delete Device
-
-@app.delete("/home/{name}", response_description="Delete a device")
-async def delete_device(name: str):
-    delete_result = await db["devices"].delete_one({"u_first_name": name})
-
-    if delete_result.deleted_count == 1:
-        return Response(status_code=status.HTTP_204_NO_CONTENT)
-
-    raise HTTPException(status_code=404, detail=f"User {name} not found")
-
-'''
-#LOCATION CRUD
-#register new location
-#patches the user document with new locations, instead of put, that replaces the entire data
-'''
-@app.patch("/locations/{user_id}", response_description="Add a new location to a user", response_model=UserData)
-async def add_location(user_id: str, location: DeviceData = Body(...)):
-    user = await db['users'].find_one({"_id": ObjectId(user_id)})
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-    # Generate _id_loc for the new location
-    location_dict = location.dict(by_alias=True)
-    location_dict["_id_loc"] = ObjectId()
-    # Add the new location to the user's list of locations
-    db['users'].update_one({"_id": ObjectId(user_id)}, {"$push": {"locations": location_dict}})
-    updated_user = await db['users'].find_one({"_id": ObjectId(user_id)})
-    return updated_user
     
-# get location details
-@app.get("/home/{id}/{id_loc}", response_description="List location details", response_model=DeviceData)
-async def show_user(id: str):
-    if (location := await db["users"].find_one({"_id_loc": id})) is not None:
-        return location
+@app.get("/home/{u_id}/{d_id}", response_description="List sensor history", response_model=DeviceData)
+async def get_sensor_data(u_id: str, d_id: str, start_date: str, end_date: str, token: str = Depends(oauth2_scheme)):
+    try:
+        #payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        #username = payload.get("sub")
 
-    raise HTTPException(status_code=404, detail=f"Location {id} not found")
+        # Converting incoming dates
+        start_date_iso = convert_to_iso_date(start_date)
+        end_date_iso = convert_to_iso_date(end_date)
+        
+        # Query with filters
+        query = {
+            "u_id": u_id,
+            "_id": d_id,
+            "date": {
+                "$gte": start_date_iso,
+                "$lte": end_date_iso
+            }
+        }
 
-# update/add location details
-@app.put("/home/{id}/addlocation", response_description="Update location details", response_model=UserData)
-async def update_user(id: str, location: DeviceData = Body(...)):
-    location = {k: v for k, v in location.dict().items() if v is not None}
+        device = await db["devices"].find(query)
+        if device:
+            return device
 
-    #if the request has items
-    if len(location) >= 1:
-        user_updated_location = UserData.add_location(location)
-        update_result = await db["users"].update_one({"_id": id}, {"$set": user_updated_location})
+        raise HTTPException(status_code=404, detail=f"Device's sensor with ID {d_id} not found")
+    
+    except:
+        raise HTTPException(status_code=401, detail="Invalid Credentials")
 
-        if update_result.modified_count == 1:
-            if (updated_user := await db["users"].find_one({"_id": id})) is not None:
-                return updated_user
-
-    if (existing_user := await db["users"].find_one({"_id": id})) is not None:
-        return existing_user
-
-    raise HTTPException(status_code=404, detail=f"Location {id} not found")
-
-#delete location
-@app.delete("/home/{id}/{id_loc}", response_description="Delete a location")
-async def delete_user(id: str):
-    delete_result = await db["users"].delete_one({"_id": id})
-
-    if delete_result.deleted_count == 1:
-        return Response(status_code=status.HTTP_204_NO_CONTENT)
-
-    raise HTTPException(status_code=404, detail=f"Location {id} not found")
-'''
+def convert_to_iso_date(date_str):
+    # Converting date to datetime object
+    date_obj = datetime.strptime(date_str, "%d/%m/%Y")
+    
+    # Converting datetime object to ISO format
+    iso_date_str = date_obj.isoformat()
+    
+    return iso_date_str

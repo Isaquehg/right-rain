@@ -103,8 +103,8 @@ async def get_user_data(u_id: str, token: str = Depends(oauth2_scheme)):
     except:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
     
-@app.get("/home/{u_id}/{d_id}", response_description="List sensor history", response_model=DeviceData)
-async def get_sensor_data(u_id: str, d_id: str, start_date: str, end_date: str, token: str = Depends(oauth2_scheme)):
+@app.get("/home/{u_id}/{d_id}/{sensor}", response_description="List sensor's history", response_model=DeviceData)
+async def get_sensor_history(sensor: str, d_id: str, start_date: str, end_date: str, token: str = Depends(oauth2_scheme)):
     try:
         #payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         #username = payload.get("sub")

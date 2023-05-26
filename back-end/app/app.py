@@ -4,6 +4,10 @@
 #/home/{id}
 #/home/{id}/{id_loc}
 #home/{u_id}/{_id}/pluviosity
+## Set the environment variables for the certificate and private key paths
+#export DEVICE_CERT_PATH="/path/to/device/cert.pem"
+#export DEVICE_KEY_PATH="/path/to/device/key.pem"
+#export MONGODB_URL="mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority"
 
 from datetime import timedelta
 import datetime
@@ -19,17 +23,16 @@ from typing import List, Dict
 import jwt
 from passlib.context import CryptContext
 import auth
-
-## Set the environment variables for the certificate and private key paths
-#export DEVICE_CERT_PATH="/path/to/device/cert.pem"
-#export DEVICE_KEY_PATH="/path/to/device/key.pem"
-#export MONGODB_URL="mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority"
+from mqtt import mqtt_subscribe
 
 app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
 db = client.rightrain
+mqtt_subscribe(db)
 
-# Constants
+# -------------------------------------------CONSTANTS-----------------------------------------------------
+USER_KEYS = ["name", "email", "password", "number"]
+LOCATION_KEYS = ["id", "locations", "latitude", "longitude", "date", "temperature", "air_humidity", "pluviosity", "soil_humidity", "soil_ph", "at_pressure", "wind_vel", "wind_dir", "luminosity", "rain"]
 SECRET_KEY = "seu_secret_key"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -37,6 +40,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+# -------------------------------------------SCHEMES------------------------------------------------------
 class OAuth2PasswordRequestFormCustom(BaseModel):
     username: str
     password: str
@@ -66,13 +70,7 @@ class UserData(BaseModel):
     password: str = Field(..., min_length=8)
     number: str = Field(..., regex=r"^\d{9,15}$")
 
-# CONSTANTS
-# MongoDB document keys
-USER_KEYS = ["name", "email", "password", "number"]
-LOCATION_KEYS = ["id", "locations", "latitude", "longitude", "date", "temperature", "air_humidity", "pluviosity", "soil_humidity", "soil_ph", "at_pressure", "wind_vel", "wind_dir", "luminosity", "rain"]
-# Sec. Keys
-
-
+# -------------------------------------------ROUTES--------------------------------------------------------
 # Authenticate Login with JWT
 @app.post("/token")
 async def login(form_data: OAuth2PasswordRequestFormCustom):

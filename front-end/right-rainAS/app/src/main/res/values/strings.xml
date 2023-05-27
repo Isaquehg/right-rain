@@ -26,4 +26,7 @@
     <string name="add_sensor">Adicionar sensor</string>
     <string name="notifications">Notificações</string>
     <string name="pluviosity">Pluviosidade</string>
+    <string name="umidity">Umidade</string>
+    <string name="temperature">Temperatura</string>
+    <string name="device_1">Device 1</string>
 </resources>

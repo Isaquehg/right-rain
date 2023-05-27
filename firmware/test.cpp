@@ -8,8 +8,8 @@
 #define DHTPIN 14     // Digital pin connected to the DHT sensor
 #define DHTTYPE DHT11   // DHT 11
  
-#define AWS_IOT_PUBLISH_TOPIC   "esp32/pub"
-#define AWS_IOT_SUBSCRIBE_TOPIC "esp32/sub"
+#define AWS_IOT_PUBLISH_TOPIC   "rightrain/data"
+#define AWS_IOT_SUBSCRIBE_TOPIC "rightrain/data"
  
 float h ;
 float t;
@@ -40,9 +40,6 @@ void connectAWS()
   // Connect to the MQTT broker on the AWS endpoint we defined earlier
   client.setServer(AWS_IOT_ENDPOINT, 8883);
  
-  // Create a message handler
-  client.setCallback(messageHandler);
- 
   Serial.println("Connecting to AWS IOT");
  
   while (!client.connect(THINGNAME))
@@ -56,9 +53,6 @@ void connectAWS()
     Serial.println("AWS IoT Timeout!");
     return;
   }
- 
-  // Subscribe to a topic
-  client.subscribe(AWS_IOT_SUBSCRIBE_TOPIC);
  
   Serial.println("AWS IoT Connected!");
 }
@@ -74,17 +68,6 @@ void publishMessage()
   client.publish(AWS_IOT_PUBLISH_TOPIC, jsonBuffer);
 }
  
-void messageHandler(char* topic, byte* payload, unsigned int length)
-{
-  Serial.print("incoming: ");
-  Serial.println(topic);
- 
-  StaticJsonDocument<200> doc;
-  deserializeJson(doc, payload);
-  const char* message = doc["message"];
-  Serial.println(message);
-}
- 
 void setup()
 {
   Serial.begin(115200);
@@ -96,7 +79,6 @@ void loop()
 {
   h = dht.readHumidity();
   t = dht.readTemperature();
- 
  
   if (isnan(h) || isnan(t) )  // Check if any reads failed and exit early (to try again).
   {

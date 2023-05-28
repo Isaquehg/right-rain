@@ -55,35 +55,23 @@
                     app:mapbox_cameraTargetLat="40.7128"
                     app:mapbox_cameraTargetLng="-74.0060"
                     app:mapbox_cameraZoom="9.0" />
-            <Button
-                android:id="@+id/bot_loc1"
-                android:layout_width="230dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="90dp"
-                android:textColor="#fff"
-                android:backgroundTint="@color/green"
-                android:text="@string/location1">
-        </Button>
-            <Button
-                android:id="@+id/bot_loc2"
-                android:layout_width="230dp"
-                android:layout_height="wrap_content"
-                android:textColor="#fff"
-                android:backgroundTint="@color/green"
-                android:layout_marginStart="90dp"
-                android:text="@string/location2">
-            </Button>
+
+            <ListView
+                android:id="@+id/userList"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp">
+            </ListView>
 
             <Button
                 android:id="@+id/add_sens"
-                android:layout_width="230dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:backgroundTint="@color/yellow"
-                android:layout_marginStart="90dp"
+                android:layout_marginStart="120dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/add_sensor">
             </Button>
-
         </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

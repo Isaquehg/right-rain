@@ -2,6 +2,7 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -20,6 +21,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/bot_menu"
+                    android:clickable="true"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:src="@drawable/baseline_menu_24"
@@ -48,7 +51,7 @@
                 <com.mapbox.maps.MapView
                     android:id="@+id/mapView"
                     android:layout_width="match_parent"
-                    android:layout_height="390dp"
+                    android:layout_height="350dp"
                     app:layout_constraintBottom_toTopOf="@+id/button2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -59,7 +62,7 @@
             <ListView
                 android:id="@+id/userList"
                 android:layout_width="wrap_content"
-                android:layout_height="150dp">
+                android:layout_height="130dp">
             </ListView>
 
             <Button
@@ -69,10 +72,15 @@
                 android:textColor="@color/black"
                 android:backgroundTint="@color/yellow"
                 android:layout_marginStart="120dp"
-                android:layout_marginTop="10dp"
                 android:text="@string/add_sensor">
             </Button>
         </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </ProgressBar>
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"

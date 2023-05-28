@@ -29,4 +29,6 @@
     <string name="umidity">Umidade</string>
     <string name="temperature">Temperatura</string>
     <string name="device_1">Device 1</string>
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
 </resources>

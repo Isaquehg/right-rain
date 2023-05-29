@@ -2,9 +2,17 @@ import asyncio
 import json
 from aiomqtt import Client, Message
 import ssl
-from app.aws import connect_to_iot, load_certificates
 
-async def on_message_received(client: Client, topic: str, message: Message, db):
+# Load the certificate and keys from disk
+def load_certificates():
+    with open('back-end/app/certs/device_cert.pem.crt', 'r') as f:
+        certificate = f.read()
+    with open('private.pem.key', 'r') as f:
+        private_key = f.read()
+    
+    return certificate, private_key
+
+async def on_message_received(message: Message, db):
     payload = message.payload.decode('utf-8')
     data = json.loads(payload)
 
@@ -13,21 +21,21 @@ async def on_message_received(client: Client, topic: str, message: Message, db):
 
 async def mqtt_subscribe(db):
     # Load the certificates
-    certificate, private_key, root_ca = load_certificates()
+    certificate, private_key = load_certificates()
 
     # Set up the MQTT client
     client = Client('client_id', ssl=ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH))
-    client.tls_set(ca_certs=root_ca, certfile=certificate, keyfile=private_key)
+    client.tls_set(certfile=certificate, keyfile=private_key)
 
     # Connect to the MQTT broker through AWS IoT Core
-    endpoint = connect_to_iot()
+    endpoint = "ar6fnfi93vtrn-ats.iot.us-east-2.amazonaws.com"
     await client.connect(endpoint, port=8883)
 
     # Subscribe to a topic
     await client.subscribe('rightrain/data', qos=1)
 
     # Set up the message received callback
-    client.on_message = on_message_received(client, "rightrain/data", db)
+    client.on_message = lambda client, message: on_message_received(message, db)
 
     # Keep the event loop running to receive messages
     try:

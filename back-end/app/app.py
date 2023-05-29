@@ -102,8 +102,9 @@ async def get_user_data(u_id: str, token: str = Depends(oauth2_scheme)):
     
     except:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
-    
-@app.get("/home/{u_id}/{d_id}/{sensor}", response_description="List sensor's history", response_model=DeviceData)
+
+# Get device's sensor history
+@app.get("/home/{u_id}/{d_id}/{sensor}", response_description="List device's history", response_model=DeviceData)
 async def get_sensor_history(sensor: str, d_id: str, start_date: str, end_date: str, token: str = Depends(oauth2_scheme)):
     try:
         #payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -115,7 +116,6 @@ async def get_sensor_history(sensor: str, d_id: str, start_date: str, end_date: 
         
         # Query with filters
         query = {
-            "u_id": u_id,
             "_id": d_id,
             "date": {
                 "$gte": start_date_iso,
@@ -132,6 +132,7 @@ async def get_sensor_history(sensor: str, d_id: str, start_date: str, end_date: 
     except:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
 
+# Function to convert date types
 def convert_to_iso_date(date_str):
     # Converting date to datetime object
     date_obj = datetime.strptime(date_str, "%d/%m/%Y")

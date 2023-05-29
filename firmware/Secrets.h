@@ -3,8 +3,8 @@
 #define SECRET
 #define THINGNAME "esp8266_test"                         //change this
  
-const char WIFI_SSID[] = "***************";               //change this
-const char WIFI_PASSWORD[] = "***************";           //change this
+const char WIFI_SSID[] = "Ap 106";               //change this
+const char WIFI_PASSWORD[] = "inatel123";           //change this
 const char AWS_IOT_ENDPOINT[] = "ar6fnfi93vtrn-ats.iot.us-east-2.amazonaws.com";       //change this
  
 // Amazon Root CA 1
@@ -53,8 +53,6 @@ gf5Vdo4EV381L3EZLyo4VBy4+tSQnPwBx270Ti0k6/O+UhVKLWVqANI76eogYRyY
 cWPgHQWqhfeFbOo8BYq1G9cqBnDHAZ+I+YBl4DEmf+TuxK98ppJVEzDtboySeUYz
 w6xw8ZMuM0Fd+LM8P4Yo9GOwo4gcMCCMIeojOIAwPhOVzuyApQOWih5Y2mYnWw==
 -----END CERTIFICATE-----
- 
- 
 )KEY";
  
 // Device Private Key                                               //change this
@@ -86,6 +84,4 @@ KwoqLXcCgYB5pYZ7ZlsQ9j2dxu/ocwQWAR+jCONvXmdIqw7Odyoz2yN41QywSB0a
 9HhEB+qGTPLTdoQlhxo4fT2C8mEncRrmYqCATW0PUx0FbOONjwJMUE5XysAn5hbQ
 Bt6IP4YD8RwYzaRVU+XZSf+rOyBp8S+ml3x91C8h6e80WtdGFvdaEA==
 -----END RSA PRIVATE KEY-----
- 
- 
 )KEY";

@@ -36,11 +36,11 @@ def on_message(client, userdata, message, db):
 
 async def mqtt_subscribe(db):
     # Load the certificates
-    certificate, private_key = load_certificates()
+    #certificate, private_key = load_certificates()
 
     # Set up the MQTT client
     client = mqtt.Client(client_id='client_id')
-    client.tls_set(certfile=certificate, keyfile=private_key)
+    client.tls_set(certfile="/home/isaquehg/certs/device_cert.pem.crt", keyfile="/home/isaquehg/certs/private.pem.key")
     client.on_connect = on_connect
     client.on_message = on_message(db)
 

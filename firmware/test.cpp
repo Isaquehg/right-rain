@@ -9,7 +9,6 @@
 #define DHTTYPE DHT11   // DHT 11
  
 #define AWS_IOT_PUBLISH_TOPIC   "rightrain/data"
-#define AWS_IOT_SUBSCRIBE_TOPIC "rightrain/data"
  
 float h ;
 float t;

@@ -20,13 +20,13 @@
     <string name="type_pass">Senha</string>
     <string name="a">a</string>
     <string name="mapbox_access_token">sk.eyJ1IjoiZ2l2LWZueiIsImEiOiJjbGg4NXh6NzIwNWJ1M2Vtd2ZmcXpqMzgyIn0.lb_Yre-0LNVWEHT6bUlLBg</string>
-    <string name="signoff">Sair</string>
+    <string name="sign_off">Sair</string>
     <string name="map">Mapa</string>
     <string name="settings">Configurações</string>
     <string name="add_sensor">Adicionar sensor</string>
     <string name="notifications">Notificações</string>
-    <string name="pluviosity">Pluviosidade</string>
-    <string name="umidity">Umidade</string>
+    <string name="rainfall">Pluviosidade</string>
+    <string name="humidity">Umidade</string>
     <string name="temperature">Temperatura</string>
     <string name="device_1">Device 1</string>
     <string name="nav_open">Open</string>

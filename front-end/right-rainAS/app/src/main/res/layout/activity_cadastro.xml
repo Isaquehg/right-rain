@@ -17,6 +17,7 @@
 
     <ImageView
         android:id="@+id/imageView2"
+        android:clickable="true"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
@@ -58,7 +59,9 @@
         style="@style/Edit_text"
         android:layout_marginTop="72dp"
         android:hint="@string/phone"
+        android:inputType="phone"
         android:minHeight="48dp"
+        android:maxLength="16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,6 +71,7 @@
     <EditText
         android:id="@+id/edit_pass"
         style="@style/Edit_text"
+        android:inputType="textPassword"
         android:layout_marginTop="72dp"
         android:hint="@string/type_pass"
         android:minHeight="48dp"
@@ -79,6 +83,7 @@
     <EditText
         android:id="@+id/edit_repeat_pass"
         style="@style/Edit_text"
+        android:inputType="textPassword"
         android:layout_marginTop="72dp"
         android:hint="@string/repeat_pass"
         android:minHeight="48dp"

@@ -28,7 +28,7 @@
                 <menu>
                         <item
                             android:id="@+id/logout"
-                            android:title="@string/signoff" />
+                            android:title="@string/sign_off" />
                 </menu>
 
         </item>

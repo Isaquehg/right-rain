@@ -35,20 +35,21 @@
         </ImageView>
     </androidx.appcompat.widget.Toolbar>
 
-    <EditText
+    <Button
+        android:id="@+id/name_loc_btn"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/yellow"
         android:layout_marginStart="100dp"
-        style="@style/Edit_text"
-        android:hint="@string/device_1">
-    </EditText>
+        android:text="@string/location1">
+    </Button>
 
     <Button
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:id="@+id/pluviosity"
-        android:text="@string/pluviosity"
+        android:id="@+id/rainfall"
+        android:text="@string/rainfall"
         android:textColor="#fff"
         android:backgroundTint="@color/green">
     </Button>
@@ -57,8 +58,8 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:id="@+id/umidity"
-        android:text="@string/umidity"
+        android:id="@+id/humidity"
+        android:text="@string/humidity"
         android:textColor="#fff"
         android:backgroundTint="@color/green">
     </Button>

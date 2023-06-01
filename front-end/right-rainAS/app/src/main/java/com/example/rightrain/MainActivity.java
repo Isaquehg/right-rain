@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -55,9 +57,17 @@ public class MainActivity extends AppCompatActivity {
         bt_menu.setOnClickListener(v->{
             drawerLayout.openDrawer(GravityCompat.START);
         });
-
         getData();
         new fetchData().start();
+
+        userList1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), DevicesActivity.class);
+                intent.putExtra("name_loc", userList.get(position));
+                startActivity(intent);
+            }
+        });
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

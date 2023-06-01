@@ -38,6 +38,10 @@
             android:name=".DadosLocActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".DevicesActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

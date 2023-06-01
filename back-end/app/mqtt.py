@@ -1,45 +1,58 @@
 import asyncio
 import json
-from aiomqtt import Client, Message
+import logging
+import os
 import ssl
+import paho.mqtt.client as mqtt
 
 # Load the certificate and keys from disk
 def load_certificates():
-    with open('back-end/app/certs/device_cert.pem.crt', 'r') as f:
+    # Build the file paths
+    cert_path = os.path.join(os.path.dirname(__file__), 'certs', 'device_cert.pem.crt')
+    key_path = os.path.join(os.path.dirname(__file__), 'certs', 'private.pem.key')
+    print(cert_path)
+    print(key_path)
+
+    # Load the certificate and private key from the files
+    with open("/home/isaquehg/certs/device_cert.pem.crt", 'r') as f:
         certificate = f.read()
-    with open('private.pem.key', 'r') as f:
+    with open("/home/isaquehg/Desktop/right-rain/back-end/app/certs/private.pem.key", 'r') as f:
         private_key = f.read()
-    
+
     return certificate, private_key
 
-async def on_message_received(message: Message, db):
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        logging.info("Connected to AWS IoT")
+    else:
+        logging.error("Failed to connect to AWS IoT. Error code: %s", rc)
+
+def on_message(client, userdata, message, db):
     payload = message.payload.decode('utf-8')
     data = json.loads(payload)
 
-    # Inserir os dados no banco de dados
-    await db["devices"].insert_one(data)
+    db["devices"].insert_one(data)
+    print(data)
 
 async def mqtt_subscribe(db):
     # Load the certificates
-    certificate, private_key = load_certificates()
+    #certificate, private_key = load_certificates()
 
     # Set up the MQTT client
-    client = Client('client_id', ssl=ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH))
-    client.tls_set(certfile=certificate, keyfile=private_key)
+    client = mqtt.Client(client_id='client_id')
+    client.tls_set(certfile="/home/isaquehg/certs/device_cert.pem.crt", keyfile="/home/isaquehg/certs/private.pem.key")
+    client.on_connect = on_connect
+    client.on_message = on_message(db)
 
     # Connect to the MQTT broker through AWS IoT Core
     endpoint = "ar6fnfi93vtrn-ats.iot.us-east-2.amazonaws.com"
-    await client.connect(endpoint, port=8883)
+    client.connect(endpoint, port=8883)
 
     # Subscribe to a topic
-    await client.subscribe('rightrain/data', qos=1)
+    client.subscribe('rightrain/data', qos=1)
 
-    # Set up the message received callback
-    client.on_message = lambda client, message: on_message_received(message, db)
-
-    # Keep the event loop running to receive messages
+    # Keep the client loop running to receive messages
     try:
-        while True:
-            await asyncio.sleep(1)
-    finally:
-        await client.disconnect()
+        client.loop_forever()
+    except KeyboardInterrupt:
+        client.disconnect()

@@ -28,7 +28,6 @@ from mqtt import mqtt_subscribe
 app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
 db = client.rightrain
-mqtt_subscribe(db)
 
 # -------------------------------------------CONSTANTS-----------------------------------------------------
 USER_KEYS = ["name", "email", "password", "number"]
@@ -71,6 +70,11 @@ class UserData(BaseModel):
     number: str = Field(..., regex=r"^\d{9,15}$")
 
 # -------------------------------------------ROUTES--------------------------------------------------------
+@app.on_event("startup")
+async def startup_event():
+    # Start the MQTT subscription
+    await mqtt_subscribe(db)
+
 # Authenticate Login with JWT
 @app.post("/token")
 async def login(form_data: OAuth2PasswordRequestFormCustom):

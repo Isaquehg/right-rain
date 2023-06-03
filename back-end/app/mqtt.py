@@ -2,16 +2,15 @@ import asyncio
 import json
 import logging
 import os
-import motor
-import paho.mqtt.client as mqtt
+from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 
 TOPIC = "rightrain/data"
 PORT = 8883
 ENDPOINT = "ar6fnfi93vtrn-ats.iot.us-east-2.amazonaws.com"
+THING_NAME = "fast_api"
 DEVICE_CERT = os.environ["DEVICE_CERT"]
 PRIVATE_KEY = os.environ["PRIVATE_KEY"]
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
-db = client.rightrain
+ROOT_CA = os.environ["ROOT_CA"]
 
 # Function to deal with MQTT errors
 def on_connect(client, userdata, flags, rc):
@@ -26,31 +25,35 @@ def on_message(client, userdata, message):
     payload = message.payload.decode('utf-8')
     data = json.loads(payload)
 
-    db["devices"].insert_one(data)
+    # Perform necessary operations with the received data
     print(data)
 
 async def mqtt_subscribe():
     # Set up the MQTT client
     print("function subscribe")
-    client = mqtt.Client(client_id='client_id')
-    client.tls_set(certfile=DEVICE_CERT, keyfile=PRIVATE_KEY)
-    client.on_connect = on_connect
-    client.on_message = on_message
+    mqtt_client = AWSIoTMQTTClient(THING_NAME)
+    mqtt_client.configureEndpoint(ENDPOINT, PORT)
+    mqtt_client.configureCredentials(ROOT_CA, PRIVATE_KEY, DEVICE_CERT)
 
-    # Connect to the MQTT broker through AWS IoT Core
-    client.connect(ENDPOINT, PORT)
-    print("connect")
+    # Set the connect and message callback functions
+    mqtt_client.onConnect = on_connect
+    mqtt_client.onMessage = on_message
 
-    # Subscribe to a topic
-    client.subscribe(TOPIC, qos=1)
+    # Connect to AWS IoT Core
+    mqtt_client.connect()
+
+    # Subscribe to the topic
+    mqtt_client.subscribe(TOPIC, 1)
+
+    print("OK")
 
     # Keep the client loop running to receive messages
     try:
         print("looping...")
-        client.loop_forever()
+        mqtt_client.loop_forever()
     except KeyboardInterrupt:
         print("disconnected")
-        client.disconnect()
+        mqtt_client.disconnect()
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)  # Enable logging

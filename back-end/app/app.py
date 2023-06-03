@@ -1,13 +1,9 @@
-#ROUTES
-#/login
-#/register
-#/home/{id}
-#/home/{id}/{id_loc}
-#home/{u_id}/{_id}/pluviosity
-## Set the environment variables for the certificate and private key paths
-#export DEVICE_CERT_PATH="/path/to/device/cert.pem"
-#export DEVICE_KEY_PATH="/path/to/device/key.pem"
-#export MONGODB_URL="mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority"
+'''
+export DEVICE_CERT="/home/isaquehg/certs/device_cert.pem.crt"
+export PRIVATE_KEY="/home/isaquehg/certs/private.pem.key"
+export ROOT_CA="/home/isaquehg/certs/AmazonRootCA1.pem"
+export MONGODB_URL="mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority"
+'''
 
 from datetime import timedelta
 import datetime
@@ -73,7 +69,7 @@ class UserData(BaseModel):
 @app.on_event("startup")
 async def startup_event():
     # Start the MQTT subscription
-    await mqtt_subscribe(db)
+    await mqtt_subscribe()
 
 # Authenticate Login with JWT
 @app.post("/token")
@@ -107,13 +103,29 @@ async def get_user_data(u_id: str, token: str = Depends(oauth2_scheme)):
     except:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
 
-# Get device's sensor history
-@app.get("/home/{u_id}/{d_id}/{sensor}", response_description="List device's history", response_model=DeviceData)
+# Show device's sensors
+@app.get("/home/{u_id}/{d_id}", response_description="List device's sensors", response_model=DeviceData)
+async def get_devices_sensors(u_id: str, d_id: str, token: str = Depends(oauth2_scheme)):
+    try:    
+        # Query with filters
+        query = {
+            "u_id": u_id,
+            "d_id": d_id,
+        }
+
+        device = await db["devices"].find(query)
+        if device:
+            return device
+
+        raise HTTPException(status_code=404, detail=f"Device's sensor with ID {d_id} not found")
+    
+    except:
+        raise HTTPException(status_code=401, detail="Invalid Credentials")
+    
+# Show sensor's history
+@app.get("/home/{u_id}/{d_id}/{sensor}", response_description="List sensor's history", response_model=DeviceData)
 async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str, end_date: str, token: str = Depends(oauth2_scheme)):
     try:
-        #payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        #username = payload.get("sub")
-
         # Converting incoming dates
         start_date_iso = convert_to_iso_date(start_date)
         end_date_iso = convert_to_iso_date(end_date)
@@ -122,6 +134,7 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
         query = {
             "u_id": u_id,
             "d_id": d_id,
+            sensor: {"$exists": True},
             "date": {
                 "$gte": start_date_iso,
                 "$lte": end_date_iso

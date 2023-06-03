@@ -20,17 +20,17 @@ public class DevicesActivity extends AppCompatActivity {
         title.setText(getIntent().getStringExtra("name_loc"));
 
         rainfall_btn.setOnClickListener(v->{
-            Intent intent = new Intent(getApplicationContext(), DadosLocActivity.class);
+            Intent intent = new Intent(getApplicationContext(), LocDataActivity.class);
             intent.putExtra("type", "Pluviosidade");
             startActivity(intent);
         });
         temperatue_btn.setOnClickListener(v->{
-            Intent intent = new Intent(getApplicationContext(), DadosLocActivity.class);
+            Intent intent = new Intent(getApplicationContext(), LocDataActivity.class);
             intent.putExtra("type", "Temperatura");
             startActivity(intent);
         });
         humidity_btn.setOnClickListener(v->{
-            Intent intent = new Intent(getApplicationContext(), DadosLocActivity.class);
+            Intent intent = new Intent(getApplicationContext(), LocDataActivity.class);
             intent.putExtra("type", "Umidade");
             startActivity(intent);
         });

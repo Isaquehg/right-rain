@@ -1,12 +1,17 @@
 package com.example.rightrain;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -19,7 +24,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import androidx.appcompat.widget.Toolbar;
 
+
 import com.mapbox.maps.MapView;
+import com.mapbox.maps.Style;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,20 +50,28 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> listAdapter;
     Handler mainHandler = new Handler();
     ProgressBar progressBar;
+    ImageView bt_menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mapView = findViewById(R.id.mapView);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        ImageView bt_menu = findViewById(R.id.bot_menu);
-
-        setSupportActionBar(toolbar);
-
+        bt_menu = findViewById(R.id.bot_menu);
         bt_menu.setOnClickListener(v->{
             drawerLayout.openDrawer(GravityCompat.START);
         });
+
+        mapView = findViewById(R.id.mapView);
+        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+            @Override
+            public void onStyleLoaded(@NonNull Style style) {
+                Map map = new Map();
+                map.addAnnotationToMap(MainActivity.this, mapView);
+            }
+        });
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        setSupportActionBar(toolbar);
         getData();
         new fetchData().start();
 
@@ -69,9 +84,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }

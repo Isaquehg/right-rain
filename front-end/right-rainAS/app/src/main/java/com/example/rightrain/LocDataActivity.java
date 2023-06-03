@@ -1,13 +1,15 @@
 package com.example.rightrain;
 
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -17,9 +19,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class DadosLocActivity extends AppCompatActivity {
+public class LocDataActivity extends AppCompatActivity {
     LineChart lineChart;
     Button startDate;
     Button endDate;
@@ -38,7 +39,7 @@ public class DadosLocActivity extends AppCompatActivity {
 
         startDate.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    DadosLocActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    LocDataActivity.this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     month++;
@@ -51,7 +52,7 @@ public class DadosLocActivity extends AppCompatActivity {
 
         endDate.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    DadosLocActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    LocDataActivity.this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     month++;
@@ -69,6 +70,18 @@ public class DadosLocActivity extends AppCompatActivity {
         LineData data = new LineData(dataSets);
         lineChart.setData(data);
         lineChart.invalidate();
+
+        type_btn.setOnClickListener(v->{
+            createNotificationChannel();
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "MyNotification")
+                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setContentTitle("Alerta de Temperatura!")
+                    .setContentText("A temperatura está muito alta.")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+            managerCompat.notify(1, builder.build());
+        });
     }
 
     private List<Entry> dataValues() {
@@ -80,7 +93,9 @@ public class DadosLocActivity extends AppCompatActivity {
         dataValue.add(new Entry(4, 50));
         return dataValue;
     }
-
-    public void showDatePickerDialog() {
+    public void createNotificationChannel(){
+        NotificationChannel channel = new NotificationChannel("MyNotification", "MyNotification", NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 }

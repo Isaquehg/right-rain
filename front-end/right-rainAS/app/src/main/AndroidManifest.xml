@@ -31,11 +31,11 @@
             android:exported="true">
         </activity>
         <activity
-            android:name=".CadastroActivity"
+            android:name=".RegisterActivity"
             android:exported="true">
         </activity>
         <activity
-            android:name=".DadosLocActivity"
+            android:name=".LocDataActivity"
             android:exported="true">
         </activity>
         <activity

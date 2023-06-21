@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
         android:layout_toRightOf="@id/image"
-        android:text="Testing is awecome"
+        android:text="@string/testing_is_awesome"
         android:textColor="#000"
         android:textSize="13dp"
         tools:ignore="TextSizeCheck" />

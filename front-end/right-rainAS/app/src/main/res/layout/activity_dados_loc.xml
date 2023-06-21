@@ -11,22 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/baseline_menu_24"
-            app:tint="@color/green">
-        </ImageView>
-        <ImageView
             android:layout_width="90dp"
             android:layout_height="30dp"
-            android:layout_marginStart="130dp"
+            android:layout_gravity="center_horizontal"
             android:src="@mipmap/logo">
         </ImageView>
         <ImageView
+            android:id="@+id/home_btn"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="130dp"
+            android:layout_gravity="end"
             android:src="@drawable/baseline_home_24"
+            android:clickable="true"
             app:tint="@color/green">
         </ImageView>
     </androidx.appcompat.widget.Toolbar>
@@ -35,50 +31,53 @@
         android:id="@+id/type_btn"
         android:layout_width="280dp"
         android:layout_height="50dp"
-        android:layout_marginStart="60dp"
+        android:layout_gravity="center_horizontal"
         android:backgroundTint="@color/green"
+        android:textSize="20sp"
         android:text="@string/rainfall">
     </Button>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
     <Button
         android:id="@+id/start_date_btn"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:backgroundTint="@color/yellow"
         android:text="@string/location2"
-        android:textColor="@color/black">
+        android:layout_marginStart="20sp"
+        android:textColor="@color/white">
     </Button>
 
         <TextView
             android:layout_width="20dp"
             android:layout_height="30dp"
-            android:layout_marginStart="20dp"
+            android:layout_gravity="center"
             android:textSize="20sp"
             android:text="@string/a">
         </TextView>
 
-    <Button
-        android:id="@+id/end_date_btn"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="20dp"
-        android:backgroundTint="@color/yellow"
-        android:text="@string/location2"
-        android:textColor="@color/black">
-    </Button>
+        <Button
+            android:id="@+id/end_date_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:backgroundTint="@color/yellow"
+            android:layout_marginEnd="20sp"
+            android:text="@string/location2"
+            android:textColor="@color/white">
+        </Button>
 
-    </LinearLayout>
+    </FrameLayout>
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/graph1"
-        android:layout_width="412dp"
-        android:layout_height="412dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
     </com.github.mikephil.charting.charts.LineChart>
 
 

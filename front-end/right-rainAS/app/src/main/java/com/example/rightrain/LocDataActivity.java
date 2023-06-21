@@ -3,11 +3,15 @@ package com.example.rightrain;
 import android.app.DatePickerDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -30,7 +34,7 @@ public class LocDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dados_loc);
         String type = getIntent().getStringExtra("type");
-
+        ImageView home_btn = findViewById(R.id.home_btn);
         Button type_btn = findViewById(R.id.type_btn);
         startDate = findViewById(R.id.start_date_btn);
         endDate = findViewById(R.id.end_date_btn);
@@ -63,6 +67,11 @@ public class LocDataActivity extends AppCompatActivity {
             datePickerDialog.show();
         });
 
+        home_btn.setOnClickListener(v->{
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+        });
+
         type_btn.setText(type);
         LineDataSet lineDataSet = new LineDataSet(dataValues(), "Data Set");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
@@ -71,7 +80,7 @@ public class LocDataActivity extends AppCompatActivity {
         lineChart.setData(data);
         lineChart.invalidate();
 
-        type_btn.setOnClickListener(v->{
+        type_btn.setOnClickListener(v -> {
             createNotificationChannel();
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "MyNotification")
                     .setSmallIcon(R.drawable.ic_launcher_background)
@@ -80,6 +89,16 @@ public class LocDataActivity extends AppCompatActivity {
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
             NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             managerCompat.notify(1, builder.build());
         });
     }

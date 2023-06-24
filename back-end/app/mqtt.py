@@ -2,7 +2,11 @@ import asyncio
 import json
 import os
 import random
+import motor
 from paho.mqtt import client as mqtt_client
+
+client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
+db = client.rightrain
 
 BROKER = 'fbe1817f.ala.us-east-1.emqxsl.com'
 PORT = 8883
@@ -33,6 +37,8 @@ def subscribe(client: mqtt_client):
         payload = msg.payload.decode('utf-8')
         data = json.loads(payload)
         print(f"Received `{data}` from `{msg.topic}` topic")
+        result = db["devices"].insert_one(data)
+        print("Documento inserido. ID:", result.inserted_id)
 
     client.subscribe(TOPIC, qos=0)
     client.on_message = on_message

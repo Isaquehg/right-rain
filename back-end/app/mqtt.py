@@ -1,19 +1,16 @@
 import asyncio
 import json
-import logging
 import os
 import random
 from paho.mqtt import client as mqtt_client
 
-BROKER = 'broker.emqx.io'
-PORT = 1883
+BROKER = 'fbe1817f.ala.us-east-1.emqxsl.com'
+PORT = 8883
 TOPIC = 'rightrain/data'
 CLIENT_ID = f'python-mqtt-{random.randint(0, 1000)}'
-USERNAME = 'emqx'
-PASSWORD = '**********'
-DEVICE_CERT = os.environ["DEVICE_CERT"]
-PRIVATE_KEY = os.environ["PRIVATE_KEY"]
-ROOT_CA = os.environ["ROOT_CA"]
+USERNAME = 'isaquehg'
+PASSWORD = '1arry_3arry'
+ROOT_CA = '/home/isaquehg/Desktop/right-rain/EMQX/emqxsl-ca.crt'
 
 def connect_mqtt() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
@@ -30,17 +27,12 @@ def connect_mqtt() -> mqtt_client:
     client.connect(BROKER, PORT)
     return client
 
-def on_message(client, userdata, message):
-    print("on_message function")
-    payload = message.payload.decode('utf-8')
-    data = json.loads(payload)
-
-    print(data)
-
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         # Perform necessary operations with the received data
-        print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+        payload = msg.payload.decode('utf-8')
+        data = json.loads(payload)
+        print(f"Received `{data}` from `{msg.topic}` topic")
 
     client.subscribe(TOPIC, qos=0)
     client.on_message = on_message
@@ -50,7 +42,7 @@ async def mqtt_subscribe():
     print("function subscribe")
     client = connect_mqtt()
     subscribe(client)
-    print("OK")
+    client.loop_forever()
 
 
 if __name__ == "__main__":

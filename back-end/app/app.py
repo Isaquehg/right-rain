@@ -1,6 +1,4 @@
 '''
-export DEVICE_CERT="/home/isaquehg/certs/device_cert.pem.crt"
-export PRIVATE_KEY="/home/isaquehg/certs/private.pem.key"
 export ROOT_CA="/home/isaquehg/certs/AmazonRootCA1.pem"
 export MONGODB_URL="mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority"
 '''

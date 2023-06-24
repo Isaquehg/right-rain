@@ -10,7 +10,7 @@ TOPIC = 'rightrain/data'
 CLIENT_ID = f'python-mqtt-{random.randint(0, 1000)}'
 USERNAME = 'isaquehg'
 PASSWORD = '1arry_3arry'
-ROOT_CA = '/home/ubuntu/right-rain/EMQX/emqxsl-ca.crt'
+ROOT_CA_PATH = '/home/ubuntu/right-rain/EMQX/emqxsl-ca.crt'
 
 def connect_mqtt() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
@@ -21,7 +21,7 @@ def connect_mqtt() -> mqtt_client:
     # Set Connecting Client ID
     client = mqtt_client.Client(CLIENT_ID)
     # Set CA certificate
-    client.tls_set(ca_certs='../../EMQX/server-ca.crt')
+    client.tls_set(ca_certs=ROOT_CA_PATH)
     client.username_pw_set(USERNAME, PASSWORD)
     client.on_connect = on_connect
     client.connect(BROKER, PORT)

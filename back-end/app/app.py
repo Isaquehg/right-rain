@@ -16,6 +16,7 @@ import motor.motor_asyncio
 from typing import List, Dict
 import jwt
 from passlib.context import CryptContext
+import uvicorn
 import auth
 from mqtt import mqtt_subscribe
 
@@ -157,3 +158,6 @@ def convert_to_iso_date(date_str):
     iso_date_str = date_obj.isoformat()
     
     return iso_date_str
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=80)

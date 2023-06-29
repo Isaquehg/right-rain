@@ -14,11 +14,13 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -30,6 +32,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mapbox.maps.MapView;
 import com.mapbox.maps.Style;
@@ -49,24 +52,26 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     Toolbar toolbar;
+    Button add_sens;
     ActionBarDrawerToggle actionBarDrawerToggle;
     MapView mapView;
     ArrayList<String> userList;
     ListView userList1;
     ArrayAdapter<String> listAdapter;
     Handler mainHandler = new Handler();
-    ProgressBar progressBar;
     ImageView bt_menu;
+    RequestQueue mQueue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         bt_menu = findViewById(R.id.bot_menu);
+        userList1 = findViewById(R.id.userList);
+        add_sens = findViewById(R.id.add_sens);
         bt_menu.setOnClickListener(v->{
             drawerLayout.openDrawer(GravityCompat.START);
         });
-
         mapView = findViewById(R.id.mapView);
         mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
             @Override
@@ -78,8 +83,11 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         setSupportActionBar(toolbar);
-        getData();
 
+        mQueue = Volley.newRequestQueue(this);
+        add_sens.setOnClickListener(v->{
+            getData();
+        });
         userList1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -99,30 +107,32 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     private void getData(){
-        userList = new ArrayList<>();
-        userList1 = findViewById(R.id.userList);
-        listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, userList);
-        userList1.setAdapter(listAdapter);
-        String url = "https://raw.githubusercontent.com/Isaquehg/right-rain/0aa4a2c3221464eb89a05000fd26ed4c579a5df5/back-end/json_model/sensor.json?token=GHSAT0AAAAAAB7OBII56S5SCSVGYKP5YZKYZE5XDYA";
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray jsonArray = response.getJSONArray("Sensors");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        userList.add("Dispositivo " + i);
+        String url = "https://raw.githubusercontent.com/Giv314/json_teste/main/index.json";
+        StringRequest request = new StringRequest(url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            userList = new ArrayList<>();
+                            JSONObject object1 = new JSONObject(response);
+                            JSONArray jsonArray = object1.getJSONArray("Users");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                String name = jsonObject.getString("name");
+                                userList.add(name);
+                                // Log.d("Name", name);
+                            }
+                            listAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, userList);
+                            userList1.setAdapter(listAdapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
         });
+        mQueue.add(request);
     }
 }

@@ -18,6 +18,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar1"
                 android:layout_width="383dp"
                 android:layout_height="wrap_content">
 
@@ -84,12 +85,6 @@
                 android:text="@string/add_sensor">
             </Button>
         </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </ProgressBar>
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"

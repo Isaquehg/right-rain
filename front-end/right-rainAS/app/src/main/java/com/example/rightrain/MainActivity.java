@@ -105,17 +105,16 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     private void getData(){
-        String url = "https://raw.githubusercontent.com/Giv314/json_teste/main/index.json";
+        String url = "https://raw.githubusercontent.com/Giv314/json_teste/main/home_uid.json";
         StringRequest request = new StringRequest(url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             userList = new ArrayList<>();
-                            JSONObject object1 = new JSONObject(response);
-                            JSONArray jsonArray = object1.getJSONArray("Users");
+                            JSONArray jsonArray = new JSONArray(response);
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                String name = jsonObject.getString("name");
+                                String name = jsonObject.getString("d_name");
                                 userList.add(name);
                                 // Log.d("Name", name);
                             }

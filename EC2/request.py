@@ -1,6 +1,6 @@
 import requests
 
-url = "http://18.191.252.222:8000/token"
+url = "http://18.191.252.222:80/token"
 response = requests.get(url)
 
 if response.status_code == 200:

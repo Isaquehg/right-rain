@@ -1,6 +1,4 @@
 '''
-export DEVICE_CERT="/home/isaquehg/certs/device_cert.pem.crt"
-export PRIVATE_KEY="/home/isaquehg/certs/private.pem.key"
 export ROOT_CA="/home/isaquehg/certs/AmazonRootCA1.pem"
 export MONGODB_URL="mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority"
 '''
@@ -18,6 +16,7 @@ import motor.motor_asyncio
 from typing import List, Dict
 import jwt
 from passlib.context import CryptContext
+import uvicorn
 import auth
 from mqtt import mqtt_subscribe
 
@@ -30,7 +29,7 @@ USER_KEYS = ["name", "email", "password", "number"]
 LOCATION_KEYS = ["id", "locations", "latitude", "longitude", "date", "temperature", "air_humidity", "pluviosity", "soil_humidity", "soil_ph", "at_pressure", "wind_vel", "wind_dir", "luminosity", "rain"]
 SECRET_KEY = "seu_secret_key"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 50
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -159,3 +158,6 @@ def convert_to_iso_date(date_str):
     iso_date_str = date_obj.isoformat()
     
     return iso_date_str
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=80)

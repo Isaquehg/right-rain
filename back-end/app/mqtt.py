@@ -1,60 +1,55 @@
 import asyncio
 import json
-import logging
 import os
-from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
+import random
+import motor
+from paho.mqtt import client as mqtt_client
 
-TOPIC = "rightrain/data"
+client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
+db = client.rightrain
+
+BROKER = 'fbe1817f.ala.us-east-1.emqxsl.com'
 PORT = 8883
-ENDPOINT = "ar6fnfi93vtrn-ats.iot.us-east-2.amazonaws.com"
-THING_NAME = "fast_api"
-DEVICE_CERT = os.environ["DEVICE_CERT"]
-PRIVATE_KEY = os.environ["PRIVATE_KEY"]
-ROOT_CA = os.environ["ROOT_CA"]
+TOPIC = 'rightrain/data'
+CLIENT_ID = f'python-mqtt-{random.randint(0, 1000)}'
+USERNAME = 'isaquehg'
+PASSWORD = '1arry_3arry'
+ROOT_CA_PATH = '/home/ubuntu/right-rain/EMQX/emqxsl-ca.crt'
 
-# Function to deal with MQTT errors
-def on_connect(client, userdata, flags, rc):
-    print("on_connect function")
-    if rc == 0:
-        logging.info("Connected to AWS IoT")
-    else:
-        logging.error("Failed to connect to AWS IoT. Error code: %s", rc)
+def connect_mqtt() -> mqtt_client:
+    def on_connect(client, userdata, flags, rc):
+        if rc == 0:
+            print("Connected to MQTT Broker!")
+        else:
+            print("Failed to connect, return code %d\n", rc)
+    # Set Connecting Client ID
+    client = mqtt_client.Client(CLIENT_ID)
+    # Set CA certificate
+    client.tls_set(ca_certs=ROOT_CA_PATH)
+    client.username_pw_set(USERNAME, PASSWORD)
+    client.on_connect = on_connect
+    client.connect(BROKER, PORT)
+    return client
 
-def on_message(client, userdata, message):
-    print("on_message function")
-    payload = message.payload.decode('utf-8')
-    data = json.loads(payload)
+def subscribe(client: mqtt_client):
+    def on_message(client, userdata, msg):
+        # Perform necessary operations with the received data
+        payload = msg.payload.decode('utf-8')
+        data = json.loads(payload)
+        print(f"Received `{data}` from `{msg.topic}` topic")
+        result = db["devices"].insert_one(data)
+        print("Documento inserido. ID:", result.inserted_id)
 
-    # Perform necessary operations with the received data
-    print(data)
+    client.subscribe(TOPIC, qos=0)
+    client.on_message = on_message
 
 async def mqtt_subscribe():
     # Set up the MQTT client
     print("function subscribe")
-    mqtt_client = AWSIoTMQTTClient(THING_NAME)
-    mqtt_client.configureEndpoint(ENDPOINT, PORT)
-    mqtt_client.configureCredentials(ROOT_CA, PRIVATE_KEY, DEVICE_CERT)
+    client = connect_mqtt()
+    subscribe(client)
+    client.loop_forever()
 
-    # Set the connect and message callback functions
-    mqtt_client.onConnect = on_connect
-    mqtt_client.onMessage = on_message
-
-    # Connect to AWS IoT Core
-    mqtt_client.connect()
-
-    # Subscribe to the topic
-    mqtt_client.subscribe(TOPIC, 1)
-
-    print("OK")
-
-    # Keep the client loop running to receive messages
-    try:
-        print("looping...")
-        mqtt_client.loop_forever()
-    except KeyboardInterrupt:
-        print("disconnected")
-        mqtt_client.disconnect()
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)  # Enable logging
     asyncio.run(mqtt_subscribe())

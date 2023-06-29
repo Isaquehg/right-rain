@@ -85,9 +85,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mQueue = Volley.newRequestQueue(this);
-        add_sens.setOnClickListener(v->{
-            getData();
-        });
+        getData();
         userList1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

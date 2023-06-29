@@ -103,17 +103,16 @@ public class MainActivity extends AppCompatActivity {
         userList1 = findViewById(R.id.userList);
         listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, userList);
         userList1.setAdapter(listAdapter);
-        String url = "";
+        String url = "https://raw.githubusercontent.com/Isaquehg/right-rain/0aa4a2c3221464eb89a05000fd26ed4c579a5df5/back-end/json_model/sensor.json?token=GHSAT0AAAAAAB7OBII56S5SCSVGYKP5YZKYZE5XDYA";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONArray jsonArray = response.getJSONArray("Devices");
+                    JSONArray jsonArray = response.getJSONArray("Sensors");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String d_name = jsonObject.getString("name");
-                        userList.add(d_name);
+                        userList.add("Dispositivo " + i);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

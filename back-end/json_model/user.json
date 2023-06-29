@@ -1,7 +1,0 @@
-{
-    "_id":{"$oid":"646e84cae25fe01f84fc2a8a"},
-    "email":"garry@gmail.com",
-    "password":"123456789",
-    "name":"Garry",
-    "number":"158686188"
-}

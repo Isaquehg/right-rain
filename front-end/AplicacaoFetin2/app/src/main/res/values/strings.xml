@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">AplicacaoFetin</string>
+    <string name="tela_2">Tela 2</string>
+    <string name="tela_1">Tela 1</string>
+    <string name="ir_para_tela_1">Ir para tela 1</string>
+</resources>

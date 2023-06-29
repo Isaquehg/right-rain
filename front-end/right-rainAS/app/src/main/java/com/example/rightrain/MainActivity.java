@@ -25,6 +25,12 @@ import android.widget.ProgressBar;
 import androidx.appcompat.widget.Toolbar;
 
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.mapbox.maps.MapView;
 import com.mapbox.maps.Style;
 
@@ -73,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         setSupportActionBar(toolbar);
         getData();
-        new fetchData().start();
 
         userList1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,50 +103,27 @@ public class MainActivity extends AppCompatActivity {
         userList1 = findViewById(R.id.userList);
         listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, userList);
         userList1.setAdapter(listAdapter);
-    }
-    class fetchData extends Thread {
-        String data = "";
-        @Override
-        public void run() {
-            mainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    progressBar = findViewById(R.id.progress_bar);
-                    progressBar.setVisibility(View.VISIBLE);
-                }
-            });
-            try {
-                URL url = new URL("https://raw.githubusercontent.com/Giv314/json_teste/main/index.json");
-                HttpURLConnection hc = (HttpURLConnection) url.openConnection();
-                InputStream is = hc.getInputStream();
-                BufferedReader bf = new BufferedReader(new InputStreamReader(is));
-                String line;
-
-                while((line = bf.readLine()) != null){
-                    data = data + line;
-                }
-                if(!data.isEmpty()){
-                    JSONObject jsonObject = new JSONObject(data);
-                    JSONArray users = jsonObject.getJSONArray("Users");
-                    userList.clear();
-                    for (int i = 0; i < users.length(); i++) {
-                        org.json.JSONObject names = users.getJSONObject(i);
-                        String name = names.getString("name");
-                        userList.add(name);
+        String url = "";
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray jsonArray = response.getJSONArray("Devices");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String d_name = jsonObject.getString("name");
+                        userList.add(d_name);
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
             }
-            mainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    progressBar.setVisibility(View.GONE);
-                    listAdapter.notifyDataSetChanged();
-                }
-            });
-        }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
     }
 }

@@ -40,14 +40,10 @@ import com.mapbox.maps.Style;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+
+import kotlin.Pair;
 
 public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
@@ -61,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
     Handler mainHandler = new Handler();
     ImageView bt_menu;
     RequestQueue mQueue;
+    Double latitude_aux;
+    Double longitude_aux;
+    List<Pair<Double, Double>> coordinates;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,13 +72,6 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.openDrawer(GravityCompat.START);
         });
         mapView = findViewById(R.id.mapView);
-        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-            @Override
-            public void onStyleLoaded(@NonNull Style style) {
-                Map map = new Map();
-                map.addAnnotationToMap(MainActivity.this, mapView);
-            }
-        });
 
         drawerLayout = findViewById(R.id.drawer_layout);
         setSupportActionBar(toolbar);
@@ -111,12 +103,21 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             userList = new ArrayList<>();
+                            coordinates = new ArrayList<>();
                             JSONArray jsonArray = new JSONArray(response);
-                            for (int i = 0; i < jsonArray.length(); i++) {
+                            int i = 0;
+                            for (i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 String name = jsonObject.getString("d_name");
+                                String latitude = jsonObject.getString("latitude");
+                                String longitude = jsonObject.getString("longitude");
+                                Log.d("Latitude", latitude);
+                                Log.d("Longitude", longitude);
+                                latitude_aux = Double.parseDouble(latitude);
+                                longitude_aux = Double.parseDouble(longitude);
+                                coordinates.add(new Pair<>(latitude_aux, longitude_aux));
                                 userList.add(name);
-                                // Log.d("Name", name);
+                                setLocations(coordinates);
                             }
                             listAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, userList);
                             userList1.setAdapter(listAdapter);
@@ -131,5 +132,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mQueue.add(request);
+    }
+    public void setLocations(List<Pair<Double, Double>> coordinates){
+        Map map = new Map();
+        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+            @Override
+            public void onStyleLoaded(@NonNull Style style) {
+                map.addAnnotationToMap(MainActivity.this, mapView, coordinates);
+            }
+        });
     }
 }

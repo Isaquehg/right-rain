@@ -19,10 +19,10 @@ import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 
  class Map : AppCompatActivity() {
 
-        fun addAnnotationToMap(context: Context, mapView: MapView) {
+        fun addAnnotationToMap(context: Context, mapView: MapView, coordinates: List<Pair<Double, Double>>) {
             mapView!!.getMapboxMap().setCamera(
                 CameraOptions.Builder()
-                    .center(Point.fromLngLat(-45.70,-22.25))
+                    .center(Point.fromLngLat(-45.7037, -22.2522))
                     .zoom(11.0)
                     .build()
             )
@@ -33,15 +33,17 @@ import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
             )?.let {
                 val annotationApi = mapView?.annotations
                 val pointAnnotationManager = annotationApi?.createPointAnnotationManager(mapView!!)
+                coordinates.forEach { coordinate ->
 // Set options for the resulting symbol layer.
-                val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
+                    val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
 // Define a geographic coordinate.
-                    .withPoint(Point.fromLngLat(-45.70, -22.25))
+                        .withPoint(Point.fromLngLat(coordinate.second, coordinate.first))
 // Specify the bitmap you assigned to the point annotation
 // The bitmap will be added to map style automatically.
-                    .withIconImage(it)
+                        .withIconImage(it)
 // Add the resulting pointAnnotation to the map.
-                pointAnnotationManager?.create(pointAnnotationOptions)
+                    pointAnnotationManager?.create(pointAnnotationOptions)
+                }
             }
         }
         fun bitmapFromDrawableRes(context: Context, @DrawableRes resourceId: Int) =

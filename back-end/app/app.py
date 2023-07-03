@@ -21,7 +21,7 @@ import auth
 from mqtt import mqtt_subscribe
 
 app = FastAPI()
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
+client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
 db = client.rightrain
 
 # -------------------------------------------CONSTANTS-----------------------------------------------------

@@ -6,12 +6,10 @@ export MONGODB_URL="mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mon
 from datetime import timedelta
 import datetime
 import os
-from fastapi import Depends, FastAPI, Body, HTTPException, status
-from fastapi.responses import Response, JSONResponse
-from fastapi.encoders import jsonable_encoder
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel, Field
-from typing import Optional, List
+from typing import Optional, List, Union
 import motor.motor_asyncio
 from typing import List, Dict
 import jwt
@@ -42,6 +40,7 @@ class OAuth2PasswordRequestFormCustom(BaseModel):
 class DeviceData(BaseModel):
     _id: str = Field(...)
     u_id: str = Field(...)
+    d_id: str = Field(...)
     latitude: Optional[float] = Field(None)
     longitude: Optional[float] = Field(None)
     date: Optional[str] = Field(None, regex=r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$")
@@ -64,7 +63,14 @@ class UserData(BaseModel):
     password: str = Field(..., min_length=8)
     number: str = Field(..., regex=r"^\d{9,15}$")
 
-# -------------------------------------------ROUTES--------------------------------------------------------
+class HistoryDataPoint(BaseModel):
+    timestamp: str
+    value: Union[int, float]
+
+class HistoryData(BaseModel):
+    data: List[HistoryDataPoint]
+
+# -------------------------------------------ROUTES----------------------------------------------------
 @app.on_event("startup")
 async def startup_event():
     # Start the MQTT subscription
@@ -121,8 +127,8 @@ async def get_devices_sensors(u_id: str, d_id: str, token: str = Depends(oauth2_
     except:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
     
-# Show sensor's history
-@app.get("/home/{u_id}/{d_id}/{sensor}", response_description="List sensor's history", response_model=DeviceData)
+# Retrieve sensor's history
+@app.get("/home/{u_id}/{d_id}/{sensor}", response_description="List sensor's history", response_model=HistoryData)
 async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str, end_date: str, token: str = Depends(oauth2_scheme)):
     try:
         # Converting incoming dates
@@ -142,7 +148,15 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
 
         device = await db["devices"].find(query)
         if device:
-            return device
+            # Create a list of HistoryDataPoint objects
+            history_data = [
+                HistoryDataPoint(timestamp=str(data["date"]), value=data[sensor])
+                for data in device
+            ]
+            
+            # Create a HistoryData object with the history_data list
+            history = HistoryData(data=history_data)
+            return history
 
         raise HTTPException(status_code=404, detail=f"Device's sensor with ID {d_id} not found")
     

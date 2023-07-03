@@ -21,7 +21,7 @@ app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
 db = client.rightrain
 
-# -------------------------------------------CONSTANTS-----------------------------------------------------
+# -------------------------------------------CONSTANTS----------------------------------------------------
 USER_KEYS = ["name", "email", "password", "number"]
 LOCATION_KEYS = ["id", "locations", "latitude", "longitude", "date", "temperature", "air_humidity", "pluviosity", "soil_humidity", "soil_ph", "at_pressure", "wind_vel", "wind_dir", "luminosity", "rain"]
 SECRET_KEY = "seu_secret_key"

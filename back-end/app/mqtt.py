@@ -1,6 +1,4 @@
-import asyncio
 import json
-import os
 import random
 import motor
 from paho.mqtt import client as mqtt_client
@@ -50,7 +48,3 @@ async def mqtt_subscribe():
     client = connect_mqtt()
     subscribe(client)
     client.loop_forever()
-
-
-if __name__ == "__main__":
-    asyncio.run(mqtt_subscribe())

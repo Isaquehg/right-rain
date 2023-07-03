@@ -73,7 +73,7 @@ class HistoryData(BaseModel):
 @app.on_event("startup")
 async def startup_event():
     # Start the MQTT subscription in a separate task
-    asyncio.create_task(mqtt_subscribe())
+    #asyncio.create_task(mqtt_subscribe())
     print("heree")
 
 @app.route("/")

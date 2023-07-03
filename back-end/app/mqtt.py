@@ -14,7 +14,8 @@ TOPIC = 'rightrain/data'
 CLIENT_ID = f'python-mqtt-{random.randint(0, 1000)}'
 USERNAME = 'isaquehg'
 PASSWORD = '1arry_3arry'
-ROOT_CA_PATH = '/home/ubuntu/right-rain/EMQX/emqxsl-ca.crt'
+ROOT_CA_PATH = '/home/isaquehg/Desktop/right-rain/EMQX/emqxsl-ca.crt'
+# '/home/ubuntu/right-rain/EMQX/emqxsl-ca.crt'
 
 def connect_mqtt() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):

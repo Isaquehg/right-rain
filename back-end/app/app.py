@@ -1,11 +1,10 @@
 '''
-export ROOT_CA="/home/isaquehg/certs/AmazonRootCA1.pem"
 export MONGODB_URL="mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority"
 '''
 
+import asyncio
 from datetime import timedelta
 import datetime
-import os
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel, Field
@@ -73,8 +72,8 @@ class HistoryData(BaseModel):
 # -------------------------------------------ROUTES----------------------------------------------------
 @app.on_event("startup")
 async def startup_event():
-    # Start the MQTT subscription
-    await mqtt_subscribe()
+    # Start the MQTT subscription in a separate task
+    asyncio.create_task(mqtt_subscribe())
 
 # Authenticate Login with JWT
 @app.post("/token")
@@ -174,4 +173,4 @@ def convert_to_iso_date(date_str):
     return iso_date_str
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=80)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

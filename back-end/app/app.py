@@ -152,6 +152,7 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
         }
 
         device = await db["devices"].find(query)
+        print(history)
         if device:
             # Create a list of HistoryDataPoint objects
             history_data = [
@@ -161,7 +162,6 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
             
             # Create a HistoryData object with the history_data list
             history = HistoryData(data=history_data)
-            print(history)
             return history
 
         raise HTTPException(status_code=404, detail=f"Device's sensor with ID {d_id} not found")

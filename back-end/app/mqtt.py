@@ -5,7 +5,7 @@ import random
 import motor
 from paho.mqtt import client as mqtt_client
 
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
+client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
 db = client.rightrain
 
 BROKER = 'fbe1817f.ala.us-east-1.emqxsl.com'

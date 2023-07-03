@@ -74,6 +74,11 @@ class HistoryData(BaseModel):
 async def startup_event():
     # Start the MQTT subscription in a separate task
     asyncio.create_task(mqtt_subscribe())
+    print("heree")
+
+@app.route("/")
+async def root():
+    return {"hello": "world"}
 
 # Authenticate Login with JWT
 @app.post("/token")

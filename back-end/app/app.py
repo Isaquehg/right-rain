@@ -174,7 +174,7 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
                 "$lte": end_date
             }
         }
-
+        print("here")
         device = await db["devices"].find(query)
         print(history)
         if device:

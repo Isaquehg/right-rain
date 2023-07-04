@@ -175,7 +175,7 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
             }
         }
         print("here")
-        device = await db["devices"].find(query)
+        device = await db["devices"].find(query).to_list(length=None)
         print(history)
         if device:
             # Create a list of HistoryDataPoint objects

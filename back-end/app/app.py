@@ -70,10 +70,12 @@ class HistoryData(BaseModel):
     data: List[HistoryDataPoint]
 
 # -------------------------------------------ROUTES----------------------------------------------------
+async def start_capture():
+    await mqtt_subscribe()
+
 @app.on_event("startup")
 async def startup_event():
-    # Start the MQTT subscription in a separate task
-    #asyncio.create_task(mqtt_subscribe())
+    asyncio.create_task(start_capture())
     print("heree")
 
 @app.route("/")

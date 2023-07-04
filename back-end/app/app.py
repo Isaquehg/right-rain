@@ -153,17 +153,6 @@ def convert_to_iso_date(date_str):
 @app.get("/home/{u_id}/{d_id}/{sensor}", response_description="List sensor's history", response_model=HistoryData)
 async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str, end_date: str, token: str = Depends(oauth2_scheme)):
     try:
-        # Converting incoming dates
-        '''print(start_date)
-        date_obj = datetime.strptime(start_date, "%d-%m-%Y")
-        # Converting datetime object to ISO format
-        iso_start_date_str = date_obj.isoformat()
-
-        date_obj = datetime.strptime(end_date, "%d-%m-%Y")
-        iso_end_date_str = date_obj.isoformat()
-
-        print(f"converted start: {iso_start_date_str}")'''
-
         # Query with filters
         query = {
             "u_id": u_id,
@@ -174,9 +163,7 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
                 "$lte": end_date
             }
         }
-        print("here")
         history = await db["devices"].find(query).to_list(length=None)
-        print(history)
         if history:
             # Create a list of HistoryDataPoint objects
             history_data = [

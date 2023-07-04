@@ -131,7 +131,18 @@ async def get_devices_sensors(u_id: str, d_id: str, token: str = Depends(oauth2_
     
     except:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
+
+
+# Function to convert date types
+def convert_to_iso_date(date_str):
+    # Converting date to datetime object
+    date_obj = datetime.strptime(date_str, "%d/%m/%Y")
     
+    # Converting datetime object to ISO format
+    iso_date_str = date_obj.isoformat()
+    
+    return iso_date_str
+
 # Retrieve sensor's history
 @app.get("/home/{u_id}/{d_id}/{sensor}", response_description="List sensor's history", response_model=HistoryData)
 async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str, end_date: str, token: str = Depends(oauth2_scheme)):
@@ -170,15 +181,6 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
     except:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
 
-# Function to convert date types
-def convert_to_iso_date(date_str):
-    # Converting date to datetime object
-    date_obj = datetime.strptime(date_str, "%d/%m/%Y")
-    
-    # Converting datetime object to ISO format
-    iso_date_str = date_obj.isoformat()
-    
-    return iso_date_str
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

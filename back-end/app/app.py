@@ -190,8 +190,9 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
 
         raise HTTPException(status_code=404, detail=f"Device's sensor with ID {d_id} not found")
     
-    except:
-        raise HTTPException(status_code=401, detail="Invalid Credentials")
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 if __name__ == "__main__":

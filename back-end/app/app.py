@@ -70,13 +70,9 @@ class HistoryData(BaseModel):
     data: List[HistoryDataPoint]
 
 # -------------------------------------------ROUTES----------------------------------------------------
-async def start_capture():
-    await mqtt_subscribe()
-
 @app.on_event("startup")
 async def startup_event():
-    await start_capture()
-    print("heree")
+    pass
 
 @app.route("/")
 async def root():
@@ -185,4 +181,5 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
 
 
 if __name__ == "__main__":
+    mqtt_subscribe()
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -45,7 +45,7 @@ class DeviceData(BaseModel):
     date: Optional[str] = Field(None, regex=r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$")
     temperature: Optional[float] = Field(None, ge=-100, le=100)
     air_humidity: Optional[int] = Field(None, ge=0, le=100)
-    pluviosity: Optional[int] = Field(None, ge=0, le=10000)
+    rainfall: Optional[int] = Field(None, ge=0, le=10000)
     soil_humidity: Optional[int] = Field(None, ge=0, le=100)
     at_pressure: Optional[int] = Field(None, ge=0)
     wind_vel: Optional[float] = Field(None, ge=0, le = 1000)

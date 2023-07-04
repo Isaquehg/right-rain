@@ -93,7 +93,7 @@ async def login(form_data: OAuth2PasswordRequestFormCustom):
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
-# User's Home Screen with authentication
+# Return all user's devices (If there are more than one with the same d_id, will return the first one)
 @app.get("/home/{u_id}", response_description="List all devices", response_model=List[DeviceData])
 async def get_user_data(u_id: str, token: str = Depends(oauth2_scheme)):
     try:
@@ -101,7 +101,13 @@ async def get_user_data(u_id: str, token: str = Depends(oauth2_scheme)):
         #username = payload.get("sub")
 
         devices = []
-        async for device in db["devices"].find({"u_id": u_id}):
+        pipeline = [
+            {"$match": {"u_id": u_id}},
+            {"$group": {"_id": "$d_id", "device": {"$first": "$$ROOT"}}},
+            {"$replaceRoot": {"newRoot": "$device"}}
+        ]
+
+        async for device in db["devices"].aggregate(pipeline):
             devices.append(device)
 
         if devices:
@@ -133,10 +139,9 @@ async def get_devices_sensors(u_id: str, d_id: str, token: str = Depends(oauth2_
         raise HTTPException(status_code=401, detail="Invalid Credentials")
 
 
-# Function to convert date types
 def convert_to_iso_date(date_str):
     # Converting date to datetime object
-    print("entrou funcao")
+    print("entered function")
     date_obj = datetime.strptime(date_str, "%d-%m-%Y")
     
     # Converting datetime object to ISO format
@@ -150,6 +155,11 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
     try:
         # Converting incoming dates
         print(start_date)
+        date_obj = datetime.strptime(start_date, "%d-%m-%Y")
+    
+        # Converting datetime object to ISO format
+        iso_start_date_str = date_obj.isoformat()
+        print(f"converted: {iso_start_date_str}")
         start_date_iso = convert_to_iso_date(start_date)
         end_date_iso = convert_to_iso_date(end_date)
         print(start_date_iso)

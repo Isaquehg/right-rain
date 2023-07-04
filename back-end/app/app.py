@@ -136,7 +136,7 @@ async def get_devices_sensors(u_id: str, d_id: str, token: str = Depends(oauth2_
 # Function to convert date types
 def convert_to_iso_date(date_str):
     # Converting date to datetime object
-    date_obj = datetime.strptime(date_str, "%d/%m/%Y")
+    date_obj = datetime.strptime(date_str, "%d-%m-%Y")
     
     # Converting datetime object to ISO format
     iso_date_str = date_obj.isoformat()

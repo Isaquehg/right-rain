@@ -137,9 +137,10 @@ async def get_devices_sensors(u_id: str, d_id: str, token: str = Depends(oauth2_
 async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str, end_date: str, token: str = Depends(oauth2_scheme)):
     try:
         # Converting incoming dates
+        print("before iso conversion")
         start_date_iso = convert_to_iso_date(start_date)
         end_date_iso = convert_to_iso_date(end_date)
-        
+        print("before query")
         # Query with filters
         query = {
             "u_id": u_id,

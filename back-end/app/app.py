@@ -156,21 +156,22 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
         # Converting incoming dates
         print(start_date)
         date_obj = datetime.strptime(start_date, "%d-%m-%Y")
-    
         # Converting datetime object to ISO format
         iso_start_date_str = date_obj.isoformat()
-        print(f"converted: {iso_start_date_str}")
-        start_date_iso = convert_to_iso_date(start_date)
-        end_date_iso = convert_to_iso_date(end_date)
-        print(start_date_iso)
+
+        date_obj = datetime.strptime(end_date, "%d-%m-%Y")
+        iso_end_date_str = date_obj.isoformat()
+
+        print(f"converted start: {iso_start_date_str}")
+
         # Query with filters
         query = {
             "u_id": u_id,
             "d_id": d_id,
             sensor: {"$exists": True},
             "date": {
-                "$gte": start_date_iso,
-                "$lte": end_date_iso
+                "$gte": iso_start_date_str,
+                "$lte": iso_end_date_str
             }
         }
 

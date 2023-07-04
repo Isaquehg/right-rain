@@ -75,7 +75,7 @@ async def start_capture():
 
 @app.on_event("startup")
 async def startup_event():
-    asyncio.create_task(start_capture())
+    await start_capture()
     print("heree")
 
 @app.route("/")

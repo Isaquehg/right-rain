@@ -154,7 +154,7 @@ def convert_to_iso_date(date_str):
 async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str, end_date: str, token: str = Depends(oauth2_scheme)):
     try:
         # Converting incoming dates
-        print(start_date)
+        '''print(start_date)
         date_obj = datetime.strptime(start_date, "%d-%m-%Y")
         # Converting datetime object to ISO format
         iso_start_date_str = date_obj.isoformat()
@@ -162,7 +162,7 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
         date_obj = datetime.strptime(end_date, "%d-%m-%Y")
         iso_end_date_str = date_obj.isoformat()
 
-        print(f"converted start: {iso_start_date_str}")
+        print(f"converted start: {iso_start_date_str}")'''
 
         # Query with filters
         query = {
@@ -170,8 +170,8 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
             "d_id": d_id,
             sensor: {"$exists": True},
             "date": {
-                "$gte": iso_start_date_str,
-                "$lte": iso_end_date_str
+                "$gte": start_date,
+                "$lte": end_date
             }
         }
 

@@ -13,7 +13,7 @@ TOPIC = 'rightrain/data'
 CLIENT_ID = f'python-mqtt-{random.randint(0, 1000)}'
 USERNAME = 'isaquehg'
 PASSWORD = '1arry_3arry'
-# ROOT_CA_PATH = '/home/isaquehg/Desktop/right-rain/EMQX/emqxsl-ca.crt'
+#ROOT_CA_PATH = '/home/isaquehg/Desktop/right-rain/EMQX/emqxsl-ca.crt'
 ROOT_CA_PATH = '/home/ubuntu/right-rain/EMQX/emqxsl-ca.crt'
 
 def connect_mqtt() -> mqtt_client:
@@ -31,23 +31,23 @@ def connect_mqtt() -> mqtt_client:
     client.connect(BROKER, PORT)
     return client
 
-async def handle_message(client, userdata, msg):
-    payload = msg.payload.decode('utf-8')
-    data = json.loads(payload)
-    print(f"Received `{data}` from `{msg.topic}` topic")
-    result = await db["devices"].insert_one(data)
-    print("Document inserted! ID:", result.inserted_id)
-
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
-        asyncio.create_task(handle_message(client, userdata, msg))
+        # Perform necessary operations with the received data
+        payload = msg.payload.decode('utf-8')
+        data = json.loads(payload)
+        print(f"Received `{data}` from `{msg.topic}` topic")
+        result = db["devices"].insert_one(data)
+        print("Document inserted! ID:", result.inserted_id)
 
     client.subscribe(TOPIC, qos=0)
     client.on_message = on_message
 
 async def mqtt_subscribe():
-    # Set up the MQTT client
-    print("function subscribe")
+    loop = asyncio.get_event_loop()
     client = connect_mqtt()
     subscribe(client)
-    client.loop_start()
+    loop.run_forever()
+
+if __name__ == "__main__":
+    asyncio.run(mqtt_subscribe())

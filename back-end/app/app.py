@@ -100,6 +100,8 @@ def create_app():
 
     return app
 
+app = create_app()
+
 # Authenticate Login with JWT
 @app.post("/token")
 async def login(form_data: OAuth2PasswordRequestFormCustom):
@@ -200,8 +202,6 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
     except Exception as e:
         print(f"Error: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
-
-app = create_app()
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

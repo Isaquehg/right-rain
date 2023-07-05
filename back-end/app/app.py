@@ -19,8 +19,6 @@ import auth
 from mqtt import mqtt_subscribe
 from paho.mqtt import client as mqtt_client
 
-
-app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
 db = client.rightrain
 
@@ -203,6 +201,7 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
         print(f"Error: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
+app = create_app()
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

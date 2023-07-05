@@ -55,7 +55,7 @@ async def subscribe(client: mqtt_client):
         print("Document inserted! ID:", result.inserted_id)
 
     client.subscribe(TOPIC, qos=0)
-    client.on_message = await on_message
+    client.on_message = on_message
 
 async def mqtt_subscribe():
     # Set up the MQTT client

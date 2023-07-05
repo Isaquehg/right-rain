@@ -46,20 +46,20 @@ def connect_mqtt() -> mqtt_client:
     client.connect(BROKER, PORT)
     return client
 
-def subscribe(client: mqtt_client):
-    def on_message(client, userdata, msg):
+async def subscribe(client: mqtt_client):
+    async def on_message(client, userdata, msg):
         # Perform necessary operations with the received data
         payload = msg.payload.decode('utf-8')
         data = json.loads(payload)
-        result = db["devices"].insert_one(data)
+        result = await db["devices"].insert_one(data).to_list(length=None)
         print("Document inserted! ID:", result.inserted_id)
 
     client.subscribe(TOPIC, qos=0)
-    client.on_message = on_message
+    client.on_message = await on_message
 
-def mqtt_subscribe():
+async def mqtt_subscribe():
     # Set up the MQTT client
     print("function subscribe")
     client = connect_mqtt()
-    subscribe(client)
+    await subscribe(client)
     client.loop_start()

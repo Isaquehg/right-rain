@@ -47,7 +47,7 @@ async def mqtt_subscribe():
     loop = asyncio.get_event_loop()
     client = connect_mqtt()
     subscribe(client)
-    loop.run_forever()
+    await loop.create_task(client.loop_forever())
 
 if __name__ == "__main__":
     asyncio.run(mqtt_subscribe())

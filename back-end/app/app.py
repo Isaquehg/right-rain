@@ -3,6 +3,7 @@ export MONGODB_URL="mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mon
 '''
 
 import asyncio
+import json
 from datetime import timedelta
 import datetime
 from fastapi import Depends, FastAPI, HTTPException
@@ -16,6 +17,8 @@ from passlib.context import CryptContext
 import uvicorn
 import auth
 from mqtt import mqtt_subscribe
+from paho.mqtt import client as mqtt_client
+
 
 app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
@@ -70,14 +73,34 @@ class HistoryData(BaseModel):
     data: List[HistoryDataPoint]
 
 # -------------------------------------------ROUTES----------------------------------------------------
-@app.on_event("startup")
+'''@app.on_event("startup")
 async def startup_event():
     # Insert mqtt_subscribe in loop
-    asyncio.create_task(mqtt_subscribe())
+    asyncio.create_task(mqtt_subscribe())'''
 
-@app.route("/")
-async def root():
-    return {"hello": "world"}
+latest_mqtt_value = None
+
+def on_message(client, userdata, msg):
+    global latest_mqtt_value
+    # Perform necessary operations with the received data
+    payload = msg.payload.decode('utf-8')
+    data = json.loads(payload)
+    result = db["devices"].insert_one(data)
+    print("Document inserted! ID:", result.inserted_id)
+
+def create_app():
+    app = FastAPI()
+    client = mqtt_client.Client()
+    client.connect('localhost', 1883)
+    client.subscribe('topic')
+    client.on_message = on_message
+    client.loop_start()
+
+    @app.get("/")
+    async def root():
+        return {"value": latest_mqtt_value}
+
+    return app
 
 # Authenticate Login with JWT
 @app.post("/token")

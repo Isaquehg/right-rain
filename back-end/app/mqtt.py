@@ -6,6 +6,7 @@ from paho.mqtt import client as mqtt_client
 
 client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
 db = client.rightrain
+result = None
 
 BROKER = 'fbe1817f.ala.us-east-1.emqxsl.com'
 PORT = 8883
@@ -47,11 +48,11 @@ def connect_mqtt() -> mqtt_client:
     return client
 
 async def subscribe(client: mqtt_client):
-    async def on_message(client, userdata, msg):
+    def on_message(client, userdata, msg):
         # Perform necessary operations with the received data
         payload = msg.payload.decode('utf-8')
         data = json.loads(payload)
-        result = await db["devices"].insert_one(data).to_list(length=None)
+        result = db["devices"].insert_one(data).to_list(length=None)
         print("Document inserted! ID:", result.inserted_id)
 
     client.subscribe(TOPIC, qos=0)

@@ -56,7 +56,7 @@ async def subscribe(client: mqtt_client):
         # Perform necessary operations with the received data
         payload = msg.payload.decode('utf-8')
         data = json.loads(payload)
-        asyncio.create_task(save_to_db(data))
+        asyncio.run_coroutine_threadsafe(save_to_db(data), asyncio.get_event_loop())
         
 
     client.subscribe(TOPIC, qos=0)

@@ -36,7 +36,6 @@ def subscribe(client: mqtt_client):
         # Perform necessary operations with the received data
         payload = msg.payload.decode('utf-8')
         data = json.loads(payload)
-        print(f"Received `{data}` from `{msg.topic}` topic")
         result = db["devices"].insert_one(data)
         print("Document inserted! ID:", result.inserted_id)
 
@@ -44,10 +43,8 @@ def subscribe(client: mqtt_client):
     client.on_message = on_message
 
 async def mqtt_subscribe():
-    loop = asyncio.get_event_loop()
+    # Set up the MQTT client
+    print("function subscribe")
     client = connect_mqtt()
     subscribe(client)
-    await loop.create_task(client.loop_forever())
-
-if __name__ == "__main__":
-    asyncio.run(mqtt_subscribe())
+    client.loop_start()

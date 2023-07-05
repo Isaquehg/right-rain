@@ -73,8 +73,7 @@ class HistoryData(BaseModel):
 @app.on_event("startup")
 async def startup_event():
     # Insert mqtt_subscribe in loop
-    loop = asyncio.get_running_loop()
-    loop.create_task(mqtt_subscribe())
+    asyncio.create_task(mqtt_subscribe())
 
 @app.route("/")
 async def root():

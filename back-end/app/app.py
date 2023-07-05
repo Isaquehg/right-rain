@@ -70,7 +70,8 @@ class HistoryData(BaseModel):
     data: List[HistoryDataPoint]
 
 # -------------------------------------------ROUTES----------------------------------------------------
-asyncio.run(mqtt_subscribe())
+loop = asyncio.get_event_loop()
+loop.run_until_complete(mqtt_subscribe())
 
 @app.route("/")
 async def root():

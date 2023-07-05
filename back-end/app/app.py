@@ -15,10 +15,10 @@ import jwt
 from passlib.context import CryptContext
 import uvicorn
 import auth
-from mqtt import mqtt_subscribe
+from mqtt import main
 import nest_asyncio
 
-nest_asyncio.apply()
+#nest_asyncio.apply()
 app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
 db = client.rightrain
@@ -72,7 +72,7 @@ class HistoryData(BaseModel):
     data: List[HistoryDataPoint]
 
 # -------------------------------------------ROUTES----------------------------------------------------
-asyncio.run(mqtt_subscribe())
+asyncio.run(main())
 
 @app.route("/")
 async def root():

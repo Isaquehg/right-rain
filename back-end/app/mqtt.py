@@ -1,12 +1,11 @@
 import asyncio
-from aiomqtt import Client as mqtt_client
+import asyncio_mqtt as aiomqtt
 import motor.motor_asyncio
 import json
 import random
 
 client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
 db = client.rightrain
-result = None
 
 BROKER = 'fbe1817f.ala.us-east-1.emqxsl.com'
 PORT = 8883
@@ -16,13 +15,16 @@ USERNAME = 'isaquehg'
 PASSWORD = '1arry_3arry'
 ROOT_CA_PATH = '/home/ubuntu/right-rain/EMQX/emqxsl-ca.crt'
 
+
 async def save_to_db(data):
     result = await db["devices"].insert_one(data)
     print("Document inserted! ID:", result.inserted_id)
 
+
 async def on_message(topic, payload, qos, retain):
     data = json.loads(payload.decode('utf-8'))
     await save_to_db(data)
+
 
 async def subscribe(client):
     await client.connect(BROKER, PORT, ssl=True, username=USERNAME, password=PASSWORD)
@@ -31,6 +33,15 @@ async def subscribe(client):
         async for message in messages:
             await on_message(message.topic, message.payload, message.qos, message.retain)
 
-async def mqtt_subscribe():
-    client = mqtt_client(client_id=CLIENT_ID)
-    await subscribe(client)
+
+async def main():
+    # Wait for messages in (unawaited) asyncio task
+    loop = asyncio.get_event_loop()
+    client = aiomqtt.Client(client_id=CLIENT_ID, username=USERNAME, password=PASSWORD)
+    task = loop.create_task(subscribe(client))
+    # This will still run!
+    print("Magic!")
+    # If you don't await the task here the program will simply finish.
+    # However, if you're using an async web framework you usually don't have to await
+    # the task, as the framework runs in an endless loop.
+    await task

@@ -57,7 +57,7 @@ def subscribe(client: mqtt_client):
     client.subscribe(TOPIC, qos=0)
     client.on_message = on_message
 
-async def mqtt_subscribe():
+def mqtt_subscribe():
     # Set up the MQTT client
     print("function subscribe")
     client = connect_mqtt()

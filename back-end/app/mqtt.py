@@ -37,7 +37,7 @@ def subscribe(client: mqtt_client):
         data = json.loads(payload)
         print(f"Received `{data}` from `{msg.topic}` topic")
         result = db["devices"].insert_one(data)
-        print("Documento inserido. ID:", result.inserted_id)
+        print("Document inserted! ID:", result.inserted_id)
 
     client.subscribe(TOPIC, qos=0)
     client.on_message = on_message
@@ -47,4 +47,4 @@ async def mqtt_subscribe():
     print("function subscribe")
     client = connect_mqtt()
     subscribe(client)
-    client.loop_forever()
+    client.loop_start()

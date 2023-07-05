@@ -72,7 +72,9 @@ class HistoryData(BaseModel):
 # -------------------------------------------ROUTES----------------------------------------------------
 @app.on_event("startup")
 async def startup_event():
-    asyncio.create_task(mqtt_subscribe())# stops the startup flow
+    # Insert mqtt_subscribe in loop
+    loop = asyncio.get_running_loop()
+    loop.create_task(mqtt_subscribe())
 
 @app.route("/")
 async def root():
@@ -181,5 +183,4 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
 
 
 if __name__ == "__main__":
-    mqtt_subscribe() # Is not called
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -1,6 +1,7 @@
 import json
 import random
 import motor
+import asyncio
 from paho.mqtt import client as mqtt_client
 
 client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
@@ -12,7 +13,7 @@ TOPIC = 'rightrain/data'
 CLIENT_ID = f'python-mqtt-{random.randint(0, 1000)}'
 USERNAME = 'isaquehg'
 PASSWORD = '1arry_3arry'
-#ROOT_CA_PATH = '/home/isaquehg/Desktop/right-rain/EMQX/emqxsl-ca.crt'
+# ROOT_CA_PATH = '/home/isaquehg/Desktop/right-rain/EMQX/emqxsl-ca.crt'
 ROOT_CA_PATH = '/home/ubuntu/right-rain/EMQX/emqxsl-ca.crt'
 
 def connect_mqtt() -> mqtt_client:
@@ -30,14 +31,16 @@ def connect_mqtt() -> mqtt_client:
     client.connect(BROKER, PORT)
     return client
 
+async def handle_message(client, userdata, msg):
+    payload = msg.payload.decode('utf-8')
+    data = json.loads(payload)
+    print(f"Received `{data}` from `{msg.topic}` topic")
+    result = await db["devices"].insert_one(data)
+    print("Document inserted! ID:", result.inserted_id)
+
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
-        # Perform necessary operations with the received data
-        payload = msg.payload.decode('utf-8')
-        data = json.loads(payload)
-        print(f"Received `{data}` from `{msg.topic}` topic")
-        result = db["devices"].insert_one(data)
-        print("Document inserted! ID:", result.inserted_id)
+        asyncio.create_task(handle_message(client, userdata, msg))
 
     client.subscribe(TOPIC, qos=0)
     client.on_message = on_message

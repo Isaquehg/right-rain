@@ -47,13 +47,17 @@ def connect_mqtt() -> mqtt_client:
     client.connect(BROKER, PORT)
     return client
 
+async def save_to_db(data):
+    result = await db["devices"].insert_one(data).to_list(length=None)
+    print("Document inserted! ID:", result.inserted_id)
+
 async def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         # Perform necessary operations with the received data
         payload = msg.payload.decode('utf-8')
         data = json.loads(payload)
-        result = db["devices"].insert_one(data).to_list(length=None)
-        print("Document inserted! ID:", result.inserted_id)
+        asyncio.create_task(save_to_db(data))
+        
 
     client.subscribe(TOPIC, qos=0)
     client.on_message = on_message

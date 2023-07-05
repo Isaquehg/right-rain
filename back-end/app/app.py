@@ -70,10 +70,9 @@ class HistoryData(BaseModel):
     data: List[HistoryDataPoint]
 
 # -------------------------------------------ROUTES----------------------------------------------------
-'''@app.on_event("startup")
+@app.on_event("startup")
 async def startup_event():
     asyncio.create_task(mqtt_subscribe())# stops the startup flow'''
-mqtt_subscribe()
 
 @app.route("/")
 async def root():

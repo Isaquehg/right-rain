@@ -31,6 +31,21 @@ def connect_mqtt() -> mqtt_client:
     client.connect(BROKER, PORT)
     return client
 
+def connect_mqtt() -> mqtt_client:
+    def on_connect(client, userdata, flags, rc):
+        if rc == 0:
+            print("Connected to MQTT Broker!")
+        else:
+            print("Failed to connect, return code %d\n", rc)
+    # Set Connecting Client ID
+    client = mqtt_client.Client(CLIENT_ID)
+    # Set CA certificate
+    client.tls_set(ca_certs=ROOT_CA_PATH)
+    client.username_pw_set(USERNAME, PASSWORD)
+    client.on_connect = on_connect
+    client.connect(BROKER, PORT)
+    return client
+
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         # Perform necessary operations with the received data

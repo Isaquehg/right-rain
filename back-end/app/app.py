@@ -6,6 +6,7 @@ import asyncio
 import json
 from datetime import timedelta
 import datetime
+import random
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel, Field
@@ -76,6 +77,15 @@ async def startup_event():
     # Insert mqtt_subscribe in loop
     asyncio.create_task(mqtt_subscribe())'''
 
+BROKER = 'fbe1817f.ala.us-east-1.emqxsl.com'
+PORT = 8883
+TOPIC = 'rightrain/data'
+CLIENT_ID = f'python-mqtt-{random.randint(0, 1000)}'
+USERNAME = 'isaquehg'
+PASSWORD = '1arry_3arry'
+#ROOT_CA_PATH = '/home/isaquehg/Desktop/right-rain/EMQX/emqxsl-ca.crt'
+ROOT_CA_PATH = '/home/ubuntu/right-rain/EMQX/emqxsl-ca.crt'
+
 latest_mqtt_value = None
 
 def on_message(client, userdata, msg):
@@ -88,10 +98,14 @@ def on_message(client, userdata, msg):
 
 def create_app():
     app = FastAPI()
-    client = mqtt_client.Client()
-    client.connect('localhost', 1883)
-    client.subscribe('topic')
-    client.on_message = on_message
+    # Set Connecting Client ID
+    client = mqtt_client.Client(CLIENT_ID)
+    # Set CA certificate
+    client.tls_set(ca_certs=ROOT_CA_PATH)
+    client.username_pw_set(USERNAME, PASSWORD)
+    client.on_connect = on_connect
+    client.connect(BROKER, PORT)
+    return client
     client.loop_start()
 
     @app.get("/")

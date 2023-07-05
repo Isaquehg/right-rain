@@ -97,110 +97,113 @@ def create_app():
     @app.get("/")
     async def root():
         return {"value": latest_mqtt_value}
+    
+    # Authenticate Login with JWT
+    @app.post("/token")
+    async def login(form_data: OAuth2PasswordRequestFormCustom):
+        user = await auth.authenticate_user(form_data.username, form_data.password, db)
+        if not user:
+            raise HTTPException(status_code=401, detail="Invalid Credentials")
+
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = await auth.create_access_token(
+            data={"sub": user["email"]}, expires_delta=access_token_expires
+        )
+        return {"access_token": access_token, "token_type": "bearer"}
+
+    # Return all user's devices (If there are more than one with the same d_id, will return the first one)
+    @app.get("/home/{u_id}", response_description="List all devices", response_model=List[DeviceData])
+    async def get_user_data(u_id: str, token: str = Depends(oauth2_scheme)):
+        try:
+            #payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            #username = payload.get("sub")
+
+            devices = []
+            pipeline = [
+                {"$match": {"u_id": u_id}},
+                {"$group": {"_id": "$d_id", "device": {"$first": "$$ROOT"}}},
+                {"$replaceRoot": {"newRoot": "$device"}}
+            ]
+
+            async for device in db["devices"].aggregate(pipeline):
+                devices.append(device)
+
+            if devices:
+                return devices
+
+            raise HTTPException(status_code=404, detail=f"User's devices with ID {u_id} not found")
+        
+        except:
+            raise HTTPException(status_code=401, detail="Invalid Credentials")
+
+    # Show device's sensors
+    @app.get("/home/{u_id}/{d_id}", response_description="List device's sensors", response_model=DeviceData)
+    async def get_devices_sensors(u_id: str, d_id: str, token: str = Depends(oauth2_scheme)):
+        try:    
+            # Query with filters
+            query = {
+                "u_id": u_id,
+                "d_id": d_id,
+            }
+
+            device = await db["devices"].find(query)
+            print(device)
+            if device:
+                return device
+
+            raise HTTPException(status_code=404, detail=f"Device's sensor with ID {d_id} not found")
+        
+        except:
+            raise HTTPException(status_code=401, detail="Invalid Credentials")
+
+
+    def convert_to_iso_date(date_str):
+        # Converting date to datetime object
+        print("entered function")
+        date_obj = datetime.strptime(date_str, "%d-%m-%Y")
+        
+        # Converting datetime object to ISO format
+        iso_date_str = date_obj.isoformat()
+        print(f"converted: {iso_date_str}")
+        return iso_date_str
+
+    # Retrieve sensor's history
+    @app.get("/home/{u_id}/{d_id}/{sensor}", response_description="List sensor's history", response_model=HistoryData)
+    async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str, end_date: str, token: str = Depends(oauth2_scheme)):
+        try:
+            # Query with filters
+            query = {
+                "u_id": u_id,
+                "d_id": d_id,
+                sensor: {"$exists": True},
+                "date": {
+                    "$gte": start_date,
+                    "$lte": end_date
+                }
+            }
+            history = await db["devices"].find(query).to_list(length=None)
+            if history:
+                # Create a list of HistoryDataPoint objects
+                history_data = [
+                    HistoryDataPoint(timestamp=str(data["date"]), value=data[sensor])
+                    for data in history
+                ]
+                
+                # Create a HistoryData object with the history_data list
+                history = HistoryData(data=history_data)
+                return history
+
+            raise HTTPException(status_code=404, detail=f"Device's sensor with ID {d_id} not found")
+        
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            raise HTTPException(status_code=500, detail="Internal Server Error")
 
     return app
 
 app = create_app()
 
-# Authenticate Login with JWT
-@app.post("/token")
-async def login(form_data: OAuth2PasswordRequestFormCustom):
-    user = await auth.authenticate_user(form_data.username, form_data.password, db)
-    if not user:
-        raise HTTPException(status_code=401, detail="Invalid Credentials")
-
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = await auth.create_access_token(
-        data={"sub": user["email"]}, expires_delta=access_token_expires
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
-
-# Return all user's devices (If there are more than one with the same d_id, will return the first one)
-@app.get("/home/{u_id}", response_description="List all devices", response_model=List[DeviceData])
-async def get_user_data(u_id: str, token: str = Depends(oauth2_scheme)):
-    try:
-        #payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        #username = payload.get("sub")
-
-        devices = []
-        pipeline = [
-            {"$match": {"u_id": u_id}},
-            {"$group": {"_id": "$d_id", "device": {"$first": "$$ROOT"}}},
-            {"$replaceRoot": {"newRoot": "$device"}}
-        ]
-
-        async for device in db["devices"].aggregate(pipeline):
-            devices.append(device)
-
-        if devices:
-            return devices
-
-        raise HTTPException(status_code=404, detail=f"User's devices with ID {u_id} not found")
-    
-    except:
-        raise HTTPException(status_code=401, detail="Invalid Credentials")
-
-# Show device's sensors
-@app.get("/home/{u_id}/{d_id}", response_description="List device's sensors", response_model=DeviceData)
-async def get_devices_sensors(u_id: str, d_id: str, token: str = Depends(oauth2_scheme)):
-    try:    
-        # Query with filters
-        query = {
-            "u_id": u_id,
-            "d_id": d_id,
-        }
-
-        device = await db["devices"].find(query)
-        print(device)
-        if device:
-            return device
-
-        raise HTTPException(status_code=404, detail=f"Device's sensor with ID {d_id} not found")
-    
-    except:
-        raise HTTPException(status_code=401, detail="Invalid Credentials")
 
 
-def convert_to_iso_date(date_str):
-    # Converting date to datetime object
-    print("entered function")
-    date_obj = datetime.strptime(date_str, "%d-%m-%Y")
-    
-    # Converting datetime object to ISO format
-    iso_date_str = date_obj.isoformat()
-    print(f"converted: {iso_date_str}")
-    return iso_date_str
-
-# Retrieve sensor's history
-@app.get("/home/{u_id}/{d_id}/{sensor}", response_description="List sensor's history", response_model=HistoryData)
-async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str, end_date: str, token: str = Depends(oauth2_scheme)):
-    try:
-        # Query with filters
-        query = {
-            "u_id": u_id,
-            "d_id": d_id,
-            sensor: {"$exists": True},
-            "date": {
-                "$gte": start_date,
-                "$lte": end_date
-            }
-        }
-        history = await db["devices"].find(query).to_list(length=None)
-        if history:
-            # Create a list of HistoryDataPoint objects
-            history_data = [
-                HistoryDataPoint(timestamp=str(data["date"]), value=data[sensor])
-                for data in history
-            ]
-            
-            # Create a HistoryData object with the history_data list
-            history = HistoryData(data=history_data)
-            return history
-
-        raise HTTPException(status_code=404, detail=f"Device's sensor with ID {d_id} not found")
-    
-    except Exception as e:
-        print(f"Error: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
-
-
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

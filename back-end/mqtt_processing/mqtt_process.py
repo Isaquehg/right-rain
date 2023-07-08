@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from mqtt import mqtt_client
+import paho.mqtt.client as mqtt_client
 import pymongo
 import json
 import random

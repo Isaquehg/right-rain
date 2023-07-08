@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 80
 
 # Set the entrypoint command
-CMD ["python", "mqtt.py"]
+CMD ["python", "mqtt_process.py"]

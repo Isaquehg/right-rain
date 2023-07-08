@@ -1,7 +1,10 @@
+from fastapi import FastAPI
 from mqtt import mqtt_client
 import pymongo
 import json
 import random
+
+app = FastAPI()
 
 client = pymongo.MongoClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
 db = client.rightrain
@@ -46,3 +49,10 @@ def mqtt_subscribe():
     client = connect_mqtt()
     subscribe(client)
     client.loop_start()
+
+@app.get("/")
+def read_root():
+    return {"RIght": "Rain MQTT!"}
+
+# Run the MQTT subscription
+mqtt_subscribe()

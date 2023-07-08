@@ -72,11 +72,9 @@ class HistoryData(BaseModel):
     data: List[HistoryDataPoint]
 
 # -------------------------------------------ROUTES----------------------------------------------------
-asyncio.run(main())
-
 @app.route("/")
 async def root():
-    return {"hello": "world"}
+    return {"right": "rain"}
 
 # Authenticate Login with JWT
 @app.post("/token")

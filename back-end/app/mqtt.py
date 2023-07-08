@@ -1,10 +1,9 @@
-import asyncio
-import asyncio_mqtt as aiomqtt
-import motor.motor_asyncio
+from mqtt import mqtt_client
+import pymongo
 import json
 import random
 
-client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
+client = pymongo.MongoClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
 db = client.rightrain
 
 BROKER = 'fbe1817f.ala.us-east-1.emqxsl.com'
@@ -15,33 +14,35 @@ USERNAME = 'isaquehg'
 PASSWORD = '1arry_3arry'
 ROOT_CA_PATH = '/home/ubuntu/right-rain/EMQX/emqxsl-ca.crt'
 
+def connect_mqtt() -> mqtt_client:
+    def on_connect(client, userdata, flags, rc):
+        if rc == 0:
+            print("Connected to MQTT Broker!")
+        else:
+            print("Failed to connect, return code %d\n", rc)
+    # Set Connecting Client ID
+    client = mqtt_client.Client(CLIENT_ID)
+    # Set CA certificate
+    client.tls_set(ca_certs=ROOT_CA_PATH)
+    client.username_pw_set(USERNAME, PASSWORD)
+    client.on_connect = on_connect
+    client.connect(BROKER, PORT)
+    return client
 
-async def save_to_db(data):
-    result = await db["devices"].insert_one(data)
-    print("Document inserted! ID:", result.inserted_id)
+def subscribe(client: mqtt_client):
+    def on_message(client, userdata, msg):
+        # Perform necessary operations with the received data
+        payload = msg.payload.decode('utf-8')
+        data = json.loads(payload)
+        result = db["devices"].insert_one(data)
+        print("Document inserted! ID:", result.inserted_id)
 
+    client.subscribe(TOPIC, qos=0)
+    client.on_message = on_message
 
-async def on_message(topic, payload, qos, retain):
-    data = json.loads(payload.decode('utf-8'))
-    await save_to_db(data)
-
-
-async def subscribe(client):
-    await client.connect(BROKER, PORT, ssl=True, username=USERNAME, password=PASSWORD)
-    await client.subscribe(TOPIC, qos=0)
-    async with client.unfiltered_messages() as messages:
-        async for message in messages:
-            await on_message(message.topic, message.payload, message.qos, message.retain)
-
-
-async def main():
-    # Wait for messages in (unawaited) asyncio task
-    loop = asyncio.get_event_loop()
-    client = aiomqtt.Client(client_id=CLIENT_ID, username=USERNAME, password=PASSWORD)
-    task = loop.create_task(subscribe(client))
-    # This will still run!
-    print("Magic!")
-    # If you don't await the task here the program will simply finish.
-    # However, if you're using an async web framework you usually don't have to await
-    # the task, as the framework runs in an endless loop.
-    await task
+def mqtt_subscribe():
+    # Set up the MQTT client
+    print("function subscribe")
+    client = connect_mqtt()
+    subscribe(client)
+    client.loop_start()

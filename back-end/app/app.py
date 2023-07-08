@@ -2,7 +2,6 @@
 export MONGODB_URL="mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority"
 '''
 
-import asyncio
 from datetime import timedelta
 import datetime
 from fastapi import Depends, FastAPI, HTTPException
@@ -11,14 +10,10 @@ from pydantic import BaseModel, Field
 from typing import Optional, List, Union
 import motor.motor_asyncio
 from typing import List, Dict
-import jwt
 from passlib.context import CryptContext
 import uvicorn
 import auth
-from mqtt import main
-import nest_asyncio
 
-#nest_asyncio.apply()
 app = FastAPI()
 client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
 db = client.rightrain
@@ -89,17 +84,14 @@ async def login(form_data: OAuth2PasswordRequestFormCustom):
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
-# Return all user's devices (If there are more than one with the same d_id, will return the first one)
+# Return all user's devices (If there are more than one with the same d_id, will return the last one)
 @app.get("/home/{u_id}", response_description="List all devices", response_model=List[DeviceData])
 async def get_user_data(u_id: str, token: str = Depends(oauth2_scheme)):
     try:
-        #payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        #username = payload.get("sub")
-
         devices = []
         pipeline = [
             {"$match": {"u_id": u_id}},
-            {"$group": {"_id": "$d_id", "device": {"$first": "$$ROOT"}}},
+            {"$group": {"_id": "$d_id", "device": {"$last": "$$ROOT"}}},
             {"$replaceRoot": {"newRoot": "$device"}}
         ]
 
@@ -179,5 +171,4 @@ async def get_sensor_history(u_id: str, d_id: str, sensor: str, start_date: str,
 
 
 if __name__ == "__main__":
-    mqtt_subscribe() # Is not called
     uvicorn.run(app, host="0.0.0.0", port=8000)

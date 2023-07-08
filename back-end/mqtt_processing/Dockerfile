@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy the requirements file
 COPY requirements.txt .
 
+# MQTT TLS cert
+COPY certs/emqxsl-ca.crt /app/certs/emqxsl-ca.crt
+
 # Install the Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 

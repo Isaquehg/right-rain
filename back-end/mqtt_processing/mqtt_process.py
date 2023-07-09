@@ -1,11 +1,12 @@
-import asyncio
+from fastapi import FastAPI
+import paho.mqtt.client as mqtt_client
+import pymongo
 import json
-import os
 import random
-import motor
-from paho.mqtt import client as mqtt_client
 
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
+app = FastAPI()
+
+client = pymongo.MongoClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
 db = client.rightrain
 
 BROKER = 'fbe1817f.ala.us-east-1.emqxsl.com'
@@ -14,7 +15,7 @@ TOPIC = 'rightrain/data'
 CLIENT_ID = f'python-mqtt-{random.randint(0, 1000)}'
 USERNAME = 'isaquehg'
 PASSWORD = '1arry_3arry'
-ROOT_CA_PATH = '/home/ubuntu/right-rain/EMQX/emqxsl-ca.crt'
+ROOT_CA_PATH = '/app/certs/emqxsl-ca.crt'
 
 def connect_mqtt() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
@@ -36,20 +37,22 @@ def subscribe(client: mqtt_client):
         # Perform necessary operations with the received data
         payload = msg.payload.decode('utf-8')
         data = json.loads(payload)
-        print(f"Received `{data}` from `{msg.topic}` topic")
         result = db["devices"].insert_one(data)
-        print("Documento inserido. ID:", result.inserted_id)
+        print("Document inserted! ID:", result.inserted_id)
 
     client.subscribe(TOPIC, qos=0)
     client.on_message = on_message
 
-async def mqtt_subscribe():
+def mqtt_subscribe():
     # Set up the MQTT client
     print("function subscribe")
     client = connect_mqtt()
     subscribe(client)
-    client.loop_forever()
+    client.loop_start()
 
+@app.get("/")
+def read_root():
+    return {"RIght": "Rain MQTT!"}
 
-if __name__ == "__main__":
-    asyncio.run(mqtt_subscribe())
+# Run the MQTT subscription
+mqtt_subscribe()

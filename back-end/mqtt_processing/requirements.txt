@@ -1,0 +1,3 @@
+fastapi
+pymongo
+paho-mqtt

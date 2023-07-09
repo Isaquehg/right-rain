@@ -44,52 +44,56 @@
         android:layout_marginTop="10dp"
         android:gravity="center">
 
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="70dp"
-        android:id="@+id/rainfall"
-        android:text="@string/rainfall"
-        android:textColor="#fff"
-        android:textSize="20sp"
-        android:backgroundTint="@color/green">
-    </Button>
+        <android.widget.Button
+            android:layout_width="180dp"
+            android:layout_height="200dp"
+            android:id="@+id/rainfall"
+            android:text="@string/rainfall"
+            android:drawableLeft="@drawable/baseline_cloud_24"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:background="@drawable/custom_button"
+            android:gravity="center">
+        </android.widget.Button>
 
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="70dp"
-        android:id="@+id/humidity"
-        android:text="@string/humidity"
-        android:textColor="#fff"
-        android:textSize="20sp"
-        android:backgroundTint="@color/green">
-    </Button>
+        <android.widget.Button
+            android:layout_width="180dp"
+            android:layout_height="200dp"
+            android:id="@+id/humidity"
+            android:text="@string/humidity"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_margin="10dp"
+            android:background="@drawable/custom_button">
+        </android.widget.Button>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:orientation="horizontal">
 
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="70dp"
-        android:id="@+id/temperature"
-        android:text="@string/temperature"
-        android:textColor="#fff"
-        android:textSize="20sp"
-        android:backgroundTint="@color/green">
-    </Button>
+        <android.widget.Button
+            android:layout_width="180dp"
+            android:layout_height="200dp"
+            android:id="@+id/temperature"
+            android:text="@string/temperature"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:background="@drawable/custom_button">
+        </android.widget.Button>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/temperature2"
-            android:layout_width="200dp"
-            android:layout_height="70dp"
-            android:backgroundTint="@color/green"
+            android:layout_width="180dp"
+            android:layout_height="200dp"
+            android:background="@drawable/custom_button"
             android:text="@string/humidity"
-            android:textColor="#fff"
+            android:textColor="@color/black"
+            android:layout_margin="10dp"
             android:textSize="20sp">
-        </Button>
+        </android.widget.Button>
     </LinearLayout>
 </LinearLayout>

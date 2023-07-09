@@ -71,19 +71,8 @@
             <ListView
                 android:id="@+id/userList"
                 android:layout_width="wrap_content"
-                android:layout_height="130dp">
+                android:layout_height="wrap_content">
             </ListView>
-
-            <Button
-                android:id="@+id/add_sens"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/yellow"
-                android:layout_gravity="center_horizontal"
-                android:textSize="18sp"
-                android:text="@string/add_sensor">
-            </Button>
         </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

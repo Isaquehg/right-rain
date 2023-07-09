@@ -29,41 +29,67 @@
 
     <Button
         android:id="@+id/name_loc_btn"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
         android:backgroundTint="@color/yellow"
         android:layout_gravity="center_horizontal"
-        android:text="@string/location1">
+        android:text="@string/location1"
+        android:drawableLeft="@drawable/baseline_location_on_24"
+        android:textSize="23sp">
     </Button>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center">
 
     <Button
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_height="70dp"
         android:id="@+id/rainfall"
         android:text="@string/rainfall"
         android:textColor="#fff"
+        android:textSize="20sp"
         android:backgroundTint="@color/green">
     </Button>
 
     <Button
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_height="70dp"
         android:id="@+id/humidity"
         android:text="@string/humidity"
         android:textColor="#fff"
+        android:textSize="20sp"
         android:backgroundTint="@color/green">
     </Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
     <Button
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_height="70dp"
         android:id="@+id/temperature"
         android:text="@string/temperature"
         android:textColor="#fff"
+        android:textSize="20sp"
         android:backgroundTint="@color/green">
     </Button>
 
+        <Button
+            android:id="@+id/temperature2"
+            android:layout_width="200dp"
+            android:layout_height="70dp"
+            android:backgroundTint="@color/green"
+            android:text="@string/humidity"
+            android:textColor="#fff"
+            android:textSize="20sp">
+        </Button>
+    </LinearLayout>
 </LinearLayout>

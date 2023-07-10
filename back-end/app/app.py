@@ -75,7 +75,7 @@ async def root():
 @app.post("/token")
 async def login(form_data: OAuth2PasswordRequestFormCustom):
     user = await auth.authenticate_user(form_data.username, form_data.password, db)
-    u_id = user["_id"]
+    u_id = str(user["_id"])
     if not user:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
 

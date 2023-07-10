@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Copy the application files
 COPY app.py /app/app.py
+COPY auth.py /app/auth.py
 
 # Install Python dependencies
 COPY requirements.txt /app/requirements.txt

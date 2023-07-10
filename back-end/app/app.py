@@ -82,7 +82,7 @@ async def login(form_data: OAuth2PasswordRequestFormCustom):
     access_token = await auth.create_access_token(
         data={"sub": user["email"]}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer", "u_id": u_id}
 
 # Return all user's devices (If there are more than one with the same d_id, will return the last one)
 @app.get("/home/{u_id}", response_description="List all devices", response_model=List[DeviceData])

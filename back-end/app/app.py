@@ -75,7 +75,8 @@ async def root():
 @app.post("/token")
 async def login(form_data: OAuth2PasswordRequestFormCustom):
     user = await auth.authenticate_user(form_data.username, form_data.password, db)
-    u_id = await db["Users"].find_one({"email": user.username})
+    print(user)
+    u_id = await db["Users"].find_one({"email": user["username"]})
     if not user:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
 

@@ -48,18 +48,18 @@ import kotlin.Pair;
 public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     Toolbar toolbar;
-    Button add_sens;
     ActionBarDrawerToggle actionBarDrawerToggle;
     MapView mapView;
     ArrayList<String> userList;
     ListView userList1;
     ArrayAdapter<String> listAdapter;
-    Handler mainHandler = new Handler();
     ImageView bt_menu;
     RequestQueue mQueue;
     Double latitude_aux;
     Double longitude_aux;
     List<Pair<Double, Double>> coordinates;
+    Bundle bundle = getIntent().getExtras();
+    String user_key = bundle.getString("user_key");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
         bt_menu = findViewById(R.id.bot_menu);
         userList1 = findViewById(R.id.userList);
-        add_sens = findViewById(R.id.add_sens);
         bt_menu.setOnClickListener(v->{
             drawerLayout.openDrawer(GravityCompat.START);
         });

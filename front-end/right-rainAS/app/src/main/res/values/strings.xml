@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">RightRain</string>
+    <string name="add_sensor">Adicionar sensor</string>
     <string name ="locations">Localizações</string>
     <string name ="location1">Localização 1</string>
     <string name ="location2">Localização 2</string>

@@ -58,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
     Double latitude_aux;
     Double longitude_aux;
     List<Pair<Double, Double>> coordinates;
-    Bundle bundle = getIntent().getExtras();
-    String user_key = bundle.getString("user_key");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

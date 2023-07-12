@@ -52,7 +52,10 @@ public class LocDataActivity extends AppCompatActivity {
     String d_id;
     String user_key;
     String type;
+    String type_pt;
     ArrayList<Entry> dataValue;
+    ArrayList<Integer> values;
+    String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,29 +66,20 @@ public class LocDataActivity extends AppCompatActivity {
         u_id = getIntent().getStringExtra("u_id");
         d_id = getIntent().getStringExtra("d_id");
         type = getIntent().getStringExtra("type");
-        // O tipo está em português, e o URL em ingles.
-        if(type.equals("Temperatura")){
-            type = "temperature";
-        }else{
-            if(type.equals("Pluviosidade")){
-                type = "rainfall";
-            }else{
-                if(type.equals("Umidade")){
-                    type = "umidity";
-                }
-            }
-        }
+        type_pt = getIntent().getStringExtra("type_pt");
+
         dataValue = new ArrayList<>();
         ImageView home_btn = findViewById(R.id.home_btn);
         Button type_btn = findViewById(R.id.type_btn);
-        // Calendar to Show current date
+        type_btn.setText(type_pt);
+
+        // Calendar para mostrar o dia atual
         Calendar c = Calendar.getInstance();
         int mYear = c.get(Calendar.YEAR);
         int mMonth = c.get(Calendar.MONTH);
         int mDay = c.get(Calendar.DAY_OF_MONTH);
         startDate = findViewById(R.id.start_date_btn);
         endDate = findViewById(R.id.end_date_btn);
-
         lineChart = findViewById(R.id.graph1);
 
         startDate.setOnClickListener(v -> {
@@ -94,7 +88,19 @@ public class LocDataActivity extends AppCompatActivity {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     month++;
-                    startDate1 = dayOfMonth + "-" + month + "-" + year;
+                    if(month < 10 && dayOfMonth > 10){
+                        startDate1 = dayOfMonth + "-0" + month + "-" + year;
+                    }else{
+                        if(dayOfMonth < 10 && month > 10){
+                            startDate1 = "0" + dayOfMonth + "-" + month + "-" + year;
+                        }else{
+                            if(dayOfMonth < 10 && month < 10){
+                                startDate1 = "0" + dayOfMonth + "-0" + month + "-" + year;
+                            }else{
+                                startDate1 = dayOfMonth + "-" + month + "-" + year;
+                            }
+                        }
+                    }
                     startDate.setText(startDate1);
                     if(endDate1 != null){
                         getData();
@@ -110,8 +116,21 @@ public class LocDataActivity extends AppCompatActivity {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     month++;
-                    String date = dayOfMonth + "-" + month + "-" + year;
-                    endDate.setText(date);
+                    if(month < 10 && dayOfMonth > 10){
+                        endDate1 = dayOfMonth + "-0" + month + "-" + year;
+                    }else{
+                        if(dayOfMonth < 10 && month > 10){
+                            endDate1 = "0" + dayOfMonth + "-" + month + "-" + year;
+                        }else {
+                            if (dayOfMonth < 10 && month < 10) {
+                                endDate1 = "0" + dayOfMonth + "-0" + month + "-" + year;
+                            } else {
+                                endDate1 = dayOfMonth + "-" + month + "-" + year;
+                            }
+                        }
+                    }
+                    Log.d("endDate", endDate1);
+                    endDate.setText(endDate1);
                     if(startDate1 != null){
                         getData();
                     }
@@ -125,14 +144,9 @@ public class LocDataActivity extends AppCompatActivity {
             startActivity(i);
         });
 
-        type_btn.setText(type);
-        LineDataSet lineDataSet = new LineDataSet(dataValues(), "Data Set");
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(lineDataSet);
-        LineData data = new LineData(dataSets);
-        lineChart.setData(data);
-        lineChart.invalidate();
+        // Configuração do gráfico
 
+        // Notificação - teste
         type_btn.setOnClickListener(v -> {
             createNotificationChannel();
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "MyNotification")
@@ -157,11 +171,10 @@ public class LocDataActivity extends AppCompatActivity {
     }
 
     private List<Entry> dataValues() {
-        dataValue.add(new Entry(0, 10));
-        dataValue.add(new Entry(1, 20));
-        dataValue.add(new Entry(2, 30));
-        dataValue.add(new Entry(3, 40));
-        dataValue.add(new Entry(4, 50));
+        for (int i = 0; i < values.size(); i++) {
+            dataValue.add(new Entry(values.get(i), i));
+            Log.d("Valor:", values.get(i).toString());
+        }
         return dataValue;
     }
     public void createNotificationChannel(){
@@ -171,8 +184,9 @@ public class LocDataActivity extends AppCompatActivity {
     }
 
     private void getData(){
+        values = new ArrayList<>();
         RequestQueue mQueue = Volley.newRequestQueue(this);
-        String url = "http://18.191.252.222:8000/home/" + u_id + d_id + startDate1 + endDate1;
+        String url = "http://18.191.252.222:8000/home/" + u_id + "/" + d_id + "/" + type + "?start_date=" + startDate1 + "&end_date=" + endDate1;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -180,7 +194,14 @@ public class LocDataActivity extends AppCompatActivity {
                     JSONArray jsonArray = response.getJSONArray("data");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject data1 = jsonArray.getJSONObject(i);
+                        values.add(data1.getInt("value"));
                     }
+                    LineDataSet lineDataSet = new LineDataSet(dataValues(), "Dia");
+                    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                    dataSets.add(lineDataSet);
+                    LineData data = new LineData(dataSets);
+                    lineChart.setData(data);
+                    lineChart.invalidate();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

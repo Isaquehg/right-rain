@@ -1,38 +1,28 @@
 package com.example.rightrain;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+
 import androidx.appcompat.widget.Toolbar;
 
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mapbox.maps.MapView;
@@ -52,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     ActionBarDrawerToggle actionBarDrawerToggle;
     MapView mapView;
-    ArrayList<String> userList;
+    ArrayList<String> locList;
     ListView userList1;
     ArrayAdapter<String> listAdapter;
     ImageView bt_menu;
@@ -87,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), DevicesActivity.class);
-                intent.putExtra("name_loc", userList.get(position));
+                intent.putExtra("name_loc", locList.get(position));
+                intent.putExtra("u_id", u_id);
+                intent.putExtra("user_key", user_key);
                 startActivity(intent);
             }
         });
@@ -107,13 +99,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            userList = new ArrayList<>();
+                            locList = new ArrayList<>();
                             coordinates = new ArrayList<>();
                             JSONArray jsonArray = new JSONArray(response);
                             int i = 0;
                             for (i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                String name = jsonObject.getString("d_id");
+                                String d_name = jsonObject.getString("d_id");
                                 String latitude = jsonObject.getString("latitude");
                                 String longitude = jsonObject.getString("longitude");
                                 Log.d("Latitude", latitude);
@@ -121,10 +113,10 @@ public class MainActivity extends AppCompatActivity {
                                 latitude_aux = Double.parseDouble(latitude);
                                 longitude_aux = Double.parseDouble(longitude);
                                 coordinates.add(new Pair<>(latitude_aux, longitude_aux));
-                                userList.add(name);
+                                locList.add(d_name);
                                 setLocations(coordinates);
                             }
-                            listAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, userList);
+                            listAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, locList);
                             userList1.setAdapter(listAdapter);
                         } catch (JSONException e) {
                             e.printStackTrace();

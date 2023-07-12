@@ -53,7 +53,7 @@ class DeviceData(BaseModel):
     soil_ph: Optional[float] = Field(None, ge=0, le=14)
 
 class UserData(BaseModel):
-    id: str = Field(...)
+    id: Optional[str] = Field(None)
     name: str = Field(..., min_length=1, max_length=100)
     email: str = Field(..., min_length=5, max_length=100, 
                        regex=r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")

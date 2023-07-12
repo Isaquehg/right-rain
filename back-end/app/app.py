@@ -9,7 +9,6 @@ from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel, Field
 from typing import Optional, List, Union
 import motor.motor_asyncio
-from typing import List, Dict
 from passlib.context import CryptContext
 import uvicorn
 import auth

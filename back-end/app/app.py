@@ -77,6 +77,7 @@ async def root():
 async def login(form_data: OAuth2PasswordRequestFormCustom):
     user = await auth.authenticate_user(form_data.username, form_data.password, db)
     u_id = str(user["_id"])
+    name = str(user["name"])
     if not user:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
 
@@ -84,7 +85,7 @@ async def login(form_data: OAuth2PasswordRequestFormCustom):
     access_token = await auth.create_access_token(
         data={"sub": user["email"]}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer", "u_id": u_id}
+    return {"access_token": access_token, "token_type": "bearer", "u_id": u_id, "name": name}
 
 @app.post("/register")
 async def register_user(user_data: UserData):

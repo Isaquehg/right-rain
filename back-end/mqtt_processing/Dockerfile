@@ -16,8 +16,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code
 COPY . .
 
-# Expose the necessary port
-EXPOSE 80
-
 # Set the entrypoint command
 CMD ["python", "mqtt_process.py"]

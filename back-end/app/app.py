@@ -36,7 +36,8 @@ class OAuth2PasswordRequestFormCustom(BaseModel):
 class DeviceData(BaseModel):
     _id: str = Field(...)
     u_id: str = Field(...)
-    d_id: Optional[str] = Field(None)
+    d_id: Optional[str] = Field(...)
+    d_name: Optional[str] = Field(None)
     latitude: Optional[float] = Field(None)
     longitude: Optional[float] = Field(None)
     date: Optional[str] = Field(None, regex=r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$")

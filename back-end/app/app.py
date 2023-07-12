@@ -96,16 +96,15 @@ async def register_user(user_data: UserData):
             raise HTTPException(status_code=400, detail="User already exists")
 
         # Create a new user
-        user_data_dict = user_data.dict()
-        user_data_dict.pop("id", None)
+        user_data_dict = user_data.dict(exclude={"id"})
         print(f"User data dict: {user_data_dict}")
         user_id = await db["users"].insert_one(user_data_dict)
-        print(f"_id: {user_id}")
         
         # Return the newly created user
         return {
             "message": "User successfully created",
             "user": {
+                "ID": str(user_id.inserted_id),
                 **user_data_dict
             }
         }

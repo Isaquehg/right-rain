@@ -103,7 +103,6 @@ async def register_user(user_data: UserData):
         return {
             "message": "User successfully created",
             "user": {
-                "id": str(user_id),
                 **user_data_dict
             }
         }

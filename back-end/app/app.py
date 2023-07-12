@@ -3,6 +3,7 @@ export MONGODB_URL="mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mon
 '''
 
 from datetime import timedelta
+import traceback
 from bson import ObjectId
 import datetime
 from fastapi import Depends, FastAPI, HTTPException
@@ -110,6 +111,7 @@ async def register_user(user_data: UserData):
         }
 
     except Exception as e:
+        traceback.print_exc()  # Print the exception traceback
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 # Return all user's devices (If there are more than one with the same d_id, will return the last one)

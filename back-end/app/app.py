@@ -77,6 +77,7 @@ async def root():
 async def login(form_data: OAuth2PasswordRequestFormCustom):
     user = await auth.authenticate_user(form_data.username, form_data.password, db)
     u_id = str(user["_id"])
+    name = str(user["name"])
     if not user:
         raise HTTPException(status_code=401, detail="Invalid Credentials")
 
@@ -84,7 +85,34 @@ async def login(form_data: OAuth2PasswordRequestFormCustom):
     access_token = await auth.create_access_token(
         data={"sub": user["email"]}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer", "u_id": u_id}
+    return {"access_token": access_token, "token_type": "bearer", "u_id": u_id, "name": name}
+
+@app.post("/register")
+async def register_user(user_data: UserData):
+    try:
+        # Check if user already exists
+        existing_user = await db["users"].find_one({"email": user_data.email})
+        if existing_user:
+            raise HTTPException(status_code=400, detail="User already exists")
+
+        # Create a new user
+        hashed_password = pwd_context.hash(user_data.password)
+        user_data_dict = user_data.dict()
+        user_data_dict["password"] = hashed_password
+        user_id = await db["users"].insert_one(user_data_dict)
+        
+        # Return the newly created user
+        return {
+            "message": "User successfully created",
+            "user": {
+                "id": str(user_id),
+                **user_data_dict
+            }
+        }
+
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 # Return all user's devices (If there are more than one with the same d_id, will return the last one)
 @app.get("/home/{u_id}", response_description="List all devices", response_model=List[DeviceData])

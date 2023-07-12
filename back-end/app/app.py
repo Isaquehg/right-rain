@@ -91,14 +91,13 @@ async def login(form_data: OAuth2PasswordRequestFormCustom):
 async def register_user(user_data: UserData):
     try:
         # Check if user already exists
-        existing_user = await db["users"].find_one({"email": user_data.email})
+        print(user_data)
+        existing_user = await db["users"].find_one({"email": str(user_data.email)})
         if existing_user:
             raise HTTPException(status_code=400, detail="User already exists")
 
         # Create a new user
-        hashed_password = pwd_context.hash(user_data.password)
         user_data_dict = user_data.dict()
-        user_data_dict["password"] = hashed_password
         user_id = await db["users"].insert_one(user_data_dict)
         
         # Return the newly created user

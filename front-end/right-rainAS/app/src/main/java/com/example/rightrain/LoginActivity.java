@@ -28,6 +28,7 @@ import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
     String user_key = "null";
+    String u_id = "null";
     ProgressBar loadingPB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,26 +51,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void getToken(){
-        String url = "http://18.191.252.222:8000/token";
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    user_key = response.getString("access_token");
-                    Log.d("teste", response.getString("access_token"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-    }
     private void postDataUsingVolley(String username, String password) {
         // url to post our data
         String url = "http://18.191.252.222:8000/token";
@@ -92,8 +73,15 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         loadingPB.setVisibility(View.GONE);
                         Toast.makeText(LoginActivity.this, "Login sucedido!", Toast.LENGTH_SHORT).show();
+                        try {
+                            user_key = response.getString("access_token");
+                            u_id = response.getString("u_id");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        // intent.putExtra("user_key", user_key);
+                        intent.putExtra("user_key", user_key);
+                        intent.putExtra("u_id", u_id);
                         startActivity(intent);
                     }
                 }, new Response.ErrorListener() {

@@ -6,4 +6,9 @@
         <item name="android:background">@drawable/edit_text</item>
         <item name="android:padding">15dp</item>
     </style>
+    <style name="DatePickerDialogStyle" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="android:textColor">@color/green</item>
+        <item name="colorOnPrimary">@color/green</item>
+        <item name="colorAccent">@color/green</item>
+    </style>
 </resources>

@@ -27,6 +27,7 @@ import android.widget.ProgressBar;
 import androidx.appcompat.widget.Toolbar;
 
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -41,6 +42,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import kotlin.Pair;
@@ -58,10 +60,16 @@ public class MainActivity extends AppCompatActivity {
     Double latitude_aux;
     Double longitude_aux;
     List<Pair<Double, Double>> coordinates;
+    String u_id;
+    String user_key;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Strings do LoginActivity
+        u_id = getIntent().getStringExtra("u_id");
+        user_key = getIntent().getStringExtra("user_key");
+        Log.d("user_key", user_key);
 
         bt_menu = findViewById(R.id.bot_menu);
         userList1 = findViewById(R.id.userList);
@@ -94,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     private void getData(){
-        String url = "https://raw.githubusercontent.com/Giv314/json_teste/main/home_uid.json";
+        String url = "http://18.191.252.222:8000/home/" + u_id;
         StringRequest request = new StringRequest(url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -105,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                             int i = 0;
                             for (i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                String name = jsonObject.getString("d_name");
+                                String name = jsonObject.getString("d_id");
                                 String latitude = jsonObject.getString("latitude");
                                 String longitude = jsonObject.getString("longitude");
                                 Log.d("Latitude", latitude);
@@ -127,7 +135,14 @@ public class MainActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
-        });
+        }){
+            @Override
+            public java.util.Map<String, String> getHeaders() throws AuthFailureError {
+                java.util.Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + user_key);
+                return headers;
+            }
+        };
         mQueue.add(request);
     }
     public void setLocations(List<Pair<Double, Double>> coordinates){

@@ -172,7 +172,7 @@ public class LocDataActivity extends AppCompatActivity {
 
     private List<Entry> dataValues() {
         for (int i = 0; i < values.size(); i++) {
-            dataValue.add(new Entry(values.get(i), i));
+            dataValue.add(new Entry(i, values.get(i)));
             Log.d("Valor:", values.get(i).toString());
         }
         return dataValue;

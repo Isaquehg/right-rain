@@ -1,4 +1,5 @@
 fastapi
+mangum
 motor
 passlib
 pydantic

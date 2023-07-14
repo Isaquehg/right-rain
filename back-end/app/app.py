@@ -99,13 +99,18 @@ async def register_user(user_data: UserData):
         user_data_dict = user_data.dict(exclude={"id"})
         print(f"User data dict: {user_data_dict}")
         user_id = await db["users"].insert_one(user_data_dict)
+
+        user_id_str = str(user_id.inserted_id)
+        name = user_data_dict["name"]
+        email = user_data_dict["email"]
         
         # Return the newly created user
         return {
-            "message": "User successfully created",
+            "message": "User successfully created!",
             "user": {
-                "ID": str(user_id.inserted_id),
-                **user_data_dict
+                "ID": user_id_str,
+                "Name": name,
+                "Email": email
             }
         }
 

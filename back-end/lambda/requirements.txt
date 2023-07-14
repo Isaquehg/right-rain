@@ -2,4 +2,6 @@ fastapi
 motor
 passlib
 pydantic
+PyJWT
+pymongo
 uvicorn

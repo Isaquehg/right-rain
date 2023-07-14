@@ -1,5 +1,6 @@
 from datetime import timedelta
 import traceback
+from mangum import Mangum
 import datetime
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordBearer
@@ -12,6 +13,7 @@ import auth
 
 # -------------------------------------------SETUP----------------------------------------------------
 app = FastAPI()
+handler = Mangum(app)
 client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
 db = client.rightrain
 ACCESS_TOKEN_EXPIRE_MINUTES = 50

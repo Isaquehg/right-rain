@@ -36,6 +36,7 @@
         style="@style/Edit_text"
         android:layout_marginBottom="20dp"
         android:hint="@string/type_pass"
+        android:inputType="textPassword"
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/botao_acessar"
         app:layout_constraintEnd_toEndOf="parent"

@@ -73,7 +73,7 @@
         style="@style/Edit_text"
         android:inputType="textPassword"
         android:layout_marginTop="72dp"
-        android:hint="@string/type_pass"
+        android:hint="@string/new_pass"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
@@ -96,11 +96,22 @@
         android:id="@+id/bot_create"
         android:layout_width="331dp"
         android:layout_height="66dp"
-        android:backgroundTint="@color/green"
+        android:backgroundTint="@color/yellow"
         android:text="@string/signup"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_repeat_pass" />
+
+    <ProgressBar
+        android:id="@+id/idLoadingPB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     String user_key = "null";
     String u_id = "null";
     ProgressBar loadingPB;
+    String ip = "http://3.21.168.204:8000";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,13 +48,14 @@ public class LoginActivity extends AppCompatActivity {
         // Sign-up button should acess sign-up screen
         bot_signup.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+            intent.putExtra("ip", ip);
             startActivity(intent);
         });
     }
 
     private void postDataUsingVolley(String username, String password) {
         // url to post our data
-        String url = "http://18.191.252.222:8000/token";
+        String url = ip + "/token";
         loadingPB.setVisibility(View.VISIBLE);
         JSONObject jsonObject = new JSONObject();
         try {
@@ -63,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // creating a new variable for our request queue
+        // Requests
         RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 url, jsonObject,
@@ -82,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("user_key", user_key);
                         intent.putExtra("u_id", u_id);
+                        intent.putExtra("ip", ip);
                         startActivity(intent);
                     }
                 }, new Response.ErrorListener() {
@@ -89,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadingPB.setVisibility(View.GONE);
-                Toast.makeText(LoginActivity.this, "Usuário ou senha inválidos!: ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Usuário ou senha inválidos!", Toast.LENGTH_SHORT).show();
             }
         });
         queue.add(jsonObjReq);

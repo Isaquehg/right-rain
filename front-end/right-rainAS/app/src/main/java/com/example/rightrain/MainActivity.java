@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     Double longitude_aux;
     List<Pair<Double, Double>> coordinates;
     String u_id;
+    String ip;
     String user_key;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         // Strings do LoginActivity
         u_id = getIntent().getStringExtra("u_id");
         user_key = getIntent().getStringExtra("user_key");
+        ip = getIntent().getStringExtra("ip");
         Log.d("user_key", user_key);
 
         bt_menu = findViewById(R.id.bot_menu);
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("name_loc", locList.get(position));
                 intent.putExtra("u_id", u_id);
                 intent.putExtra("user_key", user_key);
+                intent.putExtra("ip", ip);
                 startActivity(intent);
             }
         });
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     private void getData(){
-        String url = "http://18.191.252.222:8000/home/" + u_id;
+        String url = ip + "/home/" + u_id;
         StringRequest request = new StringRequest(url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

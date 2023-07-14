@@ -10,6 +10,7 @@ public class DevicesActivity extends AppCompatActivity {
     String user_key;
     String u_id;
     String d_id;
+    String ip;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +24,7 @@ public class DevicesActivity extends AppCompatActivity {
         user_key = getIntent().getStringExtra("user_key");
         u_id = getIntent().getStringExtra("u_id");
         d_id = getIntent().getStringExtra("name_loc");
+        ip = getIntent().getStringExtra("ip");
         title.setText(d_id);
 
         rainfall_btn.setOnClickListener(v->{
@@ -48,6 +50,7 @@ public class DevicesActivity extends AppCompatActivity {
         intent.putExtra("user_key", user_key);
         intent.putExtra("u_id", u_id);
         intent.putExtra("d_id", d_id);
+        intent.putExtra("ip", ip);
         startActivity(intent);
     }
 }

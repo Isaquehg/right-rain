@@ -19,6 +19,7 @@
     <string name="forget_pass">Esqueceu a senha?</string>
     <string name="access">Acessar</string>
     <string name="type_pass">Senha</string>
+    <string name = "new_pass">Nova senha</string>
     <string name="a">a</string>
     <string name="mapbox_access_token">sk.eyJ1IjoiZ2l2LWZueiIsImEiOiJjbGg4NXh6NzIwNWJ1M2Vtd2ZmcXpqMzgyIn0.lb_Yre-0LNVWEHT6bUlLBg</string>
     <string name="sign_off">Sair</string>
@@ -33,5 +34,7 @@
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
     <string name="testing_is_awesome">Testing is awesome</string>
+    <string name="startDate">Data inicial</string>
+    <string name="finalDate">Data final</string>
     <string name="other">Outro</string>
 </resources>

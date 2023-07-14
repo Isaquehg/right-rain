@@ -55,7 +55,7 @@ public class LocDataActivity extends AppCompatActivity {
     String type_pt;
     ArrayList<Entry> dataValue;
     ArrayList<Integer> values;
-    String date;
+    String ip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +67,7 @@ public class LocDataActivity extends AppCompatActivity {
         d_id = getIntent().getStringExtra("d_id");
         type = getIntent().getStringExtra("type");
         type_pt = getIntent().getStringExtra("type_pt");
+        ip = getIntent().getStringExtra("ip");
 
         dataValue = new ArrayList<>();
         ImageView home_btn = findViewById(R.id.home_btn);
@@ -186,7 +187,7 @@ public class LocDataActivity extends AppCompatActivity {
     private void getData(){
         values = new ArrayList<>();
         RequestQueue mQueue = Volley.newRequestQueue(this);
-        String url = "http://18.191.252.222:8000/home/" + u_id + "/" + d_id + "/" + type + "?start_date=" + startDate1 + "&end_date=" + endDate1;
+        String url = ip + "/home/" + u_id + "/" + d_id + "/" + type + "?start_date=" + startDate1 + "&end_date=" + endDate1;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

@@ -1,5 +1,5 @@
 # Use a base image
-FROM python:3.10.6
+FROM public.ecr.aws/lambda/python:3.10
 
 # Set the working directory
 WORKDIR /app

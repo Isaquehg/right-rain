@@ -15,16 +15,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.Header;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.navigation.NavigationView;
 import com.mapbox.maps.MapView;
 import com.mapbox.maps.Style;
 
@@ -38,41 +41,62 @@ import java.util.List;
 import kotlin.Pair;
 
 public class MainActivity extends AppCompatActivity {
-    DrawerLayout drawerLayout;
-    Toolbar toolbar;
-    ActionBarDrawerToggle actionBarDrawerToggle;
-    MapView mapView;
-    ArrayList<String> locList;
-    ListView userList1;
-    ArrayAdapter<String> listAdapter;
-    ImageView bt_menu;
-    RequestQueue mQueue;
-    Double latitude_aux;
-    Double longitude_aux;
-    List<Pair<Double, Double>> coordinates;
-    String u_id;
-    String ip;
-    String user_key;
+    private DrawerLayout drawerLayout;
+    public Toolbar toolbar;
+    public ActionBarDrawerToggle actionBarDrawerToggle;
+    private MapView mapView;
+    private ArrayList<String> locList;
+    private ListView userList1;
+    private ArrayAdapter<String> listAdapter;
+    public ImageView bt_menu;
+    private RequestQueue mQueue;
+    private Double latitude_aux;
+    private Double longitude_aux;
+    private List<Pair<Double, Double>> coordinates;
+    private String u_id;
+    private String ip;
+    private String user_key;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         // Strings do LoginActivity
         u_id = getIntent().getStringExtra("u_id");
         user_key = getIntent().getStringExtra("user_key");
         ip = getIntent().getStringExtra("ip");
-        Log.d("user_key", user_key);
+        String name = getIntent().getStringExtra("name");
+        String email = getIntent().getStringExtra("email");
 
+        // Configuração do drawer
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        TextView nameText = header.findViewById(R.id.name);
+        TextView emailText = header.findViewById(R.id.email);
+        nameText.setText(name);
+        emailText.setText(email);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        setSupportActionBar(toolbar);
         bt_menu = findViewById(R.id.bot_menu);
-        userList1 = findViewById(R.id.userList);
         bt_menu.setOnClickListener(v->{
             drawerLayout.openDrawer(GravityCompat.START);
         });
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                drawerLayout.closeDrawer(GravityCompat.START);
+                if(id == R.id.logout) {
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+                }
+                return true;
+                }
+        });
+
+        // Configurações dos dados do usuário
+        userList1 = findViewById(R.id.userList);
         mapView = findViewById(R.id.mapView);
-
-        drawerLayout = findViewById(R.id.drawer_layout);
-        setSupportActionBar(toolbar);
-
         mQueue = Volley.newRequestQueue(this);
         getData();
         userList1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -86,15 +110,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
     private void getData(){
         String url = ip + "/home/" + u_id;

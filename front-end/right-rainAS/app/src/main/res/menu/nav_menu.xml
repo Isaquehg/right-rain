@@ -23,11 +23,11 @@
             android:title="@string/map" />
         </group>
 
-        <item
-                android:title="">
+        <item android:title="@string/options">
                 <menu>
                         <item
                             android:id="@+id/logout"
+                            android:icon="@drawable/baseline_exit_to_app_24"
                             android:title="@string/sign_off" />
                 </menu>
 

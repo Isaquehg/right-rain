@@ -24,8 +24,8 @@
 
                 <ImageView
                     android:id="@+id/bot_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:clickable="true"
                     android:layout_gravity="start"
                     android:src="@drawable/baseline_menu_24"
@@ -43,8 +43,8 @@
 
                 <ImageView
                     android:id="@+id/notification_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="end"
                     android:src="@drawable/baseline_notifications_none_24"
                     app:tint="@color/green">
@@ -76,10 +76,12 @@
         </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:itemTextColor="@color/black"
+        app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

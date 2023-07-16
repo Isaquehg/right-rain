@@ -37,4 +37,5 @@
     <string name="startDate">Data inicial</string>
     <string name="finalDate">Data final</string>
     <string name="other">Outro</string>
+    <string name="options">Opções</string>
 </resources>

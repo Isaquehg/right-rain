@@ -27,10 +27,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
-    String user_key = "null";
-    String u_id = "null";
     ProgressBar loadingPB;
     String ip = "http://3.21.168.204:8000";
+    String name = "null";
+    String user_key = "null";
+    String u_id = "null";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,13 +54,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void postDataUsingVolley(String username, String password) {
+    private void postDataUsingVolley(String email, String password) {
         // url to post our data
         String url = ip + "/token";
         loadingPB.setVisibility(View.VISIBLE);
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("username", username);
+            jsonObject.put("username", email);
             jsonObject.put("password", password);
         }catch (Exception e){
             e.printStackTrace();
@@ -78,13 +79,16 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             user_key = response.getString("access_token");
                             u_id = response.getString("u_id");
+                            name = response.getString("name");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("ip", ip);
                         intent.putExtra("user_key", user_key);
                         intent.putExtra("u_id", u_id);
-                        intent.putExtra("ip", ip);
+                        intent.putExtra("name", name);
+                        intent.putExtra("email", email);
                         startActivity(intent);
                     }
                 }, new Response.ErrorListener() {

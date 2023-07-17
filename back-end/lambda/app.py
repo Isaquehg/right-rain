@@ -8,7 +8,6 @@ from pydantic import BaseModel, Field
 from typing import Optional, List, Union
 import motor.motor_asyncio
 from passlib.context import CryptContext
-import uvicorn
 import auth
 
 # -------------------------------------------SETUP----------------------------------------------------

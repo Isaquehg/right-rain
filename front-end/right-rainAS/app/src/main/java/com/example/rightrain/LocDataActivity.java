@@ -157,27 +157,8 @@ public class LocDataActivity extends AppCompatActivity {
         // Configuração do gráfico
 
         // Notificação - teste
-        type_btn.setOnClickListener(v -> {
-            createNotificationChannel();
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "MyNotification")
-                    .setSmallIcon(R.drawable.ic_launcher_background)
-                    .setContentTitle("Alerta de Temperatura!")
-                    .setContentText("A temperatura está muito alta.")
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            managerCompat.notify(1, builder.build());
-        });
+        //type_btn.setOnClickListener(v -> {
+        //});
     }
 
     private List<Entry> dataValues() {
@@ -185,11 +166,6 @@ public class LocDataActivity extends AppCompatActivity {
             dataValue.add(new Entry(i, values.get(i)));
         }
         return dataValue;
-    }
-    public void createNotificationChannel(){
-        NotificationChannel channel = new NotificationChannel("MyNotification", "MyNotification", NotificationManager.IMPORTANCE_DEFAULT);
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
     }
 
     private void getData(){

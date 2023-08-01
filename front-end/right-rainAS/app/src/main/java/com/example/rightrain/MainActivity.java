@@ -18,6 +18,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 
 import com.android.volley.AuthFailureError;
@@ -112,6 +115,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Notificações
+        WorkRequest uploadWorkRequest =
+                new OneTimeWorkRequest.Builder(NotificationWorker.class)
+                        .build();
+        WorkManager
+                .getInstance(this)
+                .enqueue(uploadWorkRequest);
     }
     private void getData(){
         String url = ip + "/home/" + u_id;

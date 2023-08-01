@@ -2,7 +2,9 @@ package com.example.rightrain;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import androidx.annotation.NonNull;
@@ -31,11 +33,16 @@ public class NotificationWorker extends Worker {
 
     public void sendNotification(){
         createNotificationChannel();
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getApplicationContext(), "MyNotification")
+        Intent intent = new Intent(getApplicationContext(), NotificationClass.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "MyNotification")
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle("Alerta de Temperatura!")
                 .setContentText("A temperatura está muito alta.")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this.getApplicationContext());
         if (ActivityCompat.checkSelfPermission(this.getApplicationContext(), android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {

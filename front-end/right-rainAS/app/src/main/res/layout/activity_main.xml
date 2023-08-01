@@ -43,6 +43,7 @@
 
                 <ImageView
                     android:id="@+id/notification_btn"
+                    android:clickable="true"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="end"

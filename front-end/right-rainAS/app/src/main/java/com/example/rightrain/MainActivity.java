@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> locList;
     private ListView userList1;
     private ArrayAdapter<String> listAdapter;
-    public ImageView bt_menu;
     private RequestQueue mQueue;
     private Double latitude_aux;
     private Double longitude_aux;
@@ -81,9 +80,17 @@ public class MainActivity extends AppCompatActivity {
         emailText.setText(email);
         drawerLayout = findViewById(R.id.drawer_layout);
         setSupportActionBar(toolbar);
-        bt_menu = findViewById(R.id.bot_menu);
+
+        // Configuração dos botões
+        ImageView bt_menu = findViewById(R.id.bot_menu);
         bt_menu.setOnClickListener(v->{
             drawerLayout.openDrawer(GravityCompat.START);
+        });
+
+        ImageView notButton = findViewById(R.id.notification_btn);
+        notButton.setOnClickListener(v->{
+           Intent intent = new Intent(getApplicationContext(), NotificationClass.class);
+           startActivity(intent);
         });
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override

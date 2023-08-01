@@ -27,11 +27,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
-    ProgressBar loadingPB;
-    String ip = "http://3.21.168.204:8000";
-    String name = "null";
-    String user_key = "null";
-    String u_id = "null";
+    private ProgressBar loadingPB;
+    public String ip = "http://3.21.168.204:8000";
+    private String name = "null";
+    private String user_key = "null";
+    private String u_id = "null";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

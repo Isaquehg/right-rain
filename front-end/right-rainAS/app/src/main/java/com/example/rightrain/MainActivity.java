@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private String u_id;
     private String ip;
     private String user_key;
+    private ArrayList<String> d_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,8 +104,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), DevicesActivity.class);
-                intent.putExtra("name_loc", locList.get(position));
                 intent.putExtra("u_id", u_id);
+                intent.putExtra("d_id", d_id.get(position));
+                intent.putExtra("d_name", locList.get(position));
                 intent.putExtra("user_key", user_key);
                 intent.putExtra("ip", ip);
                 startActivity(intent);
@@ -113,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void getData(){
         String url = ip + "/home/" + u_id;
+        d_id = new ArrayList<>();
         StringRequest request = new StringRequest(url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -120,18 +123,15 @@ public class MainActivity extends AppCompatActivity {
                             locList = new ArrayList<>();
                             coordinates = new ArrayList<>();
                             JSONArray jsonArray = new JSONArray(response);
-                            int i = 0;
-                            for (i = 0; i < jsonArray.length(); i++) {
+                            for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                String d_name = jsonObject.getString("d_id");
+                                d_id.add(jsonObject.getString("d_id"));
+                                locList.add(jsonObject.getString("d_name"));
                                 String latitude = jsonObject.getString("latitude");
                                 String longitude = jsonObject.getString("longitude");
-                                Log.d("Latitude", latitude);
-                                Log.d("Longitude", longitude);
                                 latitude_aux = Double.parseDouble(latitude);
                                 longitude_aux = Double.parseDouble(longitude);
                                 coordinates.add(new Pair<>(latitude_aux, longitude_aux));
-                                locList.add(d_name);
                                 setLocations(coordinates);
                             }
                             listAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, locList);

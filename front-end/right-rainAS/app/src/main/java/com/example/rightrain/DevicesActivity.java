@@ -7,10 +7,11 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class DevicesActivity extends AppCompatActivity {
-    String user_key;
-    String u_id;
-    String d_id;
-    String ip;
+    private String user_key;
+    private String u_id;
+    private String d_id;
+    private String ip;
+    public String d_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,12 +21,13 @@ public class DevicesActivity extends AppCompatActivity {
         Button rainfall_btn = findViewById(R.id.rainfall);
         Button temperatue_btn = findViewById(R.id.temperature);
         Button humidity_btn = findViewById(R.id.humidity);
-        // User params
+        // Strings da MainActivity
         user_key = getIntent().getStringExtra("user_key");
         u_id = getIntent().getStringExtra("u_id");
-        d_id = getIntent().getStringExtra("name_loc");
+        d_id = getIntent().getStringExtra("d_id");
         ip = getIntent().getStringExtra("ip");
-        title.setText(d_id);
+        d_name = getIntent().getStringExtra("d_name");
+        title.setText(d_name);
 
         rainfall_btn.setOnClickListener(v->{
             Intent intent = new Intent(getApplicationContext(), LocDataActivity.class);

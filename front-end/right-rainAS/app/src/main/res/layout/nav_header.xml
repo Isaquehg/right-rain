@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/green"
     android:layout_height="match_parent">
 
     <ImageView
@@ -18,7 +17,7 @@
         android:layout_height="wrap_content"
         android:text="@string/Name"
         android:layout_below="@id/profilepic"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_marginTop="10dp"
         android:textStyle="bold"
         android:textSize="16sp"
@@ -30,7 +29,7 @@
         android:layout_height="wrap_content"
         android:text="@string/email"
         android:layout_below="@id/name"
-        android:textColor="@color/gray"
+        android:textColor="@color/black"
         android:textSize="12sp"
         android:layout_marginStart="16dp"/>
 

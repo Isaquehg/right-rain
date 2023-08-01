@@ -43,19 +43,19 @@ import java.util.List;
 import kotlin.Pair;
 
 public class LocDataActivity extends AppCompatActivity {
-    LineChart lineChart;
-    Button startDate;
-    Button endDate;
-    String startDate1;
-    String endDate1;
-    String u_id;
-    String d_id;
-    String user_key;
-    String type;
-    String type_pt;
-    ArrayList<Entry> dataValue;
-    ArrayList<Integer> values;
-    String ip;
+    private LineChart lineChart;
+    private Button startDate;
+    private Button endDate;
+    private String startDate1;
+    private String endDate1;
+    private String u_id;
+    private String d_id;
+    private String user_key;
+    private String type;
+    private ArrayList<Entry> dataValue;
+    private ArrayList<Integer> values;
+    private String ip;
+    private String label;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +66,10 @@ public class LocDataActivity extends AppCompatActivity {
         u_id = getIntent().getStringExtra("u_id");
         d_id = getIntent().getStringExtra("d_id");
         type = getIntent().getStringExtra("type");
-        type_pt = getIntent().getStringExtra("type_pt");
+        String type_pt = getIntent().getStringExtra("type_pt");
         ip = getIntent().getStringExtra("ip");
-
+        startDate1 = "2019-01-01";
+        endDate1 = "2022-11-25";
         dataValue = new ArrayList<>();
         ImageView home_btn = findViewById(R.id.home_btn);
         Button type_btn = findViewById(R.id.type_btn);
@@ -83,6 +84,15 @@ public class LocDataActivity extends AppCompatActivity {
         endDate = findViewById(R.id.end_date_btn);
         lineChart = findViewById(R.id.graph1);
 
+        // Label do gráfico
+        if(type.equals("temperature")){
+            label = "ºC";
+        }else if(type.equals("rainfall")){
+            label = "mm";
+        }else{
+            label = "kg/m³";
+        }
+
         startDate.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(
                     this, R.style.DatePickerDialogStyle, new DatePickerDialog.OnDateSetListener() {
@@ -90,15 +100,15 @@ public class LocDataActivity extends AppCompatActivity {
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     month++;
                     if(month < 10 && dayOfMonth > 10){
-                        startDate1 = dayOfMonth + "-0" + month + "-" + year;
+                        startDate1 = year + "-0" + month + "-" + dayOfMonth;
                     }else{
                         if(dayOfMonth < 10 && month > 10){
-                            startDate1 = "0" + dayOfMonth + "-" + month + "-" + year;
+                            startDate1 = year + "-" + month + "-0" + dayOfMonth;
                         }else{
                             if(dayOfMonth < 10 && month < 10){
-                                startDate1 = "0" + dayOfMonth + "-0" + month + "-" + year;
+                                startDate1 = year + "-0" + month + "-0" + dayOfMonth;
                             }else{
-                                startDate1 = dayOfMonth + "-" + month + "-" + year;
+                                startDate1 = year + "-" + month + "-" + dayOfMonth;
                             }
                         }
                     }
@@ -118,19 +128,18 @@ public class LocDataActivity extends AppCompatActivity {
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     month++;
                     if(month < 10 && dayOfMonth > 10){
-                        endDate1 = dayOfMonth + "-0" + month + "-" + year;
+                        endDate1 = year + "-0" + month + "-" + dayOfMonth;
                     }else{
                         if(dayOfMonth < 10 && month > 10){
-                            endDate1 = "0" + dayOfMonth + "-" + month + "-" + year;
+                            endDate1 = year + "-" + month + "-0" + dayOfMonth;
                         }else {
                             if (dayOfMonth < 10 && month < 10) {
-                                endDate1 = "0" + dayOfMonth + "-0" + month + "-" + year;
+                                endDate1 = year + "-0" + month + "-0" + dayOfMonth;
                             } else {
-                                endDate1 = dayOfMonth + "-" + month + "-" + year;
+                                endDate1 = year + "-" + month + "-" + dayOfMonth;
                             }
                         }
                     }
-                    Log.d("endDate", endDate1);
                     endDate.setText(endDate1);
                     if(startDate1 != null){
                         getData();
@@ -174,7 +183,6 @@ public class LocDataActivity extends AppCompatActivity {
     private List<Entry> dataValues() {
         for (int i = 0; i < values.size(); i++) {
             dataValue.add(new Entry(i, values.get(i)));
-            Log.d("Valor:", values.get(i).toString());
         }
         return dataValue;
     }
@@ -188,6 +196,7 @@ public class LocDataActivity extends AppCompatActivity {
         values = new ArrayList<>();
         RequestQueue mQueue = Volley.newRequestQueue(this);
         String url = ip + "/home/" + u_id + "/" + d_id + "/" + type + "?start_date=" + startDate1 + "&end_date=" + endDate1;
+        Log.d("url", url);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -197,7 +206,7 @@ public class LocDataActivity extends AppCompatActivity {
                         JSONObject data1 = jsonArray.getJSONObject(i);
                         values.add(data1.getInt("value"));
                     }
-                    LineDataSet lineDataSet = new LineDataSet(dataValues(), "Dia");
+                    LineDataSet lineDataSet = new LineDataSet(dataValues(), label);
                     ArrayList<ILineDataSet> dataSets = new ArrayList<>();
                     dataSets.add(lineDataSet);
                     LineData data = new LineData(dataSets);

@@ -10,7 +10,7 @@ const char* password = "inatel123";  // Insira a senha da sua rede WiFi
 // MQTT Broker
 const char* mqtt_broker = "fbe1817f.ala.us-east-1.emqxsl.com"; // Endereço do broker
 const int mqtt_port = 8883; // Porta MQTT sobre TLS
-const char* topic = "esp8266/test"; // Tópico MQTT
+const char* topic = "rightrain/data"; // Tópico MQTT
 const char* mqtt_username = "isaquehg"; // Nome de usuário para autenticação MQTT
 const char* mqtt_password = "1arry_3arry"; // Senha para autenticação MQTT
 
@@ -58,10 +58,6 @@ void setup() {
       delay(5000);
     }
   }
-
-  // Publicação e subscrição
-  client.publish(topic, "hello emqx"); // Publica uma mensagem no tópico
-  client.subscribe(topic); // Subscreve ao tópico
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
@@ -83,7 +79,11 @@ void loop() {
   float humidity = dht.readHumidity();
 
   // Publicação dos valores no tópico
-  String message = "Temperature: " + String(temperature) + "°C, Humidity: " + String(humidity) + "%";
+  String message = "u_id: " + "64caccb46b1a8787775d075d" +
+  ", d_id: " + "plmokmuhb" +
+  ", d_name: " + "Device 2" +
+  ", latitude: " + String(-21.6804) +
+  ", longitude: " + String(-45.9190) + ", date: " + "2020-03-10T08:20:44" + ", Temperature: " + String(temperature) + "°C, Humidity: " + String(humidity) + "%";
   client.publish(topic, message.c_str());
   
   delay(5000); // Aguarda 5 segundos antes de fazer uma nova leitura e publicação

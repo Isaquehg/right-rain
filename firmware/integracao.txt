@@ -1,0 +1,55 @@
+user: rightrain@gmail.com
+senha: rightrain
+mqtt_username: miguetwardowski
+mqtt_password: myPa$$w0rd
+mqtt_topic: rightrain/data
+mqtt_port: 8883
+mqtt_broker: fbe1817f.ala.us-east-1.emqxsl.com
+
+JSON modelo Hardware 1:
+{
+  "u_id": "64caccb46b1a8787775d075d",
+  "d_id": "qazwsxedcrfv",
+  "d_name": "Device 1",
+  "latitude": -22.2522,
+  "longitude": -45.7037,
+  "date": "2020-03-10T08:20:44",
+  "temperature": 25.4,
+  "air_humidity": 85,
+  "soil_humidity": 98,
+  "soil_ph": 7.1,
+  "at_pressure": 3,
+  "wind_vel": 39.8,
+  "wind_dir": "n",
+  "luminosity": 1888,
+  "rain": 0,
+  "rainfall": 138,
+}
+
+user: rightrain@gmail.com
+senha: rightrain
+mqtt_username: isaquehg
+mqtt_password: 1arry_3arry
+mqtt_topic: rightrain/data
+mqtt_port: 8883
+mqtt_broker: fbe1817f.ala.us-east-1.emqxsl.com
+
+JSON modelo Hardware 2:
+{
+  "u_id": "64caccb46b1a8787775d075d",
+  "d_id": "plmokmuhb",
+  "d_name": "Device 2",
+  "latitude": -21.6804,
+  "longitude": -45.9190,
+  "date": "2020-03-10T08:20:44",
+  "temperature": 25.4,
+  "air_humidity": 85,
+  "soil_humidity": 98,
+  "soil_ph": 7.1,
+  "at_pressure": 3,
+  "wind_vel": 39.8,
+  "wind_dir": "n",
+  "luminosity": 1888,
+  "rain": 0,
+  "rainfall": 138,
+}

@@ -71,7 +71,6 @@ public class LocDataActivity extends AppCompatActivity {
         startDate1 = "2019-01-01";
         endDate1 = "2022-11-25";
         dataValue = new ArrayList<>();
-        ImageView home_btn = findViewById(R.id.home_btn);
         Button type_btn = findViewById(R.id.type_btn);
         type_btn.setText(type_pt);
 
@@ -148,12 +147,6 @@ public class LocDataActivity extends AppCompatActivity {
             }, mYear, mMonth, mDay);
             datePickerDialog.show();
         });
-
-        home_btn.setOnClickListener(v->{
-            Intent i = new Intent(this, MainActivity.class);
-            startActivity(i);
-        });
-
         // Configuração do gráfico
 
         // Notificação - teste

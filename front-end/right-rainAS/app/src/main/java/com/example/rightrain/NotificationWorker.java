@@ -14,6 +14,9 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class NotificationWorker extends Worker {
 
     public NotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -38,8 +41,8 @@ public class NotificationWorker extends Worker {
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "MyNotification")
                 .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentTitle("Alerta de Temperatura!")
-                .setContentText("A temperatura está muito alta.")
+                .setContentTitle("Bem vindo ao RightRain!")
+                .setContentText("Você está logado desde " + LocalDate.now() + "às " + LocalTime.now())
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);

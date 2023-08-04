@@ -3,6 +3,7 @@ package com.example.rightrain;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -46,7 +47,6 @@ import kotlin.Pair;
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     public Toolbar toolbar;
-    public ActionBarDrawerToggle actionBarDrawerToggle;
     private MapView mapView;
     private ArrayList<String> locList;
     private ListView userList1;
@@ -122,6 +122,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Configurações da barra de busca
+        SearchView searchView = findViewById(R.id.searchview);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                listAdapter.getFilter().filter(query);
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                listAdapter.getFilter().filter(newText);
+                return false;
+            }
+            });
 
         // Notificações
         WorkRequest uploadWorkRequest =

@@ -44,7 +44,7 @@ import java.util.List;
 
 import kotlin.Pair;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends DrawerBaseActivity {
     private DrawerLayout drawerLayout;
     public Toolbar toolbar;
     private MapView mapView;

@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="120dp"
+    android:background="@color/ocean">
+
+    <ImageView
+        android:id="@+id/circle"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/circle" />
 
     <ImageView
         android:id="@+id/profilepic"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
         android:src="@drawable/baseline_person_24" />
 
     <TextView
@@ -17,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="@string/Name"
         android:layout_below="@id/profilepic"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:layout_marginTop="10dp"
         android:textStyle="bold"
         android:textSize="16sp"
@@ -29,14 +38,8 @@
         android:layout_height="wrap_content"
         android:text="@string/email"
         android:layout_below="@id/name"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="12sp"
         android:layout_marginStart="16dp"/>
-
-    <View
-        android:layout_below="@+id/email"
-        android:layout_width="match_parent"
-        style="@style/line">
-    </View>
 
 </RelativeLayout>

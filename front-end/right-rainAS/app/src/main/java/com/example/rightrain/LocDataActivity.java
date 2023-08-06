@@ -7,15 +7,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageView;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -25,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.rightrain.databinding.ActivityLocDataBinding;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -42,7 +37,7 @@ import java.util.List;
 
 import kotlin.Pair;
 
-public class LocDataActivity extends AppCompatActivity {
+public class LocDataActivity extends DrawerBaseActivity {
     private LineChart lineChart;
     private Button startDate;
     private Button endDate;
@@ -60,7 +55,13 @@ public class LocDataActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dados_loc);
+        // Configuração da atividade base
+        ActivityLocDataBinding activityLocDataBinding = ActivityLocDataBinding.inflate(getLayoutInflater());
+        setContentView(activityLocDataBinding.getRoot());
+        // Strings necessarias para o header
+        String name = getIntent().getStringExtra("name");
+        String email = getIntent().getStringExtra("email");
+        allocateDrawerParms(name, email);
         // Strings necessarias para url
         user_key = getIntent().getStringExtra("user_key");
         u_id = getIntent().getStringExtra("u_id");
@@ -73,6 +74,7 @@ public class LocDataActivity extends AppCompatActivity {
         dataValue = new ArrayList<>();
         Button type_btn = findViewById(R.id.type_btn);
         type_btn.setText(type_pt);
+        // Descrição para o gráfico
 
         // Calendar para mostrar o dia atual
         Calendar c = Calendar.getInstance();
@@ -82,6 +84,7 @@ public class LocDataActivity extends AppCompatActivity {
         startDate = findViewById(R.id.start_date_btn);
         endDate = findViewById(R.id.end_date_btn);
         lineChart = findViewById(R.id.graph1);
+        lineChart.setNoDataText("Selecione a data inicial e a data final!");
 
         // Label do gráfico
         if(type.equals("temperature")){
@@ -147,11 +150,6 @@ public class LocDataActivity extends AppCompatActivity {
             }, mYear, mMonth, mDay);
             datePickerDialog.show();
         });
-        // Configuração do gráfico
-
-        // Notificação - teste
-        //type_btn.setOnClickListener(v -> {
-        //});
     }
 
     private List<Entry> dataValues() {
@@ -188,6 +186,7 @@ public class LocDataActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext() /* MyActivity */, "Selecione outros parametros!", Toast.LENGTH_SHORT).show();
                 error.printStackTrace();
             }
         }){

@@ -4,18 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.example.rightrain.databinding.ActivityDevicesBinding;
+import com.example.rightrain.databinding.ActivityMainBinding;
 
-public class DevicesActivity extends AppCompatActivity {
+public class DevicesActivity extends DrawerBaseActivity {
     private String user_key;
     private String u_id;
     private String d_id;
     private String ip;
-    public String d_name;
+    private String name;
+    private String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_devices);
+        // Configuração da atividade base
+        ActivityDevicesBinding activityDevicesBinding = ActivityDevicesBinding.inflate(getLayoutInflater());
+        setContentView(activityDevicesBinding.getRoot());
         // Buttons
         Button title = findViewById(R.id.name_loc_btn);
         Button rainfall_btn = findViewById(R.id.rainfall);
@@ -26,7 +30,11 @@ public class DevicesActivity extends AppCompatActivity {
         u_id = getIntent().getStringExtra("u_id");
         d_id = getIntent().getStringExtra("d_id");
         ip = getIntent().getStringExtra("ip");
-        d_name = getIntent().getStringExtra("d_name");
+        String d_name = getIntent().getStringExtra("d_name");
+        name = getIntent().getStringExtra("name");
+        email = getIntent().getStringExtra("email");
+        // Alocando na BaseActivity
+        allocateDrawerParms(name, email);
         title.setText(d_name);
 
         rainfall_btn.setOnClickListener(v->{
@@ -53,6 +61,8 @@ public class DevicesActivity extends AppCompatActivity {
         intent.putExtra("u_id", u_id);
         intent.putExtra("d_id", d_id);
         intent.putExtra("ip", ip);
+        intent.putExtra("name", name);
+        intent.putExtra("email", email);
         startActivity(intent);
     }
 }

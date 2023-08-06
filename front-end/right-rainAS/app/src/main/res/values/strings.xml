@@ -26,7 +26,7 @@
     <string name="map">Mapa</string>
     <string name="settings">Configurações</string>
     <string name="add_device">Adicionar dispositivo</string>
-    <string name="notifications">Notificações</string>
+    <string name="notifications">Avisos</string>
     <string name="rainfall">Pluviosidade</string>
     <string name="humidity">Umidade</string>
     <string name="temperature">Temperatura</string>
@@ -38,4 +38,6 @@
     <string name="finalDate">Data final</string>
     <string name="other">Outro</string>
     <string name="options">Opções</string>
+    <string name="close">Fechar</string>
+    <string name="open">Abrir</string>
 </resources>

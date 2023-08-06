@@ -1,37 +1,27 @@
 package com.example.rightrain;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Header;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.navigation.NavigationView;
+import com.example.rightrain.databinding.ActivityMainBinding;
 import com.mapbox.maps.MapView;
 import com.mapbox.maps.Style;
 
@@ -45,8 +35,6 @@ import java.util.List;
 import kotlin.Pair;
 
 public class MainActivity extends DrawerBaseActivity {
-    private DrawerLayout drawerLayout;
-    public Toolbar toolbar;
     private MapView mapView;
     private ArrayList<String> locList;
     private ListView userList1;
@@ -59,51 +47,20 @@ public class MainActivity extends DrawerBaseActivity {
     private String ip;
     private String user_key;
     private ArrayList<String> d_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        String name = getIntent().getStringExtra("name");
+        String email = getIntent().getStringExtra("email");
+        // Configuração da atividade base
+        ActivityMainBinding activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(activityMainBinding.getRoot());
+        allocateDrawerParms(name, email);
         // Strings do LoginActivity
         u_id = getIntent().getStringExtra("u_id");
         user_key = getIntent().getStringExtra("user_key");
         ip = getIntent().getStringExtra("ip");
-        String name = getIntent().getStringExtra("name");
-        String email = getIntent().getStringExtra("email");
-
-        // Configuração do drawer
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        View header = navigationView.getHeaderView(0);
-        TextView nameText = header.findViewById(R.id.name);
-        TextView emailText = header.findViewById(R.id.email);
-        nameText.setText(name);
-        emailText.setText(email);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        setSupportActionBar(toolbar);
-
-        // Configuração dos botões
-        ImageView bt_menu = findViewById(R.id.bot_menu);
-        bt_menu.setOnClickListener(v->{
-            drawerLayout.openDrawer(GravityCompat.START);
-        });
-
-        ImageView notButton = findViewById(R.id.notification_btn);
-        notButton.setOnClickListener(v->{
-           Intent intent = new Intent(getApplicationContext(), NotificationClass.class);
-           startActivity(intent);
-        });
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                drawerLayout.closeDrawer(GravityCompat.START);
-                if(id == R.id.logout) {
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
-                }
-                return true;
-                }
-        });
 
         // Configurações dos dados do usuário
         userList1 = findViewById(R.id.userList);
@@ -119,6 +76,8 @@ public class MainActivity extends DrawerBaseActivity {
                 intent.putExtra("d_name", locList.get(position));
                 intent.putExtra("user_key", user_key);
                 intent.putExtra("ip", ip);
+                intent.putExtra("name", name);
+                intent.putExtra("email", email);
                 startActivity(intent);
             }
         });

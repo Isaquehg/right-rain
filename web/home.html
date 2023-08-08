@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome!</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+</head>
+<body>
+    <header>
+        <div id="header-container">
+            <div>
+                <img src="web/images/RightRain_Logo.png" alt="RightRain">
+            </div>
+            <div id="navbar-container">
+                <nav id="navbar">
+                    <a href="#map">Mapa</a>
+                    <a href="#settings">Configurações</a>
+                    <a href="#about">Sobre</a>
+                    <a href="#logout">Logout</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div id="map" style="height: 500px;"></div>
+
+    <script src="js/map.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+    
+    
+</body>
+</html>

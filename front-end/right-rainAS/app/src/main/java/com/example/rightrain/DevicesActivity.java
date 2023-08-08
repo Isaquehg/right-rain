@@ -11,9 +11,6 @@ public class DevicesActivity extends DrawerBaseActivity {
     private String user_key;
     private String u_id;
     private String d_id;
-    private String ip;
-    private String name;
-    private String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,12 +26,8 @@ public class DevicesActivity extends DrawerBaseActivity {
         user_key = getIntent().getStringExtra("user_key");
         u_id = getIntent().getStringExtra("u_id");
         d_id = getIntent().getStringExtra("d_id");
-        ip = getIntent().getStringExtra("ip");
         String d_name = getIntent().getStringExtra("d_name");
-        name = getIntent().getStringExtra("name");
-        email = getIntent().getStringExtra("email");
         // Alocando na BaseActivity
-        allocateDrawerParms(name, email);
         title.setText(d_name);
 
         rainfall_btn.setOnClickListener(v->{

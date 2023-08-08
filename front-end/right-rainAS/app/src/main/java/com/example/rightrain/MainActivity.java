@@ -43,24 +43,15 @@ public class MainActivity extends DrawerBaseActivity {
     private Double latitude_aux;
     private Double longitude_aux;
     private List<Pair<Double, Double>> coordinates;
-    private String u_id;
-    private String ip;
-    private String user_key;
     private ArrayList<String> d_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String name = getIntent().getStringExtra("name");
-        String email = getIntent().getStringExtra("email");
         // Configuração da atividade base
         ActivityMainBinding activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(activityMainBinding.getRoot());
         allocateDrawerParms(name, email);
-        // Strings do LoginActivity
-        u_id = getIntent().getStringExtra("u_id");
-        user_key = getIntent().getStringExtra("user_key");
-        ip = getIntent().getStringExtra("ip");
 
         // Configurações dos dados do usuário
         userList1 = findViewById(R.id.userList);

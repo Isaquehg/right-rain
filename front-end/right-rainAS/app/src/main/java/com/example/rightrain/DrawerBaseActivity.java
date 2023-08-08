@@ -1,7 +1,6 @@
 package com.example.rightrain;
 
 import android.content.Intent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -19,6 +18,11 @@ import com.google.android.material.navigation.NavigationView;
 
 public class DrawerBaseActivity extends AppCompatActivity {
     private NavigationView navigationView;
+    public String ip;
+    public String u_id;
+    public String name;
+    public String email;
+    public String user_key;
     @Override
     public void setContentView(View view) {
         DrawerLayout drawerLayout;
@@ -31,6 +35,15 @@ public class DrawerBaseActivity extends AppCompatActivity {
         // Configuração do drawer
         navigationView = drawerLayout.findViewById(R.id.nav_view);
         navigationView.bringToFront();
+        // Strings do LoginActivity compartilhada por Activities que herdam dessa.
+        if(ip == null && u_id == null && name == null && email == null && user_key == null){
+            user_key = getIntent().getStringExtra("user_key");
+            ip = getIntent().getStringExtra("ip");
+            u_id = getIntent().getStringExtra("u_id");
+            name = getIntent().getStringExtra("name");
+            email = getIntent().getStringExtra("email");
+        }
+        allocateDrawerParms(name, email);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -42,6 +55,10 @@ public class DrawerBaseActivity extends AppCompatActivity {
                 if(id == R.id.notifications){
                     Intent intent = new Intent(getApplicationContext(), NotificationClass.class);
                     startActivity(intent);
+                }
+                if(id == R.id.mainscreen){
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    putExtrasIntent(intent);
                 }
                 return true;
             }
@@ -65,5 +82,14 @@ public class DrawerBaseActivity extends AppCompatActivity {
         emailTextView = header.findViewById(R.id.email);
         nameTextView.setText(name);
         emailTextView.setText(email);
+    }
+
+    public void putExtrasIntent(Intent intent){
+        intent.putExtra("u_id", u_id);
+        intent.putExtra("user_key", user_key);
+        intent.putExtra("ip", ip);
+        intent.putExtra("name", name);
+        intent.putExtra("email", email);
+        startActivity(intent);
     }
 }

@@ -43,13 +43,10 @@ public class LocDataActivity extends DrawerBaseActivity {
     private Button endDate;
     private String startDate1;
     private String endDate1;
-    private String u_id;
     private String d_id;
-    private String user_key;
     private String type;
     private ArrayList<Entry> dataValue;
     private ArrayList<Integer> values;
-    private String ip;
     private String label;
 
     @Override
@@ -59,16 +56,10 @@ public class LocDataActivity extends DrawerBaseActivity {
         ActivityLocDataBinding activityLocDataBinding = ActivityLocDataBinding.inflate(getLayoutInflater());
         setContentView(activityLocDataBinding.getRoot());
         // Strings necessarias para o header
-        String name = getIntent().getStringExtra("name");
-        String email = getIntent().getStringExtra("email");
-        allocateDrawerParms(name, email);
-        // Strings necessarias para url
-        user_key = getIntent().getStringExtra("user_key");
-        u_id = getIntent().getStringExtra("u_id");
+       // allocateDrawerParms(name, email);
         d_id = getIntent().getStringExtra("d_id");
         type = getIntent().getStringExtra("type");
         String type_pt = getIntent().getStringExtra("type_pt");
-        ip = getIntent().getStringExtra("ip");
         startDate1 = "2019-01-01";
         endDate1 = "2022-11-25";
         dataValue = new ArrayList<>();

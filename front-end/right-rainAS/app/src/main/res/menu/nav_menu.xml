@@ -5,22 +5,23 @@
 
         <group
                 android:checkableBehavior="single">
+                <item
+                    android:id="@+id/mainscreen"
+                    android:icon="@drawable/baseline_home_24"
+                    android:title="@string/mainscreen" />
         <item
             android:id="@+id/notifications"
             android:icon="@drawable/baseline_notifications_none_24"
             android:title="@string/notifications" />
         <item
-            android:id="@+id/add_sens"
+            android:id="@+id/senslist"
             android:icon="@drawable/baseline_sensors_24"
-            android:title="@string/add_sensor" />
+            android:title="@string/sensors_list" />
         <item
             android:id="@+id/settings"
             android:icon="@drawable/baseline_settings_24"
             android:title="@string/settings" />
-        <item
-            android:id="@+id/mapa"
-            android:icon="@drawable/baseline_map_24"
-            android:title="@string/map" />
+
         </group>
 
         <item android:title="@string/options">

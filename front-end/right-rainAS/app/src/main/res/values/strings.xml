@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">RightRain</string>
-    <string name="add_sensor">Adicionar sensor</string>
+    <string name="sensors_list">Lista de Sensores</string>
     <string name ="locations">Localizações</string>
     <string name ="location1">Localização 1</string>
     <string name ="location2">Localização 2</string>
@@ -23,7 +23,7 @@
     <string name="a">a</string>
     <string name="mapbox_access_token">sk.eyJ1IjoiZ2l2LWZueiIsImEiOiJjbGg4NXh6NzIwNWJ1M2Vtd2ZmcXpqMzgyIn0.lb_Yre-0LNVWEHT6bUlLBg</string>
     <string name="sign_off">Sair</string>
-    <string name="map">Mapa</string>
+    <string name="mainscreen">Tela Inicial</string>
     <string name="settings">Configurações</string>
     <string name="add_device">Adicionar dispositivo</string>
     <string name="notifications">Avisos</string>

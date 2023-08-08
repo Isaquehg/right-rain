@@ -76,7 +76,6 @@ public class LocDataActivity extends DrawerBaseActivity {
         endDate = findViewById(R.id.end_date_btn);
         lineChart = findViewById(R.id.graph1);
         lineChart.setNoDataText("Selecione a data inicial e a data final!");
-
         // Label do gráfico
         if(type.equals("temperature")){
             label = "ºC";
@@ -85,6 +84,10 @@ public class LocDataActivity extends DrawerBaseActivity {
         }else{
             label = "kg/m³";
         }
+        // Executando o método getData() para mostrar valores padrão
+        startDate.setText(startDate1);
+        endDate.setText(endDate1);
+        getData();
 
         startDate.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(

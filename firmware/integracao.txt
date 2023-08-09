@@ -34,7 +34,6 @@ JSON modelo Hardware:
 
 Sensores:
 DHT11-umidade e temperatura Pino d4
-gsm -não esta habilitado
-gps-
+gsm 6M-
 tx-d2
 rx-d1

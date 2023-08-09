@@ -15,7 +15,7 @@ JSON modelo Hardware:
 (Excluir não utilizados!!!!!)
 {
   "u_id": "64caccb46b1a8787775d075d",
-  "d_id": "plmokmuhb",
+  "d_id": "plmokmuhbtrver",
   "d_name": "Fetin Device",
   "latitude": -21.6804,
   "longitude": -45.9190,
@@ -31,3 +31,6 @@ JSON modelo Hardware:
   "rain": 0,
   "rainfall": 138,
 }
+
+Sensores:
+DHT11

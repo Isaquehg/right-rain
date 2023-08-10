@@ -86,8 +86,11 @@ void loop() {
 
     // Read GPS data
     while (Serial1.available() > 0) {
+        Serial.println("While loop");
         if (gps.encode(Serial1.read())) {
+            Serial.println("first IF");
             if (gps.location.isValid()) {
+                Serial.println("Second one");
                 float latitude = gps.location.lat();
                 float longitude = gps.location.lng();
 
@@ -111,6 +114,7 @@ void loop() {
                 message += "}";
 
                 client.publish(topic, message.c_str());
+                Serial.println(message);
 
                 delay(5000); // Aguarda 5 segundos antes de fazer uma nova leitura e publicação
             }

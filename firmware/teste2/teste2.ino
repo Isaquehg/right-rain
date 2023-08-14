@@ -84,40 +84,38 @@ void callback(char* topic, byte* payload, unsigned int length) {
 void loop() {
     client.loop();
 
-    // Read GPS data
-    while (Serial1.available() > 0) {
-        if (gps.encode(Serial1.read())) {
-          
-            if (gps.location.isValid()) {
-                float latitude = gps.location.lat();
-                float longitude = gps.location.lng();
+    // Get current date and time
+    String currentDateTime = getFormattedDateTime();
 
-                // Get current date and time
-                String currentDateTime = getFormattedDateTime();
-
-                // Leitura do sensor DHT11
-                float temperature = dht.readTemperature();
-                float humidity = dht.readHumidity();
-
-                // Construção do JSON
-                String message = "{";
-                message += "\"u_id\": \"64caccb46b1a8787775d075d\",";
-                message += "\"d_id\": \"plmokmuhbtrver\",";
-                message += "\"d_name\": \"Fetin Device\",";
-                message += "\"latitude\": " + String(latitude, 6) + ",";
-                message += "\"longitude\": " + String(longitude, 6) + ",";
-                message += "\"date\": \"" + currentDateTime + "\",";
-                message += "\"temperature\": " + String(temperature, 1) + ",";
-                message += "\"air_humidity\": " + String(humidity);
-                message += "}";
-
-                client.publish(topic, message.c_str());
-                
-
-                delay(5000); // Aguarda 5 segundos antes de fazer uma nova leitura e publicação
-            }
-        }
+    // Leitura do sensor DHT11
+    float temperature = dht.readTemperature();
+    float humidity = dht.readHumidity();
+    if (!isnan(temperature) && !isnan(humidity)) {
+        Serial.print("Temperature: ");
+        Serial.print(temperature);
+        Serial.print(" °C, Humidity: ");
+        Serial.print(humidity);
+        Serial.println("%");
+    } else {
+        Serial.println("Failed to read from DHT sensor!");
     }
+
+    // Construção do JSON
+    String message = "{";
+    message += "\"u_id\": \"64caccb46b1a8787775d075d\",";
+    message += "\"d_id\": \"plmokmuhbtrver\",";
+    message += "\"d_name\": \"Fetin Device\",";
+    message += "\"latitude\": " + String(-21.6804, 6) + ",";
+    message += "\"longitude\": " + String(-45.9190, 6) + ",";
+    message += "\"date\": \"" + currentDateTime + "\",";
+    message += "\"temperature\": " + String(temperature, 1) + ",";
+    message += "\"air_humidity\": " + String(humidity);
+    message += "}";
+
+    client.publish(topic, message.c_str());
+    Serial.println(message);
+
+    delay(5000); // Aguarda 5 segundos antes de fazer uma nova leitura e publicação
 }
 
 String getFormattedDateTime() {

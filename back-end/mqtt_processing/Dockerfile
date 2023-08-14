@@ -13,6 +13,9 @@ COPY certs/emqxsl-ca.crt /app/certs/emqxsl-ca.crt
 # Install the Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Expose MQTT ports
+EXPOSE 8883
+
 # Copy the rest of the application code
 COPY . .
 

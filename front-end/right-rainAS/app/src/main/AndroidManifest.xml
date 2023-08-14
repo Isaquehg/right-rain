@@ -49,6 +49,10 @@
             android:name=".NotificationClass"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".DevicesListActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

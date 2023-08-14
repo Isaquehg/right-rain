@@ -44,8 +44,8 @@ public class DevicesActivity extends DrawerBaseActivity {
         });
         humidity_btn.setOnClickListener(v->{
             Intent intent = new Intent(getApplicationContext(), LocDataActivity.class);
-            intent.putExtra("type", "humidity");
-            intent.putExtra("type_pt", "Umidade");
+            intent.putExtra("type", "air_humidity");
+            intent.putExtra("type_pt", "Umidade do ar");
             postUserParms(intent);
         });
     }

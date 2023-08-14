@@ -37,7 +37,7 @@ import kotlin.Pair;
 public class MainActivity extends DrawerBaseActivity {
     private MapView mapView;
     private ArrayList<String> locList;
-    private ListView userList1;
+    private ListView de_list1;
     private ArrayAdapter<String> listAdapter;
     private RequestQueue mQueue;
     private Double latitude_aux;
@@ -54,11 +54,11 @@ public class MainActivity extends DrawerBaseActivity {
         allocateDrawerParms(name, email);
 
         // Configurações dos dados do usuário
-        userList1 = findViewById(R.id.userList);
+        de_list1 = findViewById(R.id.de_list);
         mapView = findViewById(R.id.mapView);
         mQueue = Volley.newRequestQueue(this);
         getData();
-        userList1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        de_list1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), DevicesActivity.class);
@@ -73,28 +73,16 @@ public class MainActivity extends DrawerBaseActivity {
             }
         });
 
-        // Configurações da barra de busca
-        SearchView searchView = findViewById(R.id.searchview);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                listAdapter.getFilter().filter(query);
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                listAdapter.getFilter().filter(newText);
-                return false;
-            }
-            });
-
         // Notificações
-        WorkRequest uploadWorkRequest =
-                new OneTimeWorkRequest.Builder(NotificationWorker.class)
-                        .build();
-        WorkManager
-                .getInstance(this)
-                .enqueue(uploadWorkRequest);
+        boolean primeiro_login = getIntent().getBooleanExtra("primeiro_login", false);
+        if (primeiro_login) {
+            WorkRequest uploadWorkRequest =
+                    new OneTimeWorkRequest.Builder(NotificationWorker.class)
+                            .build();
+            WorkManager
+                    .getInstance(this)
+                    .enqueue(uploadWorkRequest);
+        }
     }
     private void getData(){
         String url = ip + "/home/" + u_id;
@@ -118,7 +106,7 @@ public class MainActivity extends DrawerBaseActivity {
                                 setLocations(coordinates);
                             }
                             listAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, locList);
-                            userList1.setAdapter(listAdapter);
+                            de_list1.setAdapter(listAdapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

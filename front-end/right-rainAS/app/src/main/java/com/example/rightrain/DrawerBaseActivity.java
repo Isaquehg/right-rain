@@ -58,6 +58,11 @@ public class DrawerBaseActivity extends AppCompatActivity {
                 }
                 if(id == R.id.mainscreen){
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("primeiro_login", false);
+                    putExtrasIntent(intent);
+                }
+                if(id == R.id.senslist){
+                    Intent intent = new Intent(getApplicationContext(), DevicesListActivity.class);
                     putExtrasIntent(intent);
                 }
                 return true;

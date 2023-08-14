@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("u_id", u_id);
                         intent.putExtra("name", name);
                         intent.putExtra("email", email);
+                        intent.putExtra("primeiro_login", true);
                         startActivity(intent);
                     }
                 }, new Response.ErrorListener() {

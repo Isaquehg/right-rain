@@ -1,9 +1,10 @@
 package com.example.rightrain;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,6 +46,13 @@ public class MainActivity extends DrawerBaseActivity {
     private List<Pair<Double, Double>> coordinates;
     private ArrayList<String> d_id;
 
+    // Strings do banco de dados das notificações
+    private static final String BANCO_NOME = "bd_aviso";
+    private static final String NOME_TABELA = "tb_aviso";
+    private static final String COLUNA_CODIGO = "id";
+    private static final String COLUNA_AVISO = "AvisoLogin";
+    private static final String COLUNA_DATE = "Data";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +90,8 @@ public class MainActivity extends DrawerBaseActivity {
             WorkManager
                     .getInstance(this)
                     .enqueue(uploadWorkRequest);
+            createDatabase();
+            createNotOnDatabase("Novo Login!");
         }
     }
     private void getData(){
@@ -134,5 +144,31 @@ public class MainActivity extends DrawerBaseActivity {
                 map.addAnnotationToMap(MainActivity.this, mapView, coordinates);
             }
         });
+    }
+        public void createDatabase(){
+            SQLiteDatabase db;
+            try {
+                db = openOrCreateDatabase(BANCO_NOME, MODE_PRIVATE, null);
+                String QUERY_COLUNA = "CREATE TABLE IF NOT EXISTS " + NOME_TABELA + " ("
+                        + COLUNA_CODIGO + " INTEGER PRIMARY KEY," + COLUNA_AVISO + " TEXT, " + COLUNA_DATE + " TEXT)";
+                db.execSQL(QUERY_COLUNA);
+                db.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    public void createNotOnDatabase(String aviso){
+        SQLiteDatabase db;
+        try{
+            db = openOrCreateDatabase(BANCO_NOME, MODE_PRIVATE, null);
+            String sql = "INSERT INTO " + NOME_TABELA + " (" + COLUNA_AVISO + ") VALUES (?)";
+            SQLiteStatement stmt = db.compileStatement(sql);
+            stmt.bindString(1,aviso);
+            stmt.executeInsert();
+            db.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

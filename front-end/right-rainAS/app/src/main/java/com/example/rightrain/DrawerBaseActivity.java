@@ -1,6 +1,7 @@
 package com.example.rightrain;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -54,7 +55,7 @@ public class DrawerBaseActivity extends AppCompatActivity {
                 }
                 if(id == R.id.notifications){
                     Intent intent = new Intent(getApplicationContext(), NotificationClass.class);
-                    startActivity(intent);
+                    putExtrasIntent(intent);
                 }
                 if(id == R.id.mainscreen){
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -68,17 +69,18 @@ public class DrawerBaseActivity extends AppCompatActivity {
                 return true;
             }
         });
-        // Configuração do botão - notificações
+        // Configuração do botão de notificações
         ImageView notButton = drawerLayout.findViewById(R.id.notification_btn);
         notButton.setOnClickListener(v->{
             Intent intent = new Intent(getApplicationContext(), NotificationClass.class);
-            startActivity(intent);
+            putExtrasIntent(intent);
         });
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         }
 
+        // Aloca as strings no header
     public void allocateDrawerParms(String name, String email){
         View header = navigationView.getHeaderView(0);
         TextView nameTextView;
@@ -89,6 +91,7 @@ public class DrawerBaseActivity extends AppCompatActivity {
         emailTextView.setText(email);
     }
 
+    // String necessarias para o header
     public void putExtrasIntent(Intent intent){
         intent.putExtra("u_id", u_id);
         intent.putExtra("user_key", user_key);

@@ -56,7 +56,6 @@ public class LocDataActivity extends DrawerBaseActivity {
         ActivityLocDataBinding activityLocDataBinding = ActivityLocDataBinding.inflate(getLayoutInflater());
         setContentView(activityLocDataBinding.getRoot());
         // Strings necessarias para o header
-       // allocateDrawerParms(name, email);
         d_id = getIntent().getStringExtra("d_id");
         type = getIntent().getStringExtra("type");
         String type_pt = getIntent().getStringExtra("type_pt");
@@ -65,7 +64,6 @@ public class LocDataActivity extends DrawerBaseActivity {
         dataValue = new ArrayList<>();
         Button type_btn = findViewById(R.id.type_btn);
         type_btn.setText(type_pt);
-        // Descrição para o gráfico
 
         // Calendar para mostrar o dia atual
         Calendar c = Calendar.getInstance();

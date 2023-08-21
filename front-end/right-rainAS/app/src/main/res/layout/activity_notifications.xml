@@ -1,35 +1,25 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout"
-    android:layout_width="fill_parent"
-    android:layout_height="64dp"
-    android:padding="10dp" >
-    <ImageView
-        android:src="@mipmap/ic_launcher"
-        android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="10dp" />
+    android:id="@+id/linearLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/title"
+    <ListView
+        android:id="@+id/avisos_list"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/image"
-        android:text="Testing"
-        android:textColor="#000"
-        android:textSize="13dp"
-        tools:ignore="TextSizeCheck" />
+        android:layout_height="0dp"
+        android:layout_weight="5">
+    </ListView>
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:layout_toRightOf="@id/image"
-        android:text="@string/testing_is_awesome"
-        android:textColor="#000"
-        android:textSize="13dp"
-        tools:ignore="TextSizeCheck" />
-</RelativeLayout>
+    <Button
+        android:id="@+id/botao_limpar"
+        android:layout_width="250dp"
+        android:layout_height="66dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/yellow"
+        android:text="@string/clean"
+        android:layout_gravity="center"
+        android:textSize="21sp"
+        />
+</LinearLayout>

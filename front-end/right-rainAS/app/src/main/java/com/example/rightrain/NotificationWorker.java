@@ -42,7 +42,7 @@ public class NotificationWorker extends Worker {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "MyNotification")
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle("Bem vindo ao RightRain!")
-                .setContentText("Você está logado desde " + LocalDate.now() + "às " + LocalTime.now())
+                .setContentText("Você está logado desde " + LocalDate.now() + " às " + LocalTime.now())
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);

@@ -70,6 +70,7 @@ void setup() {
             delay(5000);
         }
     }
+    pinMode(5, INPUT);  // GPIO 5 is used for the moisture sensor
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
@@ -92,6 +93,8 @@ void loop() {
     float temperature = dht.readTemperature();
     float humidity = dht.readHumidity();
 
+    int moistureValue = digitalRead(5);
+
     if (!isnan(temperature) && !isnan(humidity)) {
         // ... (your sensor reading code)
     } else {
@@ -107,6 +110,7 @@ void loop() {
     message += "\"date\": \"" + currentDateTime + "\",";
     message += "\"temperature\": " + String(temperature, 1) + ",";
     message += "\"air_humidity\": " + String(humidity);
+    message += "\"moisture\": " + String(moistureValue) + ",";
     message += "}";
 
     client.publish(topic, message.c_str());

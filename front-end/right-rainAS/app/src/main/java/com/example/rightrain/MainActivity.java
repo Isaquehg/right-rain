@@ -29,6 +29,9 @@ import com.mapbox.maps.Style;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,11 +50,13 @@ public class MainActivity extends DrawerBaseActivity {
     private ArrayList<String> d_id;
 
     // Strings do banco de dados das notificações
-    private static final String BANCO_NOME = "bd_aviso";
-    private static final String NOME_TABELA = "tb_aviso";
-    private static final String COLUNA_CODIGO = "id";
-    private static final String COLUNA_AVISO = "AvisoLogin";
-    private static final String COLUNA_DATE = "Data";
+    private static final String NAME_DB = "bd_notf";
+    private static final String NAME_TABLE = "tb_notf";
+    private static final String COLUMN_CODE = "id";
+    private static final String NOTF_COLUMN = "Notf";
+    private static final String DATE_COLUMN = "Date";
+    private static final String HOUR_COLUMN = "Hour";
+    private static final String USER_COLUMN = "User";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,9 +153,10 @@ public class MainActivity extends DrawerBaseActivity {
         public void createDatabase(){
             SQLiteDatabase db;
             try {
-                db = openOrCreateDatabase(BANCO_NOME, MODE_PRIVATE, null);
-                String QUERY_COLUNA = "CREATE TABLE IF NOT EXISTS " + NOME_TABELA + " ("
-                        + COLUNA_CODIGO + " INTEGER PRIMARY KEY," + COLUNA_AVISO + " TEXT, " + COLUNA_DATE + " TEXT)";
+                db = openOrCreateDatabase(NAME_DB, MODE_PRIVATE, null);
+                String QUERY_COLUNA = "CREATE TABLE IF NOT EXISTS " + NAME_TABLE + " ("
+                        + COLUMN_CODE + " INTEGER PRIMARY KEY," + NOTF_COLUMN + " TEXT, " + DATE_COLUMN + " TEXT, " + HOUR_COLUMN +
+                        " TEXT, " + USER_COLUMN + " TEXT)";
                 db.execSQL(QUERY_COLUNA);
                 db.close();
             } catch (Exception e) {
@@ -161,10 +167,14 @@ public class MainActivity extends DrawerBaseActivity {
     public void createNotOnDatabase(String aviso){
         SQLiteDatabase db;
         try{
-            db = openOrCreateDatabase(BANCO_NOME, MODE_PRIVATE, null);
-            String sql = "INSERT INTO " + NOME_TABELA + " (" + COLUNA_AVISO + ") VALUES (?)";
+            db = openOrCreateDatabase(NAME_DB, MODE_PRIVATE, null);
+            String sql = "INSERT INTO " + NAME_TABLE + " (" + NOTF_COLUMN + "," + DATE_COLUMN + "," + HOUR_COLUMN + "," +
+                    USER_COLUMN + ") VALUES (?, ?, ?, ?)";
             SQLiteStatement stmt = db.compileStatement(sql);
             stmt.bindString(1,aviso);
+            stmt.bindString(2, String.valueOf(LocalDate.now()));
+            stmt.bindString(3, String.valueOf(LocalTime.now()));
+            stmt.bindString(4, name);
             stmt.executeInsert();
             db.close();
         }catch (Exception e){

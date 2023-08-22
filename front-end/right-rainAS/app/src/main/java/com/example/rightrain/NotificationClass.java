@@ -1,17 +1,18 @@
 package com.example.rightrain;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rightrain.databinding.ActivityNotificationsBinding;
 
@@ -19,65 +20,77 @@ import java.util.ArrayList;
 
 public class NotificationClass extends DrawerBaseActivity {
     // Strings do banco de dados das notificações
-    private static final String BANCO_NOME = "bd_aviso";
-    private static final String NOME_TABELA = "tb_aviso";
-    private static final String COLUNA_CODIGO = "id";
-    private static final String COLUNA_AVISO = "AvisoLogin";
-    ListView listViewWarnings;
+    private static final String NAME_BD = "bd_notf";
+    private static final String TABLE_NAME = "tb_notf";
+    private static final String CODE_COLUMN = "id";
+    private static final String NOTF_COLUMN = "Notf";
+    ListView listViewNotf;
     ArrayList<String> linhas;
     ArrayList<Integer> arrayIds;
     SQLiteDatabase db;
+    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Configuração da atividade base
+        // BaseActivity Configuration
         ActivityNotificationsBinding activityNotificationsBinding = ActivityNotificationsBinding.inflate(getLayoutInflater());
         setContentView(activityNotificationsBinding.getRoot());
-        // Listando avisos
-        listViewWarnings = findViewById(R.id.avisos_list);
-        ListarAvisos();
+
+        // Listing notifications
+        listViewNotf = findViewById(R.id.avisos_list);
+        ListNotf();
         if(linhas.isEmpty()){
             Toast.makeText(this, "Nenhum aviso registrado!", Toast.LENGTH_LONG).show();
         }
-        // Configuração do botao
+        // Configuring what happens if user clicks in an element of a listView
+        listViewNotf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), NotfInfoActivity.class);
+                intent.putExtra("position", position);
+                putExtrasIntent(intent);
+            }
+        });
+
+        // Configuring Button
         Button clean_btn = findViewById(R.id.botao_limpar);
         clean_btn.setOnClickListener(v->{
-            LimparAvisos();
+            DeleteNotf();
         });
     }
-    public void ListarAvisos(){
+    public void ListNotf(){
         try {
             arrayIds = new ArrayList<>();
-            db = openOrCreateDatabase(BANCO_NOME, MODE_PRIVATE, null);
-            String query = "SELECT " + COLUNA_CODIGO + ", " + COLUNA_AVISO + " FROM " + NOME_TABELA;
-            Cursor meuCursor = db.rawQuery(query, null);
+            db = openOrCreateDatabase(NAME_BD, MODE_PRIVATE, null);
+            String query = "SELECT " + CODE_COLUMN + ", " + NOTF_COLUMN + " FROM " + TABLE_NAME;
+            Cursor cursor = db.rawQuery(query, null);
             linhas = new ArrayList<>();
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, linhas
+            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, linhas
             );
-            listViewWarnings.setAdapter(adapter);
-            meuCursor.moveToFirst();
-            while(meuCursor!=null){
-                linhas.add(meuCursor.getString(1));
-                arrayIds.add(meuCursor.getInt(0));
-                meuCursor.moveToNext();
+            listViewNotf.setAdapter(adapter);
+            cursor.moveToFirst();
+            while(cursor!=null){
+                linhas.add(cursor.getString(1));
+                arrayIds.add(cursor.getInt(0));
+                cursor.moveToNext();
             }
-            meuCursor.close();
+            cursor.close();
 
         }catch (Exception e){
             e.printStackTrace();
         }
     }
-    public void LimparAvisos(){
+    public void DeleteNotf(){
         try{
-            db = openOrCreateDatabase(BANCO_NOME, MODE_PRIVATE, null);
-            String sql = "DELETE FROM " + NOME_TABELA + " WHERE " + COLUNA_CODIGO +" =?";
+            db = openOrCreateDatabase(NAME_BD, MODE_PRIVATE, null);
+            String sql = "DELETE FROM " + TABLE_NAME + " WHERE " + CODE_COLUMN +" =?";
             SQLiteStatement stmt = db.compileStatement(sql);
             for (int i = 0; i < linhas.size(); i++) {
                 stmt.bindLong(1, arrayIds.get(i));
                 stmt.executeUpdateDelete();
             }
-            ListarAvisos();
+            ListNotf();
             db.close();
         }catch(Exception e){
             e.printStackTrace();

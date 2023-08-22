@@ -41,4 +41,5 @@
     <string name="close">Fechar</string>
     <string name="open">Abrir</string>
     <string name="clean">Limpar</string>
+    <string name="new_login">Novo Login!</string>
 </resources>

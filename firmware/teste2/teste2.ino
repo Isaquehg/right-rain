@@ -100,7 +100,13 @@ void loop() {
 
     String message = "{";
     message += "\"u_id\": \"64caccb46b1a8787775d075d\",";
-    // ... (rest of your JSON construction)
+    message += "\"d_id\": \"plmokmuhbtrver\",";
+    message += "\"d_name\": \"Fetin Device\",";
+    message += "\"latitude\": " + String(-21.6804, 6) + ",";
+    message += "\"longitude\": " + String(-45.9190, 6) + ",";
+    message += "\"date\": \"" + currentDateTime + "\",";
+    message += "\"temperature\": " + String(temperature, 1) + ",";
+    message += "\"air_humidity\": " + String(humidity);
     message += "}";
 
     client.publish(topic, message.c_str());
@@ -110,10 +116,18 @@ void loop() {
 }
 
 String getFormattedDateTime(unsigned long epochTime) {
+    unsigned long year, month, day, hour, minute, second;
+
+    // Extract date and time components from epochTime
+    second = epochTime % 60;
+    minute = (epochTime / 60) % 60;
+    hour = (epochTime / 3600) % 24;
+    day = (epochTime / 86400) % 31 + 1; // Assuming each month has 31 days
+    month = (epochTime / 2592000) % 12 + 1; // Assuming there are 30.44 days in a month (on average)
+    year = (epochTime / 31536000UL) + 1970; // 31536000 seconds in a year
+
     char buffer[20];
-    snprintf(buffer, sizeof(buffer), "%04d-%02d-%02dT%02d:%02d:%02d",
-             year(epochTime), month(epochTime), day(epochTime),
-             hour(epochTime), minute(epochTime), second(epochTime));
+    snprintf(buffer, sizeof(buffer), "%04lu-%02lu-%02luT%02lu:%02lu:%02lu", year, month, day, hour, minute, second);
 
     return String(buffer);
 }

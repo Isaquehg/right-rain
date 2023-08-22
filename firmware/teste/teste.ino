@@ -116,18 +116,45 @@ void loop() {
 }
 
 String getFormattedDateTime(unsigned long epochTime) {
-    unsigned long year, month, day, hour, minute, second;
+    unsigned long seconds = epochTime;
+    unsigned long minutes = seconds / 60;
+    unsigned long hours = minutes / 60;
+    unsigned long days = hours / 24;
+    unsigned long years = 1970;
 
-    // Extract date and time components from epochTime
-    second = epochTime % 60;
-    minute = (epochTime / 60) % 60;
-    hour = (epochTime / 3600) % 24;
-    day = (epochTime / 86400) % 31 + 1; // Assuming each month has 31 days
-    month = (epochTime / 2592000) % 12 + 1; // Assuming there are 30.44 days in a month (on average)
-    year = (epochTime / 31536000UL) + 1970; // 31536000 seconds in a year
+    // Calculate years, considering leap years
+    while (days >= 365) {
+        if (years % 4 == 0 && (years % 100 != 0 || years % 400 == 0)) {
+            if (days >= 366) {
+                days -= 366;
+                years++;
+            } else {
+                break;
+            }
+        } else {
+            days -= 365;
+            years++;
+        }
+    }
+
+    // Calculate months and days
+    unsigned long monthDays[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (years % 4 == 0 && (years % 100 != 0 || years % 400 == 0)) {
+        monthDays[1] = 29; // Leap year
+    }
+    unsigned long month = 1;
+    while (days >= monthDays[month - 1]) {
+        days -= monthDays[month - 1];
+        month++;
+    }
+
+    // Calculate hours, minutes, and seconds
+    hours %= 24;
+    minutes %= 60;
+    seconds %= 60;
 
     char buffer[20];
-    snprintf(buffer, sizeof(buffer), "%04lu-%02lu-%02luT%02lu:%02lu:%02lu", year, month, day, hour, minute, second);
+    snprintf(buffer, sizeof(buffer), "%04lu-%02lu-%02luT%02lu:%02lu:%02lu", years, month, days + 1, hours, minutes, seconds);
 
     return String(buffer);
 }

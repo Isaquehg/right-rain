@@ -1,5 +1,2 @@
-EC2 API
-ssh -i "myKeys.pem" ubuntu@ec2-18-191-252-222.us-east-2.compute.amazonaws.com
-
 EC2 MQTT
 ssh -i "myKeys.pem" ubuntu@ec2-3-21-168-204.us-east-2.compute.amazonaws.com

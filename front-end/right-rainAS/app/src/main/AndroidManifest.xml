@@ -60,6 +60,10 @@
             android:name=".NotfInfoActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

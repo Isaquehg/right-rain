@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -24,7 +25,9 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,6 +50,7 @@ public class LocDataActivity extends DrawerBaseActivity {
     private String type;
     private ArrayList<Entry> dataValue;
     private ArrayList<Integer> values;
+    private ArrayList<String> timestamps;
     private String label;
 
     @Override
@@ -65,7 +69,7 @@ public class LocDataActivity extends DrawerBaseActivity {
         Button type_btn = findViewById(R.id.type_btn);
         type_btn.setText(type_pt);
 
-        // Calendar para mostrar o dia atual
+        // Calendar to show the current date
         Calendar c = Calendar.getInstance();
         int mYear = c.get(Calendar.YEAR);
         int mMonth = c.get(Calendar.MONTH);
@@ -74,7 +78,7 @@ public class LocDataActivity extends DrawerBaseActivity {
         endDate = findViewById(R.id.end_date_btn);
         lineChart = findViewById(R.id.graph1);
         lineChart.setNoDataText("Selecione a data inicial e a data final!");
-        // Label do gráfico
+        // Graphic label
         if(type.equals("temperature")){
             label = "ºC";
         }else if(type.equals("rainfall")){
@@ -82,6 +86,7 @@ public class LocDataActivity extends DrawerBaseActivity {
         }else{
             label = "kg/m³";
         }
+
         // Executando o método getData() para mostrar valores padrão
         startDate.setText(startDate1);
         endDate.setText(endDate1);
@@ -114,6 +119,19 @@ public class LocDataActivity extends DrawerBaseActivity {
             }, mYear, mMonth, mDay);
             datePickerDialog.show();
         });
+        lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                int i = (int) e.getX();
+                String text = "Timestamp: " + timestamps.get(i);
+                Toast.makeText(LocDataActivity.this, text, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
 
         endDate.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(
@@ -144,6 +162,7 @@ public class LocDataActivity extends DrawerBaseActivity {
         });
     }
 
+    // Add values to the graphic
     private List<Entry> dataValues() {
         for (int i = 0; i < values.size(); i++) {
             dataValue.add(new Entry(i, values.get(i)));
@@ -153,6 +172,7 @@ public class LocDataActivity extends DrawerBaseActivity {
 
     private void getData(){
         values = new ArrayList<>();
+        timestamps = new ArrayList<>();
         RequestQueue mQueue = Volley.newRequestQueue(this);
         String url = ip + "/home/" + u_id + "/" + d_id + "/" + type + "?start_date=" + startDate1 + "&end_date=" + endDate1;
         Log.d("url", url);
@@ -164,8 +184,11 @@ public class LocDataActivity extends DrawerBaseActivity {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject data1 = jsonArray.getJSONObject(i);
                         values.add(data1.getInt("value"));
+                        timestamps.add(data1.getString("timestamp"));
                     }
                     LineDataSet lineDataSet = new LineDataSet(dataValues(), label);
+                    int color = Color.argb(180, 242,174,28);
+                    lineDataSet.setColor(color);
                     ArrayList<ILineDataSet> dataSets = new ArrayList<>();
                     dataSets.add(lineDataSet);
                     LineData data = new LineData(dataSets);

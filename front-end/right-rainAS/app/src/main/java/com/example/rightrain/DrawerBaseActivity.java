@@ -66,6 +66,10 @@ public class DrawerBaseActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), DevicesListActivity.class);
                     putExtrasIntent(intent);
                 }
+                if(id == R.id.settings){
+                    Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                    startActivity(intent);
+                }
                 return true;
             }
         });

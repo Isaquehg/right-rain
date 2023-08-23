@@ -18,7 +18,7 @@ const char* mqtt_username = "isaquehg";
 const char* mqtt_password = "1arry_3arry";
 
 // DHT11
-#define DHTPIN 4
+#define DHTPIN 2
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -100,10 +100,10 @@ void loop() {
 
     String message = "{";
     message += "\"u_id\": \"64caccb46b1a8787775d075d\",";
-    message += "\"d_id\": \"plmokmuhbtrver\",";
+    message += "\"d_id\": \"abcdefghijk\",";
     message += "\"d_name\": \"Fetin Device\",";
-    message += "\"latitude\": " + String(-21.6804, 6) + ",";
-    message += "\"longitude\": " + String(-45.9190, 6) + ",";
+    message += "\"latitude\": " + String(-22.2583, 6) + ",";
+    message += "\"longitude\": " + String(-45.6963, 6) + ",";
     message += "\"date\": \"" + currentDateTime + "\",";
     message += "\"temperature\": " + String(temperature, 1) + ",";
     message += "\"air_humidity\": " + String(humidity);

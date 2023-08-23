@@ -104,9 +104,9 @@ void loop() {
     String message = "{";
     message += "\"u_id\": \"64caccb46b1a8787775d075d\",";
     message += "\"d_id\": \"plmokmuhbtrver\",";
-    message += "\"d_name\": \"Fetin Device\",";
-    message += "\"latitude\": " + String(-21.6804, 6) + ",";
-    message += "\"longitude\": " + String(-45.9190, 6) + ",";
+    message += "\"d_name\": \"Fetin Device 2\",";
+    message += "\"latitude\": " + String(-22.256604, 6) + ",";
+    message += "\"longitude\": " + String(-45.695863, 6) + ",";
     message += "\"date\": \"" + currentDateTime + "\",";
     message += "\"temperature\": " + String(temperature, 1) + ",";
     message += "\"air_humidity\": " + String(humidity);

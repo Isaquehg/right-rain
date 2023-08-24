@@ -70,7 +70,10 @@ public class MainActivity extends DrawerBaseActivity {
         de_list1 = findViewById(R.id.de_list);
         mapView = findViewById(R.id.mapView);
         mQueue = Volley.newRequestQueue(this);
+        // Getting data from devices
         getData();
+        // We are going to use yellow color for de_list1
+        de_list1.setBackgroundColor(getResources().getColor(R.color.yellow));
         de_list1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -120,7 +123,7 @@ public class MainActivity extends DrawerBaseActivity {
                                 coordinates.add(new Pair<>(latitude_aux, longitude_aux));
                                 setLocations(coordinates);
                             }
-                            listAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, locList);
+                            listAdapter = new ArrayAdapter<String>(MainActivity.this, R.layout.custom_adapter, R.id.textview, locList);
                             de_list1.setAdapter(listAdapter);
                         } catch (JSONException e) {
                             e.printStackTrace();

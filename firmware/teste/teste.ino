@@ -7,8 +7,8 @@
 #include <WiFiUdp.h>
 
 // WiFi
-const char* ssid = "Ap 106";
-const char* password = "inatel123";
+const char* ssid = "WLL-Inatel";
+const char* password = "inatelsemfio";
 
 // MQTT Broker
 const char* mqtt_broker = "fbe1817f.ala.us-east-1.emqxsl.com";

@@ -22,6 +22,10 @@ const char* mqtt_password = "1arry_3arry";
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
 
+// Soil Moisture
+const int potPin = A0;
+int potValue;
+
 // GPS
 TinyGPSPlus gps;
 
@@ -70,7 +74,6 @@ void setup() {
             delay(5000);
         }
     }
-    pinMode(5, INPUT);  // GPIO 5 is used for the moisture sensor
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
@@ -93,24 +96,29 @@ void loop() {
     float temperature = dht.readTemperature();
     float humidity = dht.readHumidity();
 
-    int moistureValue = digitalRead(5);
+    // Mapping soil moisture value to %
+    potValue = analogRead(potPin);
+    float mappedHumidity = map(potValue, 0, 1023, 0, 100);
 
     if (!isnan(temperature) && !isnan(humidity)) {
         // ... (your sensor reading code)
     } else {
         Serial.println("Failed to read from DHT sensor!");
     }
+    if (isnan(mappedHumidity)){
+        Serial.println("Failed to read from Soil Moisture sensor!");
+    }
 
     String message = "{";
     message += "\"u_id\": \"64caccb46b1a8787775d075d\",";
     message += "\"d_id\": \"plmokmuhbtrver\",";
     message += "\"d_name\": \"Fetin Device 2\",";
-    message += "\"latitude\": " + String(-22.256604, 6) + ",";
-    message += "\"longitude\": " + String(-45.695863, 6) + ",";
+    message += "\"latitude\": " + String(-22.2566, 6) + ",";
+    message += "\"longitude\": " + String(-45.6958, 6) + ",";
     message += "\"date\": \"" + currentDateTime + "\",";
     message += "\"temperature\": " + String(temperature, 1) + ",";
-    message += "\"air_humidity\": " + String(humidity);
-    message += "\"moisture\": " + String(moistureValue) + ",";
+    message += "\"air_humidity\": " + String(humidity) + ",";
+    message += "\"soil_humidity\": " + String(mappedHumidity);
     message += "}";
 
     client.publish(topic, message.c_str());

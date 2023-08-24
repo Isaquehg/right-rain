@@ -19,6 +19,7 @@
         android:backgroundTint="@color/yellow"
         android:layout_gravity="center_horizontal"
         android:text="@string/device_1"
+        android:textStyle="bold"
         android:drawableLeft="@drawable/baseline_location_on_24"
         android:textSize="23sp">
     </Button>
@@ -34,8 +35,10 @@
             android:layout_height="200dp"
             android:id="@+id/soil_button"
             android:text="@string/soil_humidity"
-            android:drawableStart="@drawable/baseline_cloud_24"
-            android:textColor="@color/green"
+            android:drawableStart="@drawable/baseline_water_drop_24"
+            android:paddingStart="15dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:scaleType="fitCenter"
             android:textSize="20sp"
             android:background="@drawable/custom_button"
@@ -47,10 +50,12 @@
             android:layout_height="200dp"
             android:id="@+id/humidity"
             android:text="@string/air_humidity"
-            android:textColor="@color/green"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:layout_margin="10dp"
             android:drawableStart="@drawable/baseline_water_drop_24"
+            android:paddingStart="15dp"
+            android:textStyle="bold"
             android:background="@drawable/custom_button">
         </android.widget.Button>
     </LinearLayout>
@@ -67,8 +72,9 @@
             android:layout_height="200dp"
             android:id="@+id/temperature"
             android:text="@string/temperature"
-            android:textColor="@color/green"
+            android:textColor="@color/white"
             android:textSize="20sp"
+            android:textStyle="bold"
             android:drawableStart="@drawable/baseline_tungsten_24"
             android:background="@drawable/custom_button">
         </android.widget.Button>

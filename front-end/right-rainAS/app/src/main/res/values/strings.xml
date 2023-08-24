@@ -27,8 +27,8 @@
     <string name="settings">Configurações</string>
     <string name="add_device">Adicionar dispositivo</string>
     <string name="notifications">Avisos</string>
-    <string name="soil_humidity">Umidade - Solo</string>
-    <string name="air_humidity">Umidade - Ar</string>
+    <string name="soil_humidity">Umidade\nSolo</string>
+    <string name="air_humidity">Umidade\nAr</string>
     <string name="temperature">Temperatura</string>
     <string name="device_1">Device 1</string>
     <string name="nav_open">Open</string>

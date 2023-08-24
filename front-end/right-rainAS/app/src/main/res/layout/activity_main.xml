@@ -26,6 +26,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:mapbox_cameraTargetLat="40.7128"
                     app:mapbox_cameraTargetLng="-74.0060"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     app:mapbox_cameraZoom="9.0" />
 
             <ListView
@@ -34,6 +36,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:divider="@android:color/white"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
                 android:dividerHeight="10sp">
             </ListView>
         </LinearLayout>

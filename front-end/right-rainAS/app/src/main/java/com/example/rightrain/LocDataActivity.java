@@ -22,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.rightrain.databinding.ActivityLocDataBinding;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -33,6 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -56,15 +58,15 @@ public class LocDataActivity extends DrawerBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Configuração da atividade base
+        // Activity base
         ActivityLocDataBinding activityLocDataBinding = ActivityLocDataBinding.inflate(getLayoutInflater());
         setContentView(activityLocDataBinding.getRoot());
-        // Strings necessarias para o header
+        // Necessary Strings for header
         d_id = getIntent().getStringExtra("d_id");
         type = getIntent().getStringExtra("type");
         String type_pt = getIntent().getStringExtra("type_pt");
         startDate1 = "2019-01-01";
-        endDate1 = "2022-11-25";
+        endDate1 = String.valueOf(LocalDate.now());
         dataValue = new ArrayList<>();
         Button type_btn = findViewById(R.id.type_btn);
         type_btn.setText(type_pt);
@@ -77,17 +79,17 @@ public class LocDataActivity extends DrawerBaseActivity {
         startDate = findViewById(R.id.start_date_btn);
         endDate = findViewById(R.id.end_date_btn);
         lineChart = findViewById(R.id.graph1);
-        lineChart.setNoDataText("Selecione a data inicial e a data final!");
+        // When the graphic has no data available, it will show a message
+        lineChart.setNoDataText(getString(R.string.unavailable));
+
         // Graphic label
         if(type.equals("temperature")){
             label = "ºC";
-        }else if(type.equals("rainfall")){
-            label = "mm";
-        }else{
-            label = "kg/m³";
+        }else {
+            label = "%";
         }
 
-        // Executando o método getData() para mostrar valores padrão
+        // Executing getData() to show default values
         startDate.setText(startDate1);
         endDate.setText(endDate1);
         getData();
@@ -123,10 +125,10 @@ public class LocDataActivity extends DrawerBaseActivity {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 int i = (int) e.getX();
-                String text = "Timestamp: " + timestamps.get(i);
+                Integer text1 = values.get(i);
+                String text = text1 + label + " registrado em "  + timestamps.get(i);
                 Toast.makeText(LocDataActivity.this, text, Toast.LENGTH_LONG).show();
             }
-
             @Override
             public void onNothingSelected() {
 
@@ -187,8 +189,10 @@ public class LocDataActivity extends DrawerBaseActivity {
                         timestamps.add(data1.getString("timestamp"));
                     }
                     LineDataSet lineDataSet = new LineDataSet(dataValues(), label);
-                    int color = Color.argb(180, 242,174,28);
+                    // We are going to use yellow color
+                    int color = Color.argb(255, 242,174,28);
                     lineDataSet.setColor(color);
+                    lineDataSet.setCircleColor(color);
                     ArrayList<ILineDataSet> dataSets = new ArrayList<>();
                     dataSets.add(lineDataSet);
                     LineData data = new LineData(dataSets);
@@ -201,7 +205,7 @@ public class LocDataActivity extends DrawerBaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext() /* MyActivity */, "Selecione outros parametros!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.select_other_params), Toast.LENGTH_SHORT).show();
                 error.printStackTrace();
             }
         }){

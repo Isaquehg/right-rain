@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import com.example.rightrain.databinding.ActivityDevicesBinding;
-import com.example.rightrain.databinding.ActivityMainBinding;
 
 public class DevicesActivity extends DrawerBaseActivity {
     private String user_key;
@@ -14,26 +13,26 @@ public class DevicesActivity extends DrawerBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Configuração da atividade base
+        // Activity base setup
         ActivityDevicesBinding activityDevicesBinding = ActivityDevicesBinding.inflate(getLayoutInflater());
         setContentView(activityDevicesBinding.getRoot());
         // Buttons
         Button title = findViewById(R.id.name_loc_btn);
-        Button rainfall_btn = findViewById(R.id.rainfall);
+        Button soil_btn = findViewById(R.id.soil_button);
         Button temperatue_btn = findViewById(R.id.temperature);
         Button humidity_btn = findViewById(R.id.humidity);
-        // Strings da MainActivity
+        // Strings - MainActivity
         user_key = getIntent().getStringExtra("user_key");
         u_id = getIntent().getStringExtra("u_id");
         d_id = getIntent().getStringExtra("d_id");
         String d_name = getIntent().getStringExtra("d_name");
-        // Alocando na BaseActivity
+        // BaseActivity allocation
         title.setText(d_name);
 
-        rainfall_btn.setOnClickListener(v->{
+        soil_btn.setOnClickListener(v->{
             Intent intent = new Intent(getApplicationContext(), LocDataActivity.class);
-            intent.putExtra("type", "rainfall");
-            intent.putExtra("type_pt", "Pluviosidade");
+            intent.putExtra("type", "soil_humidity");
+            intent.putExtra("type_pt", "Umidade do solo");
             postUserParms(intent);
         });
         temperatue_btn.setOnClickListener(v->{

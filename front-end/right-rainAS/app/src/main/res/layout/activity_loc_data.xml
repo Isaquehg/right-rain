@@ -14,7 +14,7 @@
         android:layout_gravity="center_horizontal"
         android:backgroundTint="@color/green"
         android:textSize="20sp"
-        android:text="@string/rainfall">
+        android:text="@string/soil_humidity">
     </Button>
     <FrameLayout
         android:layout_width="match_parent"

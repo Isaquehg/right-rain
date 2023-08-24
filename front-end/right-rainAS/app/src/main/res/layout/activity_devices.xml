@@ -18,7 +18,7 @@
         android:layout_height="70dp"
         android:backgroundTint="@color/yellow"
         android:layout_gravity="center_horizontal"
-        android:text="@string/location1"
+        android:text="@string/device_1"
         android:drawableLeft="@drawable/baseline_location_on_24"
         android:textSize="23sp">
     </Button>
@@ -32,10 +32,11 @@
         <android.widget.Button
             android:layout_width="180dp"
             android:layout_height="200dp"
-            android:id="@+id/rainfall"
-            android:text="@string/rainfall"
-            android:drawableLeft="@drawable/baseline_cloud_24"
+            android:id="@+id/soil_button"
+            android:text="@string/soil_humidity"
+            android:drawableStart="@drawable/baseline_cloud_24"
             android:textColor="@color/green"
+            android:scaleType="fitCenter"
             android:textSize="20sp"
             android:background="@drawable/custom_button"
             android:gravity="center">
@@ -45,7 +46,7 @@
             android:layout_width="180dp"
             android:layout_height="200dp"
             android:id="@+id/humidity"
-            android:text="@string/humidity"
+            android:text="@string/air_humidity"
             android:textColor="@color/green"
             android:textSize="20sp"
             android:layout_margin="10dp"
@@ -70,17 +71,6 @@
             android:textSize="20sp"
             android:drawableStart="@drawable/baseline_tungsten_24"
             android:background="@drawable/custom_button">
-        </android.widget.Button>
-
-        <android.widget.Button
-            android:id="@+id/temperature2"
-            android:layout_width="180dp"
-            android:layout_height="200dp"
-            android:background="@drawable/custom_button"
-            android:text="@string/other"
-            android:textColor="@color/black"
-            android:layout_margin="10dp"
-            android:textSize="20sp">
         </android.widget.Button>
     </LinearLayout>
 </LinearLayout>

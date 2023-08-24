@@ -31,7 +31,9 @@
             <ListView
                 android:id="@+id/de_list"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:divider="@android:color/white"
+                android:dividerHeight="5sp">
             </ListView>
         </LinearLayout>
 

@@ -72,8 +72,8 @@ public class MainActivity extends DrawerBaseActivity {
         mQueue = Volley.newRequestQueue(this);
         // Getting data from devices
         getData();
-        // We are going to use yellow color for de_list1
-        de_list1.setBackgroundColor(getResources().getColor(R.color.yellow));
+        // We are going to set rounded corners for de_list1
+        de_list1.setBackgroundResource(R.drawable.custom_listview);
         de_list1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

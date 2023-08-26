@@ -2,11 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="Notificações" />
-    <SwitchPreferenceCompat
-        app:key="Login"
+    <SwitchPreference
+        app:key="login"
         android:theme="@style/SwitchTheme"
         android:defaultValue="false"
         app:title="Avisos"
         app:summary="Receber avisos de login">
-    </SwitchPreferenceCompat>
+    </SwitchPreference>
 </PreferenceScreen>

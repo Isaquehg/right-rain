@@ -39,6 +39,7 @@ public class NotificationClass extends DrawerBaseActivity {
 
         // Listing notifications
         listViewNotf = findViewById(R.id.avisos_list);
+        linhas = new ArrayList<>();
         ListNotf();
         if(linhas.isEmpty()){
             Toast.makeText(this, "Nenhum aviso registrado!", Toast.LENGTH_LONG).show();
@@ -65,7 +66,6 @@ public class NotificationClass extends DrawerBaseActivity {
             db = openOrCreateDatabase(NAME_BD, MODE_PRIVATE, null);
             String query = "SELECT " + CODE_COLUMN + ", " + NOTF_COLUMN + " FROM " + TABLE_NAME;
             Cursor cursor = db.rawQuery(query, null);
-            linhas = new ArrayList<>();
             adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, linhas
             );
             listViewNotf.setAdapter(adapter);

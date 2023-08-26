@@ -42,5 +42,5 @@
     <string name="new_login">Novo Login!</string>
     <string name="unavailable">Dados indisponiveis!</string>
     <string name="select_other_params">Selecione outros parametros!</string>
-    <string name="registered_in"> registrado em </string>
+    <string name="registered_in">\u0020registrado\u0020em\u0020</string>
 </resources>

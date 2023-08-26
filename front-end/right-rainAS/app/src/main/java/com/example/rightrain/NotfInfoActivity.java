@@ -33,7 +33,7 @@ public class NotfInfoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Novo Login!");
+        getSupportActionBar().setTitle(getString(R.string.new_login));
         getNotf(position);
         content.setText("O usuário " + name + " fez login na data " + date + " às " + hour);
     }

@@ -91,10 +91,11 @@ public class MainActivity extends DrawerBaseActivity {
             }
         });
 
-        // Notifications
+        // Login notification
+        createDatabase();
         boolean primeiro_login = getIntent().getBooleanExtra("primeiro_login", false);
         SharedPreferences sharedPr = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean is_enabled = sharedPr.getBoolean("Login", false);
+        boolean is_enabled = sharedPr.getBoolean("login", false);
         if (primeiro_login && is_enabled) {
             WorkRequest uploadWorkRequest =
                     new OneTimeWorkRequest.Builder(NotificationWorker.class)
@@ -102,7 +103,6 @@ public class MainActivity extends DrawerBaseActivity {
             WorkManager
                     .getInstance(this)
                     .enqueue(uploadWorkRequest);
-            createDatabase();
             createNotOnDatabase("Novo Login!");
         }
     }

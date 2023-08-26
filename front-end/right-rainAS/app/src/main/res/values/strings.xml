@@ -33,10 +33,8 @@
     <string name="device_1">Device 1</string>
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
-    <string name="testing_is_awesome">Testing is awesome</string>
     <string name="startDate">Data inicial</string>
     <string name="finalDate">Data final</string>
-    <string name="other">Outro</string>
     <string name="options">Opções</string>
     <string name="close">Fechar</string>
     <string name="open">Abrir</string>
@@ -44,4 +42,5 @@
     <string name="new_login">Novo Login!</string>
     <string name="unavailable">Dados indisponiveis!</string>
     <string name="select_other_params">Selecione outros parametros!</string>
+    <string name="registered_in"> registrado em </string>
 </resources>

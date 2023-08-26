@@ -18,4 +18,8 @@
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_height">1dp</item>
     </style>
+
+    <style name="SwitchTheme" parent="@style/Theme.AppCompat">
+        <item name="colorSwitchThumbNormal">@color/green</item>
+    </style>
 </resources>

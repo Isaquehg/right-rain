@@ -3,6 +3,7 @@ package com.example.rightrain;
 import androidx.annotation.NonNull;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.preference.PreferenceManager;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
@@ -61,12 +63,12 @@ public class MainActivity extends DrawerBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Configuração da atividade base
+        // Base activity setting
         ActivityMainBinding activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(activityMainBinding.getRoot());
         allocateDrawerParms(name, email);
 
-        // Configurações dos dados do usuário
+        // User data settings
         de_list1 = findViewById(R.id.de_list);
         mapView = findViewById(R.id.mapView);
         mQueue = Volley.newRequestQueue(this);
@@ -89,9 +91,11 @@ public class MainActivity extends DrawerBaseActivity {
             }
         });
 
-        // Notificações
+        // Notifications
         boolean primeiro_login = getIntent().getBooleanExtra("primeiro_login", false);
-        if (primeiro_login) {
+        SharedPreferences sharedPr = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean is_enabled = sharedPr.getBoolean("Login", false);
+        if (primeiro_login && is_enabled) {
             WorkRequest uploadWorkRequest =
                     new OneTimeWorkRequest.Builder(NotificationWorker.class)
                             .build();

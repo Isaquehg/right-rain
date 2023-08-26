@@ -5,7 +5,9 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="colorPrimary">@color/white</item>
+        <item name="colorAccent">@color/green</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:forceDarkAllowed">false</item>
+        <item name="android:trackTint">@color/green</item>
     </style>
 </resources>

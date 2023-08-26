@@ -126,7 +126,7 @@ public class LocDataActivity extends DrawerBaseActivity {
             public void onValueSelected(Entry e, Highlight h) {
                 int i = (int) e.getX();
                 Integer text1 = values.get(i);
-                String text = text1 + label + " registrado em "  + timestamps.get(i);
+                String text = text1 + label + getString(R.string.registered_in) + timestamps.get(i);
                 Toast.makeText(LocDataActivity.this, text, Toast.LENGTH_LONG).show();
             }
             @Override

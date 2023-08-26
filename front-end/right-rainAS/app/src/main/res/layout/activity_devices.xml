@@ -20,7 +20,7 @@
         android:layout_gravity="center_horizontal"
         android:text="@string/device_1"
         android:textStyle="bold"
-        android:drawableLeft="@drawable/baseline_location_on_24"
+        android:drawableLeft="@drawable/baseline_sensors_24"
         android:textSize="23sp">
     </Button>
 
@@ -35,7 +35,7 @@
             android:layout_height="200dp"
             android:id="@+id/soil_button"
             android:text="@string/soil_humidity"
-            android:drawableStart="@drawable/baseline_water_drop_24"
+            android:drawableStart="@drawable/baseline_grass_24"
             android:paddingStart="15dp"
             android:textColor="@color/white"
             android:textStyle="bold"

@@ -41,17 +41,17 @@ public class RegisterActivity extends AppCompatActivity {
         EditText phoneField = findViewById(R.id.edit_phone);
         EditText passField = findViewById(R.id.edit_pass);
         EditText repeatPass = findViewById(R.id.edit_repeat_pass);
-        // Botão de cadastrar
-        Button cadastrar = findViewById(R.id.bot_create);
+        // Register button
+        Button register_btn = findViewById(R.id.bot_create);
 
-        // Muda o formato do número de telefone
+        // Change phone field format
         phoneField.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
         arrow.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         });
-        cadastrar.setOnClickListener(v->{
+        register_btn.setOnClickListener(v->{
             if(repeatPass.getText().toString().equals(passField.getText().toString())) {
                 String name = nameField.getText().toString();
                 String email = emailField.getText().toString();
@@ -59,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String phone = phoneField.getText().toString();
                 postDataUsingVolley(name, email, pass, phone);
             }else{
-                Toast.makeText(this, "Senhas não coincidem!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.password_error), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -95,7 +95,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadingPB.setVisibility(View.GONE);
-                Toast.makeText(RegisterActivity.this, "Usuário não criado, verifique informações!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, getString(R.string.create_user_error), Toast.LENGTH_SHORT).show();
             }
         });
         queue.add(jsonObjReq);

@@ -36,7 +36,8 @@ public class NotificationWorker extends Worker {
 
     public void sendNotification(){
         createNotificationChannel();
-        Intent intent = new Intent(getApplicationContext(), NotificationClass.class);
+        Intent intent = new Intent(getApplicationContext(), NotfInfoActivity.class);
+        intent.putExtra("position", 0);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "MyNotification")

@@ -51,11 +51,11 @@ public class MainActivity extends DrawerBaseActivity {
     private List<Pair<Double, Double>> coordinates;
     private ArrayList<String> d_id;
 
-    // Strings do banco de dados das notificações
+    // Strings for SQL Database (Notification)
     private static final String NAME_DB = "bd_notf";
     private static final String NAME_TABLE = "tb_notf";
     private static final String COLUMN_CODE = "id";
-    private static final String NOTF_COLUMN = "Notf";
+    private static final String NOTIFICATION_COLUMN = "Notf";
     private static final String DATE_COLUMN = "Date";
     private static final String HOUR_COLUMN = "Hour";
     private static final String USER_COLUMN = "User";
@@ -93,10 +93,10 @@ public class MainActivity extends DrawerBaseActivity {
 
         // Login notification
         createDatabase();
-        boolean primeiro_login = getIntent().getBooleanExtra("primeiro_login", false);
+        boolean first_login = getIntent().getBooleanExtra("first_login", false);
         SharedPreferences sharedPr = PreferenceManager.getDefaultSharedPreferences(this);
         boolean is_enabled = sharedPr.getBoolean("login", false);
-        if (primeiro_login && is_enabled) {
+        if (first_login && is_enabled) {
             WorkRequest uploadWorkRequest =
                     new OneTimeWorkRequest.Builder(NotificationWorker.class)
                             .build();
@@ -161,24 +161,24 @@ public class MainActivity extends DrawerBaseActivity {
             SQLiteDatabase db;
             try {
                 db = openOrCreateDatabase(NAME_DB, MODE_PRIVATE, null);
-                String QUERY_COLUNA = "CREATE TABLE IF NOT EXISTS " + NAME_TABLE + " ("
-                        + COLUMN_CODE + " INTEGER PRIMARY KEY," + NOTF_COLUMN + " TEXT, " + DATE_COLUMN + " TEXT, " + HOUR_COLUMN +
+                String QUERY_COLUMN = "CREATE TABLE IF NOT EXISTS " + NAME_TABLE + " ("
+                        + COLUMN_CODE + " INTEGER PRIMARY KEY," + NOTIFICATION_COLUMN + " TEXT, " + DATE_COLUMN + " TEXT, " + HOUR_COLUMN +
                         " TEXT, " + USER_COLUMN + " TEXT)";
-                db.execSQL(QUERY_COLUNA);
+                db.execSQL(QUERY_COLUMN);
                 db.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-    public void createNotOnDatabase(String aviso){
+    public void createNotOnDatabase(String notification){
         SQLiteDatabase db;
         try{
             db = openOrCreateDatabase(NAME_DB, MODE_PRIVATE, null);
-            String sql = "INSERT INTO " + NAME_TABLE + " (" + NOTF_COLUMN + "," + DATE_COLUMN + "," + HOUR_COLUMN + "," +
+            String sql = "INSERT INTO " + NAME_TABLE + " (" + NOTIFICATION_COLUMN + "," + DATE_COLUMN + "," + HOUR_COLUMN + "," +
                     USER_COLUMN + ") VALUES (?, ?, ?, ?)";
             SQLiteStatement stmt = db.compileStatement(sql);
-            stmt.bindString(1,aviso);
+            stmt.bindString(1,notification);
             stmt.bindString(2, String.valueOf(LocalDate.now()));
             stmt.bindString(3, String.valueOf(LocalTime.now()));
             stmt.bindString(4, name);

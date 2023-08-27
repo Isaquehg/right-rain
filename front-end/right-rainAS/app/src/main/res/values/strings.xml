@@ -2,10 +2,6 @@
     <string name="app_name">RightRain</string>
     <string name="sensors_list">Lista de Sensores</string>
     <string name ="locations">Localizações</string>
-    <string name ="location1">Localização 1</string>
-    <string name ="location2">Localização 2</string>
-    <string name ="location3">Localização 3</string>
-    <string name ="location4">Localização 4</string>
     <string name="statistics">Estatísticas</string>
     <string name="Name">Nome</string>
     <string name="email">E-mail</string>
@@ -20,6 +16,8 @@
     <string name="access">Acessar</string>
     <string name="type_pass">Senha</string>
     <string name = "new_pass">Nova senha</string>
+    <string name="invalid_data">Usuário ou senha inválidos!</string>
+    <string name="success">Login sucedido!</string>
     <string name="a">a</string>
     <string name="mapbox_access_token">sk.eyJ1IjoiZ2l2LWZueiIsImEiOiJjbGg4NXh6NzIwNWJ1M2Vtd2ZmcXpqMzgyIn0.lb_Yre-0LNVWEHT6bUlLBg</string>
     <string name="sign_off">Sair</string>
@@ -43,4 +41,9 @@
     <string name="unavailable">Dados indisponiveis!</string>
     <string name="select_other_params">Selecione outros parametros!</string>
     <string name="registered_in">\u0020registrado\u0020em\u0020</string>
+    <string name="no_notifications">Nenhum aviso registrado!</string>
+    <string name="content_info">O usuário %1$s fez login na data %2$s às %3$s</string>
+    <string name="password_error">Senhas não coincidem!</string>
+    <string name="create_user_error">Usuário não criado, verifique informações!</string>
+    <string name="unknown_login">Algum usuário fez login em alguma data desconhecida.</string>
 </resources>

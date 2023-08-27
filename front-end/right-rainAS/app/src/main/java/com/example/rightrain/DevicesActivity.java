@@ -19,7 +19,7 @@ public class DevicesActivity extends DrawerBaseActivity {
         // Buttons
         Button title = findViewById(R.id.name_loc_btn);
         Button soil_btn = findViewById(R.id.soil_button);
-        Button temperatue_btn = findViewById(R.id.temperature);
+        Button temperature_btn = findViewById(R.id.temperature);
         Button humidity_btn = findViewById(R.id.humidity);
         // Strings - MainActivity
         user_key = getIntent().getStringExtra("user_key");
@@ -35,7 +35,7 @@ public class DevicesActivity extends DrawerBaseActivity {
             intent.putExtra("type_pt", "Umidade do solo");
             postUserParms(intent);
         });
-        temperatue_btn.setOnClickListener(v->{
+        temperature_btn.setOnClickListener(v->{
             Intent intent = new Intent(getApplicationContext(), LocDataActivity.class);
             intent.putExtra("type", "temperature");
             intent.putExtra("type_pt", "Temperatura");

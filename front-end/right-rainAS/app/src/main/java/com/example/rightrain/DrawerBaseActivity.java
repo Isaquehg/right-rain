@@ -27,16 +27,16 @@ public class DrawerBaseActivity extends AppCompatActivity {
     @Override
     public void setContentView(View view) {
         DrawerLayout drawerLayout;
-        // Configuração das views
+        // Views configurations
         drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
         FrameLayout frameLayout = drawerLayout.findViewById(R.id.activityContainer);
         frameLayout.addView(view);
         super.setContentView(drawerLayout);
         Toolbar toolbar = drawerLayout.findViewById(R.id.toolbar1);
-        // Configuração do drawer
+        // Drawer configuration
         navigationView = drawerLayout.findViewById(R.id.nav_view);
         navigationView.bringToFront();
-        // Strings do LoginActivity compartilhada por Activities que herdam dessa.
+        // LoginActivity Strings shared by activities that extends this one.
         if(ip == null && u_id == null && name == null && email == null && user_key == null){
             user_key = getIntent().getStringExtra("user_key");
             ip = getIntent().getStringExtra("ip");
@@ -60,7 +60,7 @@ public class DrawerBaseActivity extends AppCompatActivity {
                 }
                 if(id == R.id.mainscreen){
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.putExtra("primeiro_login", false);
+                    intent.putExtra("first_login", false);
                     putExtrasIntent(intent);
                 }
                 if(id == R.id.senslist){
@@ -74,7 +74,7 @@ public class DrawerBaseActivity extends AppCompatActivity {
                 return true;
             }
         });
-        // Configuração do botão de notificações
+        // Notification button configuration
         ImageView notButton = drawerLayout.findViewById(R.id.notification_btn);
         notButton.setOnClickListener(v->{
             Intent intent = new Intent(getApplicationContext(), NotificationClass.class);
@@ -85,7 +85,7 @@ public class DrawerBaseActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
         }
 
-        // Aloca as strings no header
+        // Allocate strings to the header
     public void allocateDrawerParms(String name, String email){
         View header = navigationView.getHeaderView(0);
         TextView nameTextView;
@@ -96,7 +96,7 @@ public class DrawerBaseActivity extends AppCompatActivity {
         emailTextView.setText(email);
     }
 
-    // String necessarias para o header
+    // Necessary strings to the header
     public void putExtrasIntent(Intent intent){
         intent.putExtra("u_id", u_id);
         intent.putExtra("user_key", user_key);

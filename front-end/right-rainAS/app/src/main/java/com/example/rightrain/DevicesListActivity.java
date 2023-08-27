@@ -34,7 +34,7 @@ public class DevicesListActivity extends DrawerBaseActivity{
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Configuração da atividade base
+        // BaseActivity configuration
         ActivityDevicesListBinding activityDevicesListBinding = ActivityDevicesListBinding.inflate(getLayoutInflater());
         setContentView(activityDevicesListBinding.getRoot());
         allocateDrawerParms(name, email);
@@ -57,7 +57,7 @@ public class DevicesListActivity extends DrawerBaseActivity{
             }
         });
 
-        // Configurações da barra de busca
+        // Search bar configuration
         SearchView searchView = findViewById(R.id.searchview);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

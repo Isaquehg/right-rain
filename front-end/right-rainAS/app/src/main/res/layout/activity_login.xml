@@ -59,23 +59,13 @@
         android:id="@+id/bot_create"
         android:layout_width="331dp"
         android:layout_height="50dp"
+        android:layout_marginBottom="80dp"
         android:backgroundTint="@color/green"
-        android:textSize="18sp"
         android:text="@string/sign_up_user"
-        app:layout_constraintBottom_toTopOf="@+id/button9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/button9"
-        android:layout_width="331dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="48dp"
         android:textSize="18sp"
-        android:backgroundTint="@color/green"
-        android:text="@string/forget_pass"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/idLoadingPB"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar

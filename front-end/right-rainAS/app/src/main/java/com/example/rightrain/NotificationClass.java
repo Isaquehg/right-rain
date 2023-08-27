@@ -19,16 +19,15 @@ import com.example.rightrain.databinding.ActivityNotificationsBinding;
 import java.util.ArrayList;
 
 public class NotificationClass extends DrawerBaseActivity {
-    // Strings do banco de dados das notificações
-    private static final String NAME_BD = "bd_notf";
-    private static final String TABLE_NAME = "tb_notf";
-    private static final String CODE_COLUMN = "id";
-    private static final String NOTF_COLUMN = "Notf";
-    ListView listViewNotf;
-    ArrayList<String> linhas;
-    ArrayList<Integer> arrayIds;
-    SQLiteDatabase db;
-    ArrayAdapter<String> adapter;
+    // Strings for SQL Database (Notification)
+    private static final String NAME_DB = "bd_notf";
+    private static final String NAME_TABLE = "tb_notf";
+    private static final String COLUMN_CODE = "id";
+    private static final String NOTIFICATION_COLUMN = "Notf";
+    public static ArrayList<String> lines;
+    private ArrayList<Integer> arrayIds;
+    private SQLiteDatabase db;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,11 +37,15 @@ public class NotificationClass extends DrawerBaseActivity {
         setContentView(activityNotificationsBinding.getRoot());
 
         // Listing notifications
+        ListView listViewNotf;
         listViewNotf = findViewById(R.id.avisos_list);
-        linhas = new ArrayList<>();
+        lines = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, lines
+        );
+        listViewNotf.setAdapter(adapter);
         ListNotf();
-        if(linhas.isEmpty()){
-            Toast.makeText(this, "Nenhum aviso registrado!", Toast.LENGTH_LONG).show();
+        if(lines.isEmpty()){
+            Toast.makeText(this, getString(R.string.no_notifications), Toast.LENGTH_LONG).show();
         }
         // Configuring what happens if user clicks in an element of a listView
         listViewNotf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -54,7 +57,7 @@ public class NotificationClass extends DrawerBaseActivity {
             }
         });
 
-        // Configuring Button
+        // Configuring clean button
         Button clean_btn = findViewById(R.id.botao_limpar);
         clean_btn.setOnClickListener(v->{
             DeleteNotf();
@@ -63,34 +66,31 @@ public class NotificationClass extends DrawerBaseActivity {
     public void ListNotf(){
         try {
             arrayIds = new ArrayList<>();
-            db = openOrCreateDatabase(NAME_BD, MODE_PRIVATE, null);
-            String query = "SELECT " + CODE_COLUMN + ", " + NOTF_COLUMN + " FROM " + TABLE_NAME;
+            db = openOrCreateDatabase(NAME_DB, MODE_PRIVATE, null);
+            String query = "SELECT " + COLUMN_CODE + ", " + NOTIFICATION_COLUMN + " FROM " + NAME_TABLE;
             Cursor cursor = db.rawQuery(query, null);
-            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, linhas
-            );
-            listViewNotf.setAdapter(adapter);
             cursor.moveToFirst();
             while(cursor!=null){
-                linhas.add(cursor.getString(1));
+                lines.add(cursor.getString(1));
                 arrayIds.add(cursor.getInt(0));
                 cursor.moveToNext();
             }
             cursor.close();
-
         }catch (Exception e){
             e.printStackTrace();
         }
     }
     public void DeleteNotf(){
         try{
-            db = openOrCreateDatabase(NAME_BD, MODE_PRIVATE, null);
-            String sql = "DELETE FROM " + TABLE_NAME + " WHERE " + CODE_COLUMN +" =?";
+            db = openOrCreateDatabase(NAME_DB, MODE_PRIVATE, null);
+            String sql = "DELETE FROM " + NAME_TABLE + " WHERE " + COLUMN_CODE +" =?";
             SQLiteStatement stmt = db.compileStatement(sql);
-            for (int i = 0; i < linhas.size(); i++) {
+            for (int i = 0; i < lines.size(); i++) {
                 stmt.bindLong(1, arrayIds.get(i));
                 stmt.executeUpdateDelete();
             }
-            ListNotf();
+            lines.clear();
+            adapter.clear();
             db.close();
         }catch(Exception e){
             e.printStackTrace();

@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory android:title="Notificações" />
+    <PreferenceCategory android:title="@string/notifications2" />
     <SwitchPreference
         app:key="login"
         android:theme="@style/SwitchTheme"
         android:defaultValue="false"
-        app:title="Avisos"
-        app:summary="Receber avisos de login">
+        app:title="@string/notifications"
+        app:summary="@string/notification_details">
     </SwitchPreference>
+    <Preference
+        app:key="about"
+        app:title="@string/about"
+        app:summary="@string/about_details">
+    </Preference>
 </PreferenceScreen>

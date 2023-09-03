@@ -67,6 +67,7 @@ public class MainActivity extends DrawerBaseActivity {
         ActivityMainBinding activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(activityMainBinding.getRoot());
         allocateDrawerParms(name, email);
+        // Asking permissions
 
         // User data settings
         de_list1 = findViewById(R.id.de_list);

@@ -25,6 +25,7 @@
     <string name="settings">Configurações</string>
     <string name="add_device">Adicionar dispositivo</string>
     <string name="notifications">Avisos</string>
+    <string name="notifications2">Notificações</string>
     <string name="soil_humidity">Umidade\nSolo</string>
     <string name="air_humidity">Umidade\nAr</string>
     <string name="temperature">Temperatura</string>
@@ -46,4 +47,7 @@
     <string name="password_error">Senhas não coincidem!</string>
     <string name="create_user_error">Usuário não criado, verifique informações!</string>
     <string name="unknown_login">Algum usuário fez login em alguma data desconhecida.</string>
+    <string name="about">Sobre</string>
+    <string name="notification_details">Receber avisos de login</string>
+    <string name="about_details">Sobre o RightRain</string>
 </resources>

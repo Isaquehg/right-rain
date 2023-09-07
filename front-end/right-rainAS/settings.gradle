@@ -26,6 +26,9 @@ dependencyResolutionManagement {
         maven {
             url 'https://jitpack.io'
         }
+        maven{
+            url 'https://jcenter.bintray.com'
+        }
     }
 }
 rootProject.name = "RightRain"

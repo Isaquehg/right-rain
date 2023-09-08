@@ -1,6 +1,7 @@
 package com.example.rightrain;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -46,7 +47,7 @@ public class NotfInfoActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish(); // close this activity and return to preview activity
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

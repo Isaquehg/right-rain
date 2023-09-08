@@ -36,10 +36,9 @@ public class NotificationWorker extends Worker {
 
     public void sendNotification(){
         createNotificationChannel();
-        Intent intent = new Intent(getApplicationContext(), NotfInfoActivity.class);
+        Intent intent = new Intent(getApplicationContext(), NotfInfoActivity.class).addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("position", 0);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_MUTABLE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "MyNotification")
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle("Bem vindo ao RightRain!")

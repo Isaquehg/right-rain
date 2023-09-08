@@ -54,6 +54,7 @@ public class DrawerBaseActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 if(id == R.id.logout) {
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
                     startActivity(intent);
                 }

@@ -6,10 +6,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -96,6 +98,9 @@ public class DevicesListActivity extends DrawerBaseActivity{
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if (error instanceof NoConnectionError) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
+                }
                 error.printStackTrace();
             }
         }){

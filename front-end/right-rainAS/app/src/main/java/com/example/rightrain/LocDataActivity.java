@@ -12,7 +12,11 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -44,6 +48,7 @@ import kotlin.Pair;
 
 public class LocDataActivity extends DrawerBaseActivity {
     private LineChart lineChart;
+    private LineDataSet lineDataSet;
     private Button startDate;
     private Button endDate;
     private String startDate1;
@@ -92,7 +97,18 @@ public class LocDataActivity extends DrawerBaseActivity {
         // Executing getData() to show default values
         startDate.setText(startDate1);
         endDate.setText(endDate1);
-        getData();
+        // SwipeRefresh configuration
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData(true);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        swipeRefreshLayout.setRefreshing(true);
+        getData(false);
+        swipeRefreshLayout.setRefreshing(false);
 
         startDate.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(
@@ -115,7 +131,7 @@ public class LocDataActivity extends DrawerBaseActivity {
                     }
                     startDate.setText(startDate1);
                     if(endDate1 != null){
-                        getData();
+                        getData(true);
                     }
                 }
             }, mYear, mMonth, mDay);
@@ -156,7 +172,7 @@ public class LocDataActivity extends DrawerBaseActivity {
                     }
                     endDate.setText(endDate1);
                     if(startDate1 != null){
-                        getData();
+                        getData(true);
                     }
                 }
             }, mYear, mMonth, mDay);
@@ -172,7 +188,7 @@ public class LocDataActivity extends DrawerBaseActivity {
         return dataValue;
     }
 
-    private void getData(){
+    private void getData(boolean refreshData){
         values = new ArrayList<>();
         timestamps = new ArrayList<>();
         RequestQueue mQueue = Volley.newRequestQueue(this);
@@ -188,7 +204,10 @@ public class LocDataActivity extends DrawerBaseActivity {
                         values.add(data1.getInt("value"));
                         timestamps.add(data1.getString("timestamp"));
                     }
-                    LineDataSet lineDataSet = new LineDataSet(dataValues(), label);
+                    if(refreshData && lineDataSet != null) {
+                        lineDataSet.clear();
+                    }
+                    lineDataSet = new LineDataSet(dataValues(), label);
                     // We are going to use yellow color
                     int color = Color.argb(255, 242,174,28);
                     lineDataSet.setColor(color);
@@ -205,7 +224,11 @@ public class LocDataActivity extends DrawerBaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), getString(R.string.select_other_params), Toast.LENGTH_SHORT).show();
+                if (error instanceof NetworkError) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.select_other_params), Toast.LENGTH_SHORT).show();
+                }
                 error.printStackTrace();
             }
         }){

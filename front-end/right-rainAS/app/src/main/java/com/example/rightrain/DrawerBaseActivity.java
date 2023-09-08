@@ -2,6 +2,7 @@ package com.example.rightrain;
 
 import android.content.Intent;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
@@ -24,6 +26,7 @@ public class DrawerBaseActivity extends AppCompatActivity {
     public String name;
     public String email;
     public String user_key;
+    boolean closeDrawer = false;
     @Override
     public void setContentView(View view) {
         DrawerLayout drawerLayout;
@@ -55,19 +58,23 @@ public class DrawerBaseActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 if(id == R.id.notifications){
+                    drawerLayout.closeDrawer(GravityCompat.START);
                     Intent intent = new Intent(getApplicationContext(), NotificationClass.class);
                     putExtrasIntent(intent);
                 }
                 if(id == R.id.mainscreen){
+                    drawerLayout.closeDrawer(GravityCompat.START);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.putExtra("first_login", false);
-                    putExtrasIntent(intent);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
                 }
                 if(id == R.id.senslist){
+                    drawerLayout.closeDrawer(GravityCompat.START);
                     Intent intent = new Intent(getApplicationContext(), DevicesListActivity.class);
                     putExtrasIntent(intent);
                 }
                 if(id == R.id.settings){
+                    drawerLayout.closeDrawer(GravityCompat.START);
                     Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                     startActivity(intent);
                 }

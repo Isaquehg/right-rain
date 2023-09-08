@@ -48,8 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
         phoneField.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
         arrow.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(intent);
+            finish();
         });
         register_btn.setOnClickListener(v->{
             if(repeatPass.getText().toString().equals(passField.getText().toString())) {

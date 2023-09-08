@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -92,7 +93,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadingPB.setVisibility(View.GONE);
-                Toast.makeText(LoginActivity.this, getString(R.string.invalid_data), Toast.LENGTH_SHORT).show();
+                if (error instanceof NoConnectionError) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(LoginActivity.this, getString(R.string.invalid_data), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         queue.add(jsonObjReq);

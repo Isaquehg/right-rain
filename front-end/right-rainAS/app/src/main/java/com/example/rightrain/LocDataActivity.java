@@ -61,8 +61,6 @@ public class LocDataActivity extends DrawerBaseActivity {
     private ArrayList<Integer> values;
     private ArrayList<String> timestamps;
     private String label;
-    private Button type_btn;
-    private String type_pt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +76,11 @@ public class LocDataActivity extends DrawerBaseActivity {
         // Necessary Strings for header
         d_id = getIntent().getStringExtra("d_id");
         type = getIntent().getStringExtra("type");
-        type_pt = getIntent().getStringExtra("type_pt");
+        String type_pt = getIntent().getStringExtra("type_pt");
         startDate1 = "2019-01-01";
         endDate1 = String.valueOf(LocalDate.now());
         dataValue = new ArrayList<>();
-        type_btn = findViewById(R.id.type_btn);
+        Button type_btn = findViewById(R.id.type_btn);
         type_btn.setText(type_pt);
 
         // Calendar to show the current date

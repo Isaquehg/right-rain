@@ -42,6 +42,7 @@
     <string name="unavailable">Dados indisponiveis!</string>
     <string name="select_other_params">Selecione outros parametros!</string>
     <string name="registered_in">\u0020registrado\u0020em\u0020</string>
+    <string name="future_register">\u0020previsto\u0020para\u0020</string>
     <string name="no_notifications">Nenhum aviso registrado!</string>
     <string name="content_info">O usuário %1$s fez login na data %2$s às %3$s</string>
     <string name="password_error">Senhas não coincidem!</string>

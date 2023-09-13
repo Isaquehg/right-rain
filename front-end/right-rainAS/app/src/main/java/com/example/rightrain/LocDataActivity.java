@@ -33,7 +33,9 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.apache.commons.math3.stat.regression.SimpleRegression;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,6 +61,8 @@ public class LocDataActivity extends DrawerBaseActivity {
     private ArrayList<Integer> values;
     private ArrayList<String> timestamps;
     private String label;
+    private Button type_btn;
+    private String type_pt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +70,19 @@ public class LocDataActivity extends DrawerBaseActivity {
         // Activity base
         ActivityLocDataBinding activityLocDataBinding = ActivityLocDataBinding.inflate(getLayoutInflater());
         setContentView(activityLocDataBinding.getRoot());
+        // Floating button
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(v->{
+            doRegression();
+        });
         // Necessary Strings for header
         d_id = getIntent().getStringExtra("d_id");
         type = getIntent().getStringExtra("type");
-        String type_pt = getIntent().getStringExtra("type_pt");
+        type_pt = getIntent().getStringExtra("type_pt");
         startDate1 = "2019-01-01";
         endDate1 = String.valueOf(LocalDate.now());
         dataValue = new ArrayList<>();
-        Button type_btn = findViewById(R.id.type_btn);
+        type_btn = findViewById(R.id.type_btn);
         type_btn.setText(type_pt);
 
         // Calendar to show the current date
@@ -141,8 +150,9 @@ public class LocDataActivity extends DrawerBaseActivity {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 int i = (int) e.getX();
-                Integer text1 = values.get(i);
-                String text = text1 + label + getString(R.string.registered_in) + timestamps.get(i);
+                Log.d("i", String.valueOf(i));
+                Log.d("values", String.valueOf(values.get(i)));
+                String text = values.get(i) + label + getString(R.string.registered_in) + timestamps.get(i);
                 Toast.makeText(LocDataActivity.this, text, Toast.LENGTH_LONG).show();
             }
             @Override
@@ -188,6 +198,18 @@ public class LocDataActivity extends DrawerBaseActivity {
         return dataValue;
     }
 
+    private void writeLineDataSet(int color){
+        lineDataSet = new LineDataSet(dataValues(), label);
+        // We are going to use yellow color
+        lineDataSet.setColor(color);
+        lineDataSet.setCircleColor(color);
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(lineDataSet);
+        LineData data = new LineData(dataSets);
+        lineChart.setData(data);
+        lineChart.invalidate();
+    }
+
     private void getData(boolean refreshData){
         values = new ArrayList<>();
         timestamps = new ArrayList<>();
@@ -207,16 +229,8 @@ public class LocDataActivity extends DrawerBaseActivity {
                     if(refreshData && lineDataSet != null) {
                         lineDataSet.clear();
                     }
-                    lineDataSet = new LineDataSet(dataValues(), label);
+                    writeLineDataSet(Color.argb(255, 242,174,28));
                     // We are going to use yellow color
-                    int color = Color.argb(255, 242,174,28);
-                    lineDataSet.setColor(color);
-                    lineDataSet.setCircleColor(color);
-                    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-                    dataSets.add(lineDataSet);
-                    LineData data = new LineData(dataSets);
-                    lineChart.setData(data);
-                    lineChart.invalidate();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -240,5 +254,27 @@ public class LocDataActivity extends DrawerBaseActivity {
             }
         };
        mQueue.add(request);
+    }
+    private void doRegression(){
+        // Regression to preview values
+        SimpleRegression simpleRegression = new SimpleRegression();
+        if(values != null){
+            int i;
+            int aux = 0;
+            // Getting values we added from json
+            for (i = 0; i < values.size(); i++) {
+                simpleRegression.addData(i, values.get(i)); // x = json value, y = i);
+                aux++;
+            }
+            // Predicting values
+            while(i < aux + 30) {
+                values.add((int) simpleRegression.predict(i));
+                timestamps.add("futuramente");
+                i++;
+            }
+            writeLineDataSet(Color.argb(255, 242,174,28));
+        }else{
+            Toast.makeText(getApplicationContext(), "Não há valores para prever", Toast.LENGTH_SHORT).show();
+        }
     }
 }

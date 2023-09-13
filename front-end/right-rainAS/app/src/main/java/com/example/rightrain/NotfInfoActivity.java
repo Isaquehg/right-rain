@@ -13,6 +13,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import org.apache.commons.math3.stat.regression.SimpleRegression;
+
 public class NotfInfoActivity extends AppCompatActivity {
     private static final String NAME_DB = "bd_notf";
     private static final String DATE_COLUMN = "Date";

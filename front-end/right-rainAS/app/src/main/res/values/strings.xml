@@ -52,4 +52,7 @@
     <string name="notification_details">Receber avisos de login</string>
     <string name="about_details">Sobre o RightRain</string>
     <string name="internet_unavailable">Internet indisponível, tente mais tarde!</string>
+    <string name="no_values_available">Sem valores disponíveis!</string>
+    <string name="in_future">futuramente</string>
+    <string name="sucess_on_predict">Valores previstos com sucesso!</string>
 </resources>

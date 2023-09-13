@@ -1,8 +1,6 @@
 package com.example.rightrain;
 
 import android.content.Intent;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -26,7 +24,6 @@ public class DrawerBaseActivity extends AppCompatActivity {
     public String name;
     public String email;
     public String user_key;
-    boolean closeDrawer = false;
     @Override
     public void setContentView(View view) {
         DrawerLayout drawerLayout;

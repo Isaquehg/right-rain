@@ -7,7 +7,7 @@ client = pymongo.MongoClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.m
 db = client.rightrain
 
 BROKER = 'fbe1817f.ala.us-east-1.emqxsl.com'
-PORT = 8883
+PORT = 8084
 TOPIC = 'rightrain/data'
 CLIENT_ID = f'python-mqtt-{random.randint(0, 1000)}'
 USERNAME = 'isaquehg'
@@ -21,7 +21,7 @@ def connect_mqtt() -> mqtt_client:
         else:
             print("Failed to connect, return code %d\n", rc)
     # Set Connecting Client ID
-    client = mqtt_client.Client(CLIENT_ID)
+    client = mqtt_client.Client(CLIENT_ID, transport='websockets')
     # Set CA certificate
     client.tls_set(ca_certs=ROOT_CA_PATH)
     client.username_pw_set(USERNAME, PASSWORD)

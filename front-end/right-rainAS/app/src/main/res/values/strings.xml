@@ -5,6 +5,7 @@
     <string name="statistics">Estatísticas</string>
     <string name="Name">Nome</string>
     <string name="email">E-mail</string>
+    <string name="graphic">Gráfico</string>
     <string name="phone">Telefone</string>
     <string name="pass">Senha</string>
     <string name="repeat_pass">Repetir senha</string>
@@ -55,4 +56,7 @@
     <string name="no_values_available">Sem valores disponíveis!</string>
     <string name="in_future">futuramente</string>
     <string name="sucess_on_predict">Valores previstos com sucesso!</string>
+    <string name="infos">Informações</string>
+    <string name="infos_info">Mostrar informações de data e hora ao clicar em pontos no gráfico</string>
+    <string name="future">Futuramente</string>
 </resources>

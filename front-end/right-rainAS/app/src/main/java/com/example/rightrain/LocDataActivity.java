@@ -3,6 +3,7 @@ package com.example.rightrain;
 import static java.lang.Math.sin;
 
 import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.AuthFailureError;
@@ -87,6 +89,8 @@ public class LocDataActivity extends DrawerBaseActivity {
         lineChart = findViewById(R.id.graph1);
         // When the graphic has no data available, it will show a message
         lineChart.setNoDataText(getString(R.string.unavailable));
+        // SharedPreferences
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Graphic label
         if(type.equals("temperature")){
@@ -141,11 +145,14 @@ public class LocDataActivity extends DrawerBaseActivity {
         lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                int i = (int) e.getX();
-                Log.d("i", String.valueOf(i));
-                Log.d("values", String.valueOf(values.get(i)));
-                String text = values.get(i) + label + getString(R.string.registered_in) + timestamps.get(i);
-                Toast.makeText(LocDataActivity.this, text, Toast.LENGTH_LONG).show();
+                boolean showInfo = sharedPreferences.getBoolean("info_data", true);
+                if(showInfo) {
+                    int i = (int) e.getX();
+                    Log.d("i", String.valueOf(i));
+                    Log.d("values", String.valueOf(values.get(i)));
+                    String text = values.get(i) + label + getString(R.string.registered_in) + timestamps.get(i);
+                    Toast.makeText(LocDataActivity.this, text, Toast.LENGTH_LONG).show();
+                }
             }
             @Override
             public void onNothingSelected() {
@@ -253,15 +260,19 @@ public class LocDataActivity extends DrawerBaseActivity {
         SimpleRegression simpleRegression = new SimpleRegression();
         if(values != null){
             int i;
-            double valor = 0;
+            int aux = 0;
             // Getting values we added from json
-            for (i = aux; i < aux+30; i++) {
-                valor = 7*sin(0.4487*i + 1.8) + 22;
-                values.add((int)valor);
-                timestamps.add(getString(R.string.in_future));
+            for (i = 0; i < values.size(); i++) {
+                simpleRegression.addData(i, values.get(i)); // x = json value, y = i);
+                aux++;
+            }
+            // Predicting values
+            while(i < aux + 30) {
+                values.add((int) simpleRegression.predict(i));
+                timestamps.add(getString(R.string.future));
+                i++;
             }
             writeLineDataSet(Color.argb(255, 242,174,28));
-            Toast.makeText(getApplicationContext(), getString(R.string.sucess_on_predict), Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(getApplicationContext(), getString(R.string.no_values_available), Toast.LENGTH_SHORT).show();
         }

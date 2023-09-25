@@ -9,6 +9,14 @@
         app:title="@string/notifications"
         app:summary="@string/notification_details">
     </SwitchPreference>
+    <PreferenceCategory android:title="@string/graphic" />
+    <SwitchPreference
+        app:key="info_data"
+        android:theme="@style/SwitchTheme"
+        android:defaultValue="true"
+        app:title="@string/infos"
+        app:summary="@string/infos_info">
+    </SwitchPreference>
     <Preference
         app:key="about"
         app:title="@string/about"

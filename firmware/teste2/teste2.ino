@@ -2,7 +2,6 @@
 #include <PubSubClient.h>
 #include <WiFiClientSecureBearSSL.h>
 #include "DHT.h"
-#include <TinyGPS++.h>
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 
@@ -25,9 +24,6 @@ DHT dht(DHTPIN, DHTTYPE);
 // Soil Moisture
 const int potPin = A0;
 int potValue;
-
-// GPS
-TinyGPSPlus gps;
 
 // WiFi Client
 WiFiClientSecure espClient;

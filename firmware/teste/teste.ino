@@ -2,7 +2,6 @@
 #include <PubSubClient.h>
 #include <WiFiClientSecureBearSSL.h>
 #include "DHT.h"
-#include <TinyGPS++.h>
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 
@@ -21,9 +20,6 @@ const char* mqtt_password = "1arry_3arry";
 #define DHTPIN 2
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
-
-// GPS
-TinyGPSPlus gps;
 
 // WiFi Client
 WiFiClientSecure espClient;

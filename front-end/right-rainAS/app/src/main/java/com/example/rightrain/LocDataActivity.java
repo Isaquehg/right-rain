@@ -74,7 +74,7 @@ public class LocDataActivity extends DrawerBaseActivity {
         type = getIntent().getStringExtra("type");
         String type_pt = getIntent().getStringExtra("type_pt");
         startDate1 = "2019-01-01";
-        endDate1 = String.valueOf(LocalDate.now());
+        endDate1 = String.valueOf(LocalDate.now().plusDays(1));
         dataValue = new ArrayList<>();
         Button type_btn = findViewById(R.id.type_btn);
         type_btn.setText(type_pt);

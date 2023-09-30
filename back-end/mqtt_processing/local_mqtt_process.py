@@ -2,17 +2,17 @@ import paho.mqtt.client as mqtt_client
 import pymongo
 import json
 import random
-#VxeOus9Z6njSPMQk
-client = pymongo.MongoClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/test")
+
+client = pymongo.MongoClient("mongodbstring")
 db = client.rightrain
 
-BROKER = 'fbe1817f.ala.us-east-1.emqxsl.com'
+BROKER = 'username.emqxsl.com'
 PORT = 8883
 TOPIC = 'rightrain/data'
 CLIENT_ID = f'python-mqtt-{random.randint(0, 1000)}'
-USERNAME = 'isaquehg'
-PASSWORD = '1arry_3arry'
-ROOT_CA_PATH = '/home/isaquehg/Desktop/right-rain/back-end/mqtt_processing/certs/emqxsl-ca.crt'
+USERNAME = 'username'
+PASSWORD = 'password'
+ROOT_CA_PATH = '/path/to/cert.crt'
 
 def connect_mqtt() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):

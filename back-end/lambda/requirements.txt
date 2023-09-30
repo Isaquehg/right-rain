@@ -1,8 +1,0 @@
-fastapi
-mangum
-motor
-passlib
-pydantic
-PyJWT
-pymongo
-uvicorn

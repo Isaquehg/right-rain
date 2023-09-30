@@ -6,15 +6,15 @@
 #include <WiFiUdp.h>
 
 // WiFi
-const char* ssid = "WLL-Inatel";
-const char* password = "inatelsemfio";
+const char* ssid = "id";
+const char* password = "password";
 
 // MQTT Broker
-const char* mqtt_broker = "fbe1817f.ala.us-east-1.emqxsl.com";
+const char* mqtt_broker = "adress.emqxsl.com";
 const int mqtt_port = 8883;
 const char* topic = "rightrain/data";
-const char* mqtt_username = "isaquehg";
-const char* mqtt_password = "1arry_3arry";
+const char* mqtt_username = "username";
+const char* mqtt_password = "password";
 
 // DHT11
 #define DHTPIN 2

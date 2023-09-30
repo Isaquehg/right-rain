@@ -12,7 +12,7 @@ import auth
 
 # -------------------------------------------SETUP----------------------------------------------------
 app = FastAPI()
-client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://isaquehg:VxeOus9Z6njSPMQk@cluster0.mv5e4bc.mongodb.net/?retryWrites=true&w=majority")
+client = motor.motor_asyncio.AsyncIOMotorClient("mongodbstring")
 db = client.rightrain
 ACCESS_TOKEN_EXPIRE_MINUTES = 50
 

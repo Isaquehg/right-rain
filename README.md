@@ -11,7 +11,8 @@ RightRain System for Agricultural Sensing
 - Location
 
 ## Technologies
-- React Native
-- FastAPI
-- MongoDB
-- ESP8266
+- Java (App)
+- FastAPI (API)
+- MongoDB (DB)
+- EC2 + Docker (Deployment)
+- ESP8266 (Hardware)

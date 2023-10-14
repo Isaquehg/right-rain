@@ -6,7 +6,7 @@ RightRain System for Agricultural Sensing
 - Temperature
 - Air Humidity
 - Ground Humidity
-- Pluviosity
+- Rainfall
 - Wind Speed
 - Location
 
